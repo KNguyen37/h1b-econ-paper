@@ -1,0 +1,793 @@
+﻿YEAR,2 digit,3 digit,INDUSTRY_CODE,NAICS_TITLE,AVG_WAGE,Industry based on USCIS
+2012,52,521,521000,Monetary Authorities-Central Bank,80372.94521,Finance and Insurance
+2012,21,211,211000,Oil and Gas Extraction,77900.53824,"Mining, Quarrying, and Oil and Gas Extraction"
+2012,48,486,486000,Pipeline Transportation,76876.04651,Transportation and Warehousing
+2012,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",73489.19614,Finance and Insurance
+2012,32,324,324000,Petroleum and Coal Products Manufacturing,73021.93038,Manufacturing
+2012,49,491,491000,Postal Service,72112.01646,Transportation and Warehousing
+2012,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",70858.37838,Finance and Insurance
+2012,22,221,221000,Utilities,68529.39453,Utilities
+2012,51,519,519000,Other Information Services,68079.03125,Information
+2012,51,517,517000,Telecommunications,66108.34688,Information
+2012,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),64707.9096,Real Estate and Rental and Leasing
+2012,51,518,518000,"Data Processing, Hosting, and Related Services",64472.45283,Information
+2012,48,482,482000,Rail Transportation,63191.94286,Transportation and Warehousing
+2012,48,483,483000,Water Transportation,63153.64035,Transportation and Warehousing
+2012,33,334,334000,Computer and Electronic Product Manufacturing,63104.10959,Manufacturing
+2012,52,524,524000,Insurance Carriers and Related Activities,62902.82744,Finance and Insurance
+2012,51,515,515000,Broadcasting (except Internet),62362.0922,Information
+2012,21,213,213000,Support Activities for Mining,62083.82653,"Mining, Quarrying, and Oil and Gas Extraction"
+2012,48,481,481000,Air Transportation,61089.47368,Transportation and Warehousing
+2012,32,325,325000,Chemical Manufacturing,61019.52727,Manufacturing
+2012,51,511,511000,Publishing Industries (except Internet),60172.36585,Information
+2012,49,492,492000,Couriers and Messengers,59574.32558,Transportation and Warehousing
+2012,51,512,512000,Motion Picture and Sound Recording Industries,59434.67647,Information
+2012,33,336,336000,Transportation Equipment Manufacturing,59410.03534,Manufacturing
+2012,52,522,522000,Credit Intermediation and Related Activities,59396.77871,Finance and Insurance
+2012,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",58770.09732,Manufacturing
+2012,55,551,551000,Management of Companies and Enterprises,58142.45763,Management of Companies and Enterprises
+2012,54,541,541000,"Professional, Scientific, and Technical Services",57784.63074,"Professional, Scientific, and Technical Services"
+2012,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,57176.04736,Wholesale Trade
+2012,56,562,562000,Waste Management and Remediation Services,56995.50239,Administrative and Support and Waste Management and Remediation Services
+2012,32,322,322000,Paper Manufacturing,56874.49468,Manufacturing
+2012,33,333,333000,Machinery Manufacturing,56734.93097,Manufacturing
+2012,21,212,212000,Mining (except Oil and Gas),56620.21622,"Mining, Quarrying, and Oil and Gas Extraction"
+2012,62,621,621000,Ambulatory Health Care Services,55946.89051,Health Care and Social Assistance
+2012,62,622,622000,Hospitals,55171.62129,Health Care and Social Assistance
+2012,33,331,331000,Primary Metal Manufacturing,54970.54688,Manufacturing
+2012,99,999,999000,"Federal, State, and Local Government (excluding state and local schools and hospitals)",54841.70325,
+2012,33,339,339000,Miscellaneous Manufacturing,54669.66165,Manufacturing
+2012,23,236,236000,Construction of Buildings,54214.60829,Construction
+2012,44,443,443000,Electronics and Appliance Stores,53565.17857,Retail Trade
+2012,42,424,424000,"Merchant Wholesalers, Nondurable Goods",53013.76702,Wholesale Trade
+2012,23,237,237000,Heavy and Civil Engineering Construction,52806.80162,Construction
+2012,61,611,611000,Educational Services,52559.00469,Educational Services
+2012,33,332,332000,Fabricated Metal Product Manufacturing,52509.00952,Manufacturing
+2012,31,315,315000,Apparel Manufacturing,52396.61017,Manufacturing
+2012,48,488,488000,Support Activities for Transportation,52329.44215,Transportation and Warehousing
+2012,42,423,423000,"Merchant Wholesalers, Durable Goods",51969.05738,Wholesale Trade
+2012,31,312,312000,Beverage and Tobacco Product Manufacturing,51786.35542,Manufacturing
+2012,32,326,326000,Plastics and Rubber Products Manufacturing,51454.27184,Manufacturing
+2012,45,454,454000,Nonstore Retailers,51276.09705,Retail Trade
+2012,32,323,323000,Printing and Related Support Activities,50849.7929,Manufacturing
+2012,32,327,327000,Nonmetallic Mineral Product Manufacturing,50241.49367,Manufacturing
+2012,31,313,313000,Textile Mills,49853.60515,Manufacturing
+2012,49,493,493000,Warehousing and Storage,49382.00514,Transportation and Warehousing
+2012,23,238,238000,Specialty Trade Contractors,49308.48101,Construction
+2012,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",49241.91761,Other Services (except Public Administration)
+2012,31,311,311000,Food Manufacturing,49011.00569,Manufacturing
+2012,53,532,532000,Rental and Leasing Services,48707.55708,Real Estate and Rental and Leasing
+2012,31,316,316000,Leather and Allied Product Manufacturing,48620.10695,Manufacturing
+2012,53,531,531000,Real Estate,48606.28405,Real Estate and Rental and Leasing
+2012,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",48562.87785,"Arts, Entertainment, and Recreation"
+2012,33,337,337000,Furniture and Related Product Manufacturing,47508.23034,Manufacturing
+2012,56,561,561000,Administrative and Support Services,47285.53818,Administrative and Support and Waste Management and Remediation Services
+2012,81,811,811000,Repair and Maintenance,47216.72032,Other Services (except Public Administration)
+2012,48,484,484000,Truck Transportation,46791.8314,Transportation and Warehousing
+2012,48,485,485000,Transit and Ground Passenger Transportation,46400.78189,Transportation and Warehousing
+2012,31,314,314000,Textile Product Mills,46317.8481,Manufacturing
+2012,44,441,441000,Motor Vehicle and Parts Dealers,46137.68786,Retail Trade
+2012,44,446,446000,Health and Personal Care Stores,45557.94702,Retail Trade
+2012,32,321,321000,Wood Product Manufacturing,45074.50425,Manufacturing
+2012,71,712,712000,"Museums, Historical Sites, and Similar Institutions",45014.71698,"Arts, Entertainment, and Recreation"
+2012,44,448,448000,Clothing and Clothing Accessories Stores,44076.97479,Retail Trade
+2012,62,623,623000,Nursing and Residential Care Facilities,43959.6699,Health Care and Social Assistance
+2012,11,115,115000,Support Activities for Agriculture and Forestry,43749.7482,"Agriculture, Forestry, Fishing and Hunting"
+2012,71,713,713000,"Amusement, Gambling, and Recreation Industries",43691.10544,"Arts, Entertainment, and Recreation"
+2012,11,113,113000,Forestry and Logging,42956.42276,"Agriculture, Forestry, Fishing and Hunting"
+2012,44,442,442000,Furniture and Home Furnishings Stores,42349.19355,Retail Trade
+2012,62,624,624000,Social Assistance,42318.04916,Health Care and Social Assistance
+2012,72,721,721000,Accommodation,41642.64822,Accommodation and Food Services
+2012,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,40908.54839,Retail Trade
+2012,81,812,812000,Personal and Laundry Services,40475.74324,Other Services (except Public Administration)
+2012,48,487,487000,Scenic and Sightseeing Transportation,39770.5,Transportation and Warehousing
+2012,45,452,452000,General Merchandise Stores,39480.66869,Retail Trade
+2012,45,453,453000,Miscellaneous Store Retailers,38148.42105,Retail Trade
+2012,44,445,445000,Food and Beverage Stores,36725.63422,Retail Trade
+2012,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",36405.33569,Retail Trade
+2012,72,722,722000,Food Services and Drinking Places,36150.65831,Accommodation and Food Services
+2012,44,447,447000,Gasoline Stations,34677.5,Retail Trade
+2013,52,521,521000,Monetary Authorities-Central Bank,84169.26471,Finance and Insurance
+2013,21,211,211000,Oil and Gas Extraction,80602.03252,"Mining, Quarrying, and Oil and Gas Extraction"
+2013,48,486,486000,Pipeline Transportation,77635.72491,Transportation and Warehousing
+2013,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",76296.21359,Finance and Insurance
+2013,32,324,324000,Petroleum and Coal Products Manufacturing,75491.87879,Manufacturing
+2013,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",72959.26667,Finance and Insurance
+2013,49,491,491000,Postal Service,72152.5,Transportation and Warehousing
+2013,51,519,519000,Other Information Services,70677.24638,Information
+2013,22,221,221000,Utilities,69904.14397,Utilities
+2013,51,517,517000,Telecommunications,67967.2191,Information
+2013,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),66836.83333,Real Estate and Rental and Leasing
+2013,33,334,334000,Computer and Electronic Product Manufacturing,65750.47059,Manufacturing
+2013,51,518,518000,"Data Processing, Hosting, and Related Services",65664.8503,Information
+2013,48,482,482000,Rail Transportation,65222.52226,Transportation and Warehousing
+2013,21,213,213000,Support Activities for Mining,64770.29703,"Mining, Quarrying, and Oil and Gas Extraction"
+2013,48,483,483000,Water Transportation,64742.31092,Transportation and Warehousing
+2013,51,515,515000,Broadcasting (except Internet),63967.1831,Information
+2013,52,524,524000,Insurance Carriers and Related Activities,63497.68595,Finance and Insurance
+2013,51,511,511000,Publishing Industries (except Internet),62688.11594,Information
+2013,48,481,481000,Air Transportation,61887.75811,Transportation and Warehousing
+2013,49,492,492000,Couriers and Messengers,61864.14141,Transportation and Warehousing
+2013,52,522,522000,Credit Intermediation and Related Activities,61578.97727,Finance and Insurance
+2013,32,325,325000,Chemical Manufacturing,61192.82609,Manufacturing
+2013,33,336,336000,Transportation Equipment Manufacturing,60807.61484,Manufacturing
+2013,56,562,562000,Waste Management and Remediation Services,59339.28747,Administrative and Support and Waste Management and Remediation Services
+2013,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,59175.1577,Wholesale Trade
+2013,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",58963.92683,Manufacturing
+2013,21,212,212000,Mining (except Oil and Gas),58788.15934,"Mining, Quarrying, and Oil and Gas Extraction"
+2013,51,512,512000,Motion Picture and Sound Recording Industries,58712.43827,Information
+2013,55,551,551000,Management of Companies and Enterprises,58539.6462,Management of Companies and Enterprises
+2013,62,621,621000,Ambulatory Health Care Services,58272.15007,Health Care and Social Assistance
+2013,54,541,541000,"Professional, Scientific, and Technical Services",58191.90058,"Professional, Scientific, and Technical Services"
+2013,32,322,322000,Paper Manufacturing,57998.52941,Manufacturing
+2013,33,333,333000,Machinery Manufacturing,57679.06615,Manufacturing
+2013,62,622,622000,Hospitals,56364.79115,Health Care and Social Assistance
+2013,33,339,339000,Miscellaneous Manufacturing,56177.91897,Manufacturing
+2013,23,236,236000,Construction of Buildings,55218.16471,Construction
+2013,99,999,999000,"Federal, State, and Local Government (excluding state and local schools and hospitals)",55152.76817,
+2013,23,237,237000,Heavy and Civil Engineering Construction,55114.46764,Construction
+2013,33,331,331000,Primary Metal Manufacturing,54796.41975,Manufacturing
+2013,31,312,312000,Beverage and Tobacco Product Manufacturing,54677.02065,Manufacturing
+2013,42,424,424000,"Merchant Wholesalers, Nondurable Goods",53462.95522,Wholesale Trade
+2013,33,332,332000,Fabricated Metal Product Manufacturing,53017.78218,Manufacturing
+2013,61,611,611000,Educational Services,52987.06717,Educational Services
+2013,31,315,315000,Apparel Manufacturing,52772.51101,Manufacturing
+2013,48,488,488000,Support Activities for Transportation,52564.70226,Transportation and Warehousing
+2013,44,443,443000,Electronics and Appliance Stores,52276.97761,Retail Trade
+2013,32,326,326000,Plastics and Rubber Products Manufacturing,52207.63723,Manufacturing
+2013,42,423,423000,"Merchant Wholesalers, Durable Goods",51747.7628,Wholesale Trade
+2013,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",51657.96813,"Arts, Entertainment, and Recreation"
+2013,45,454,454000,Nonstore Retailers,51655.72917,Retail Trade
+2013,32,323,323000,Printing and Related Support Activities,51327.74194,Manufacturing
+2013,31,313,313000,Textile Mills,51162.13675,Manufacturing
+2013,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",50738.27247,Other Services (except Public Administration)
+2013,31,316,316000,Leather and Allied Product Manufacturing,50586.77419,Manufacturing
+2013,32,327,327000,Nonmetallic Mineral Product Manufacturing,50326.91729,Manufacturing
+2013,33,337,337000,Furniture and Related Product Manufacturing,49782.71003,Manufacturing
+2013,23,238,238000,Specialty Trade Contractors,49739.08592,Construction
+2013,31,311,311000,Food Manufacturing,49711.34357,Manufacturing
+2013,53,532,532000,Rental and Leasing Services,49429.52915,Real Estate and Rental and Leasing
+2013,49,493,493000,Warehousing and Storage,49387.57106,Transportation and Warehousing
+2013,53,531,531000,Real Estate,49099.30966,Real Estate and Rental and Leasing
+2013,56,561,561000,Administrative and Support Services,48628.14612,Administrative and Support and Waste Management and Remediation Services
+2013,81,811,811000,Repair and Maintenance,48111.58635,Other Services (except Public Administration)
+2013,48,484,484000,Truck Transportation,47570.05731,Transportation and Warehousing
+2013,44,446,446000,Health and Personal Care Stores,47303.30218,Retail Trade
+2013,48,485,485000,Transit and Ground Passenger Transportation,47076.48536,Transportation and Warehousing
+2013,31,314,314000,Textile Product Mills,46794.85106,Manufacturing
+2013,32,321,321000,Wood Product Manufacturing,46020.40984,Manufacturing
+2013,71,712,712000,"Museums, Historical Sites, and Similar Institutions",45520.54245,"Arts, Entertainment, and Recreation"
+2013,44,441,441000,Motor Vehicle and Parts Dealers,45493.66864,Retail Trade
+2013,44,448,448000,Clothing and Clothing Accessories Stores,44666.18257,Retail Trade
+2013,62,623,623000,Nursing and Residential Care Facilities,44421.59309,Health Care and Social Assistance
+2013,11,115,115000,Support Activities for Agriculture and Forestry,43866.08209,"Agriculture, Forestry, Fishing and Hunting"
+2013,71,713,713000,"Amusement, Gambling, and Recreation Industries",43714.70486,"Arts, Entertainment, and Recreation"
+2013,72,721,721000,Accommodation,43356.86391,Accommodation and Food Services
+2013,44,442,442000,Furniture and Home Furnishings Stores,42850.16835,Retail Trade
+2013,62,624,624000,Social Assistance,42503.37942,Health Care and Social Assistance
+2013,11,113,113000,Forestry and Logging,42018.76106,"Agriculture, Forestry, Fishing and Hunting"
+2013,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,41102.52874,Retail Trade
+2013,81,812,812000,Personal and Laundry Services,40856.44944,Other Services (except Public Administration)
+2013,48,487,487000,Scenic and Sightseeing Transportation,40303.31658,Transportation and Warehousing
+2013,45,452,452000,General Merchandise Stores,39710.53512,Retail Trade
+2013,45,453,453000,Miscellaneous Store Retailers,39001.48459,Retail Trade
+2013,72,722,722000,Food Services and Drinking Places,37975.18634,Accommodation and Food Services
+2013,44,445,445000,Food and Beverage Stores,37649.79592,Retail Trade
+2013,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",35510,Retail Trade
+2013,44,447,447000,Gasoline Stations,35360.6044,Retail Trade
+2014,52,521,521000,Monetary Authorities-Central Bank,84476.5493,Finance and Insurance
+2014,21,211,211000,Oil and Gas Extraction,80778.40206,"Mining, Quarrying, and Oil and Gas Extraction"
+2014,48,486,486000,Pipeline Transportation,79504.67626,Transportation and Warehousing
+2014,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",77942.76923,Finance and Insurance
+2014,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",77220.15291,Finance and Insurance
+2014,32,324,324000,Petroleum and Coal Products Manufacturing,73747.39255,Manufacturing
+2014,49,491,491000,Postal Service,73259.53586,Transportation and Warehousing
+2014,51,519,519000,Other Information Services,73219.22388,Information
+2014,22,221,221000,Utilities,71696.62264,Utilities
+2014,51,517,517000,Telecommunications,70498.25843,Information
+2014,48,482,482000,Rail Transportation,67910.9621,Transportation and Warehousing
+2014,33,334,334000,Computer and Electronic Product Manufacturing,67583.55899,Manufacturing
+2014,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),67358.47458,Real Estate and Rental and Leasing
+2014,51,518,518000,"Data Processing, Hosting, and Related Services",66319.45687,Information
+2014,21,213,213000,Support Activities for Mining,66098.83886,"Mining, Quarrying, and Oil and Gas Extraction"
+2014,51,515,515000,Broadcasting (except Internet),65380.9375,Information
+2014,52,524,524000,Insurance Carriers and Related Activities,64663.62887,Finance and Insurance
+2014,32,325,325000,Chemical Manufacturing,64470.74349,Manufacturing
+2014,51,511,511000,Publishing Industries (except Internet),64212.78177,Information
+2014,52,522,522000,Credit Intermediation and Related Activities,63591.55125,Finance and Insurance
+2014,48,483,483000,Water Transportation,63542.2619,Transportation and Warehousing
+2014,48,481,481000,Air Transportation,63432.16463,Transportation and Warehousing
+2014,49,492,492000,Couriers and Messengers,63194.97297,Transportation and Warehousing
+2014,33,336,336000,Transportation Equipment Manufacturing,62949.17733,Manufacturing
+2014,32,322,322000,Paper Manufacturing,60320.8311,Manufacturing
+2014,55,551,551000,Management of Companies and Enterprises,60171.60955,Management of Companies and Enterprises
+2014,21,212,212000,Mining (except Oil and Gas),60068.21918,"Mining, Quarrying, and Oil and Gas Extraction"
+2014,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,59699.41281,Wholesale Trade
+2014,54,541,541000,"Professional, Scientific, and Technical Services",59486.16877,"Professional, Scientific, and Technical Services"
+2014,56,562,562000,Waste Management and Remediation Services,59466.60241,Administrative and Support and Waste Management and Remediation Services
+2014,51,512,512000,Motion Picture and Sound Recording Industries,58856.85015,Information
+2014,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",58819.61538,Manufacturing
+2014,33,333,333000,Machinery Manufacturing,58662.62664,Manufacturing
+2014,62,621,621000,Ambulatory Health Care Services,58406.52555,Health Care and Social Assistance
+2014,62,622,622000,Hospitals,57916.89139,Health Care and Social Assistance
+2014,99,999,999000,"Federal, State, and Local Government (excluding state and local schools and hospitals)",56784.79239,
+2014,23,236,236000,Construction of Buildings,55771.57773,Construction
+2014,23,237,237000,Heavy and Civil Engineering Construction,55717.53564,Construction
+2014,33,339,339000,Miscellaneous Manufacturing,55634.21903,Manufacturing
+2014,33,331,331000,Primary Metal Manufacturing,54749.73236,Manufacturing
+2014,31,312,312000,Beverage and Tobacco Product Manufacturing,54327.06231,Manufacturing
+2014,42,424,424000,"Merchant Wholesalers, Nondurable Goods",54200.37651,Wholesale Trade
+2014,31,315,315000,Apparel Manufacturing,53942.79661,Manufacturing
+2014,48,488,488000,Support Activities for Transportation,53892.26069,Transportation and Warehousing
+2014,33,332,332000,Fabricated Metal Product Manufacturing,53799.16988,Manufacturing
+2014,61,611,611000,Educational Services,53615.00954,Educational Services
+2014,42,423,423000,"Merchant Wholesalers, Durable Goods",53170.94467,Wholesale Trade
+2014,32,326,326000,Plastics and Rubber Products Manufacturing,52575.67696,Manufacturing
+2014,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",52327.53846,"Arts, Entertainment, and Recreation"
+2014,32,323,323000,Printing and Related Support Activities,52186.0479,Manufacturing
+2014,45,454,454000,Nonstore Retailers,51826.8,Retail Trade
+2014,44,443,443000,Electronics and Appliance Stores,51626.92607,Retail Trade
+2014,31,313,313000,Textile Mills,51528.60169,Manufacturing
+2014,32,327,327000,Nonmetallic Mineral Product Manufacturing,51484.36409,Manufacturing
+2014,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",51477.36994,Other Services (except Public Administration)
+2014,49,493,493000,Warehousing and Storage,51249.01554,Transportation and Warehousing
+2014,53,531,531000,Real Estate,50948.94632,Real Estate and Rental and Leasing
+2014,23,238,238000,Specialty Trade Contractors,50823.93382,Construction
+2014,53,532,532000,Rental and Leasing Services,50459.91471,Real Estate and Rental and Leasing
+2014,31,311,311000,Food Manufacturing,50397.51434,Manufacturing
+2014,31,316,316000,Leather and Allied Product Manufacturing,50211.45251,Manufacturing
+2014,48,484,484000,Truck Transportation,49785.35613,Transportation and Warehousing
+2014,33,337,337000,Furniture and Related Product Manufacturing,49781.48571,Manufacturing
+2014,56,561,561000,Administrative and Support Services,49486.68519,Administrative and Support and Waste Management and Remediation Services
+2014,81,811,811000,Repair and Maintenance,49429.05222,Other Services (except Public Administration)
+2014,44,446,446000,Health and Personal Care Stores,48103.42593,Retail Trade
+2014,31,314,314000,Textile Product Mills,48056.28,Manufacturing
+2014,44,441,441000,Motor Vehicle and Parts Dealers,47275.30899,Retail Trade
+2014,32,321,321000,Wood Product Manufacturing,46976.0452,Manufacturing
+2014,44,448,448000,Clothing and Clothing Accessories Stores,46942.85714,Retail Trade
+2014,48,485,485000,Transit and Ground Passenger Transportation,45990.04167,Transportation and Warehousing
+2014,11,115,115000,Support Activities for Agriculture and Forestry,45746.15079,"Agriculture, Forestry, Fishing and Hunting"
+2014,62,623,623000,Nursing and Residential Care Facilities,45583.86275,Health Care and Social Assistance
+2014,71,712,712000,"Museums, Historical Sites, and Similar Institutions",45208.66667,"Arts, Entertainment, and Recreation"
+2014,72,721,721000,Accommodation,44335.44762,Accommodation and Food Services
+2014,71,713,713000,"Amusement, Gambling, and Recreation Industries",44250.1692,"Arts, Entertainment, and Recreation"
+2014,44,442,442000,Furniture and Home Furnishings Stores,44034.07895,Retail Trade
+2014,62,624,624000,Social Assistance,43783.38415,Health Care and Social Assistance
+2014,11,113,113000,Forestry and Logging,43211.92661,"Agriculture, Forestry, Fishing and Hunting"
+2014,81,812,812000,Personal and Laundry Services,42809.46352,Other Services (except Public Administration)
+2014,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,42156.81319,Retail Trade
+2014,48,487,487000,Scenic and Sightseeing Transportation,41093.28205,Transportation and Warehousing
+2014,45,453,453000,Miscellaneous Store Retailers,40696.45161,Retail Trade
+2014,45,452,452000,General Merchandise Stores,40131.80887,Retail Trade
+2014,72,722,722000,Food Services and Drinking Places,38947.59146,Accommodation and Food Services
+2014,44,445,445000,Food and Beverage Stores,38516.97885,Retail Trade
+2014,44,447,447000,Gasoline Stations,37272.71277,Retail Trade
+2014,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",34267.94118,Retail Trade
+2015,52,521,521000,Monetary Authorities-Central Bank,84479.86207,Finance and Insurance
+2015,21,211,211000,Oil and Gas Extraction,81403.68421,"Mining, Quarrying, and Oil and Gas Extraction"
+2015,48,486,486000,Pipeline Transportation,80679.88679,Transportation and Warehousing
+2015,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",77871.34921,Finance and Insurance
+2015,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",77722.67081,Finance and Insurance
+2015,51,519,519000,Other Information Services,75334.19753,Information
+2015,49,491,491000,Postal Service,73739.91453,Transportation and Warehousing
+2015,32,324,324000,Petroleum and Coal Products Manufacturing,73131.06509,Manufacturing
+2015,22,221,221000,Utilities,72934.22857,Utilities
+2015,48,482,482000,Rail Transportation,71158.0117,Transportation and Warehousing
+2015,51,518,518000,"Data Processing, Hosting, and Related Services",70384.40397,Information
+2015,51,517,517000,Telecommunications,70296.92529,Information
+2015,33,334,334000,Computer and Electronic Product Manufacturing,69534.375,Manufacturing
+2015,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),68353.57542,Real Estate and Rental and Leasing
+2015,52,524,524000,Insurance Carriers and Related Activities,66453.49495,Finance and Insurance
+2015,51,511,511000,Publishing Industries (except Internet),66187.33333,Information
+2015,21,213,213000,Support Activities for Mining,65976.13793,"Mining, Quarrying, and Oil and Gas Extraction"
+2015,51,515,515000,Broadcasting (except Internet),65334.56522,Information
+2015,32,325,325000,Chemical Manufacturing,65163.55019,Manufacturing
+2015,48,481,481000,Air Transportation,64771.14007,Transportation and Warehousing
+2015,48,483,483000,Water Transportation,64725.49801,Transportation and Warehousing
+2015,52,522,522000,Credit Intermediation and Related Activities,64572.02156,Finance and Insurance
+2015,33,336,336000,Transportation Equipment Manufacturing,63702.3475,Manufacturing
+2015,49,492,492000,Couriers and Messengers,62793.53591,Transportation and Warehousing
+2015,21,212,212000,Mining (except Oil and Gas),62259.94413,"Mining, Quarrying, and Oil and Gas Extraction"
+2015,55,551,551000,Management of Companies and Enterprises,61891.64743,Management of Companies and Enterprises
+2015,32,322,322000,Paper Manufacturing,61314.65426,Manufacturing
+2015,54,541,541000,"Professional, Scientific, and Technical Services",61281.61606,"Professional, Scientific, and Technical Services"
+2015,51,512,512000,Motion Picture and Sound Recording Industries,61121.86391,Information
+2015,56,562,562000,Waste Management and Remediation Services,59542.26277,Administrative and Support and Waste Management and Remediation Services
+2015,62,621,621000,Ambulatory Health Care Services,59323.32838,Health Care and Social Assistance
+2015,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",59279.33168,Manufacturing
+2015,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,59105.40728,Wholesale Trade
+2015,33,333,333000,Machinery Manufacturing,58998.24299,Manufacturing
+2015,62,622,622000,Hospitals,58590.24661,Health Care and Social Assistance
+2015,99,999,999000,"Federal, State, and Local Government (excluding state and local schools and hospitals)",58390.17467,
+2015,23,236,236000,Construction of Buildings,58389.15789,Construction
+2015,23,237,237000,Heavy and Civil Engineering Construction,56983.95161,Construction
+2015,33,339,339000,Miscellaneous Manufacturing,56335.90747,Manufacturing
+2015,33,331,331000,Primary Metal Manufacturing,56253.075,Manufacturing
+2015,31,316,316000,Leather and Allied Product Manufacturing,56193.56021,Manufacturing
+2015,42,424,424000,"Merchant Wholesalers, Nondurable Goods",55432.08889,Wholesale Trade
+2015,48,488,488000,Support Activities for Transportation,55412.4375,Transportation and Warehousing
+2015,31,315,315000,Apparel Manufacturing,54706.34361,Manufacturing
+2015,33,332,332000,Fabricated Metal Product Manufacturing,54639.79206,Manufacturing
+2015,42,423,423000,"Merchant Wholesalers, Durable Goods",54520.1752,Wholesale Trade
+2015,61,611,611000,Educational Services,54510.84681,Educational Services
+2015,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",54144.17293,"Arts, Entertainment, and Recreation"
+2015,31,312,312000,Beverage and Tobacco Product Manufacturing,54127.06061,Manufacturing
+2015,32,326,326000,Plastics and Rubber Products Manufacturing,53745.3288,Manufacturing
+2015,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",53560.22667,Other Services (except Public Administration)
+2015,32,323,323000,Printing and Related Support Activities,53279.9115,Manufacturing
+2015,44,443,443000,Electronics and Appliance Stores,53132.16667,Retail Trade
+2015,45,454,454000,Nonstore Retailers,53077.84648,Retail Trade
+2015,32,327,327000,Nonmetallic Mineral Product Manufacturing,52448.30097,Manufacturing
+2015,49,493,493000,Warehousing and Storage,52397.88945,Transportation and Warehousing
+2015,81,811,811000,Repair and Maintenance,51973.24111,Other Services (except Public Administration)
+2015,23,238,238000,Specialty Trade Contractors,51849.69751,Construction
+2015,31,313,313000,Textile Mills,51758.66379,Manufacturing
+2015,53,531,531000,Real Estate,51599.20233,Real Estate and Rental and Leasing
+2015,31,311,311000,Food Manufacturing,51570.20599,Manufacturing
+2015,53,532,532000,Rental and Leasing Services,51266.51639,Real Estate and Rental and Leasing
+2015,48,484,484000,Truck Transportation,51059.1831,Transportation and Warehousing
+2015,56,561,561000,Administrative and Support Services,50329.71715,Administrative and Support and Waste Management and Remediation Services
+2015,31,314,314000,Textile Product Mills,49117.74704,Manufacturing
+2015,33,337,337000,Furniture and Related Product Manufacturing,49077.47191,Manufacturing
+2015,44,446,446000,Health and Personal Care Stores,47912.58675,Retail Trade
+2015,32,321,321000,Wood Product Manufacturing,47840.17241,Manufacturing
+2015,48,485,485000,Transit and Ground Passenger Transportation,47813.33333,Transportation and Warehousing
+2015,44,441,441000,Motor Vehicle and Parts Dealers,47382.20339,Retail Trade
+2015,71,712,712000,"Museums, Historical Sites, and Similar Institutions",47191.11111,"Arts, Entertainment, and Recreation"
+2015,11,115,115000,Support Activities for Agriculture and Forestry,46587.59398,"Agriculture, Forestry, Fishing and Hunting"
+2015,62,623,623000,Nursing and Residential Care Facilities,45941.53696,Health Care and Social Assistance
+2015,71,713,713000,"Amusement, Gambling, and Recreation Industries",45833.80379,"Arts, Entertainment, and Recreation"
+2015,44,442,442000,Furniture and Home Furnishings Stores,45489.38776,Retail Trade
+2015,11,113,113000,Forestry and Logging,45264.35484,"Agriculture, Forestry, Fishing and Hunting"
+2015,72,721,721000,Accommodation,45224.55769,Accommodation and Food Services
+2015,81,812,812000,Personal and Laundry Services,44667.42678,Other Services (except Public Administration)
+2015,62,624,624000,Social Assistance,44308.62538,Health Care and Social Assistance
+2015,44,448,448000,Clothing and Clothing Accessories Stores,44156.17225,Retail Trade
+2015,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,43072.01681,Retail Trade
+2015,48,487,487000,Scenic and Sightseeing Transportation,42752.3301,Transportation and Warehousing
+2015,45,452,452000,General Merchandise Stores,40928.59155,Retail Trade
+2015,44,445,445000,Food and Beverage Stores,39426.76301,Retail Trade
+2015,45,453,453000,Miscellaneous Store Retailers,39268.73626,Retail Trade
+2015,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",38895.03472,Retail Trade
+2015,72,722,722000,Food Services and Drinking Places,38154.29907,Accommodation and Food Services
+2015,44,447,447000,Gasoline Stations,36309.35484,Retail Trade
+2016,52,521,521000,Monetary Authorities-Central Bank,92039.21053,Finance and Insurance
+2016,48,486,486000,Pipeline Transportation,83988.41897,Transportation and Warehousing
+2016,21,211,211000,Oil and Gas Extraction,82438.19549,"Mining, Quarrying, and Oil and Gas Extraction"
+2016,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",81700.6213,Finance and Insurance
+2016,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",80143.47826,Finance and Insurance
+2016,22,221,221000,Utilities,74645.57034,Utilities
+2016,49,491,491000,Postal Service,73912.66094,Transportation and Warehousing
+2016,51,519,519000,Other Information Services,73643.73288,Information
+2016,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),72899.94318,Real Estate and Rental and Leasing
+2016,51,518,518000,"Data Processing, Hosting, and Related Services",72248.57627,Information
+2016,51,517,517000,Telecommunications,71882.23164,Information
+2016,32,324,324000,Petroleum and Coal Products Manufacturing,71438.38806,Manufacturing
+2016,48,482,482000,Rail Transportation,70772.94944,Transportation and Warehousing
+2016,33,334,334000,Computer and Electronic Product Manufacturing,70626.26204,Manufacturing
+2016,48,481,481000,Air Transportation,68538.1457,Transportation and Warehousing
+2016,51,511,511000,Publishing Industries (except Internet),68312.39609,Information
+2016,21,213,213000,Support Activities for Mining,68116.59314,"Mining, Quarrying, and Oil and Gas Extraction"
+2016,52,524,524000,Insurance Carriers and Related Activities,68066.6075,Finance and Insurance
+2016,51,515,515000,Broadcasting (except Internet),67695.13986,Information
+2016,32,325,325000,Chemical Manufacturing,67411.5879,Manufacturing
+2016,33,336,336000,Transportation Equipment Manufacturing,66511.00917,Manufacturing
+2016,48,483,483000,Water Transportation,66003.41463,Transportation and Warehousing
+2016,52,522,522000,Credit Intermediation and Related Activities,64761.01333,Finance and Insurance
+2016,55,551,551000,Management of Companies and Enterprises,63249.07098,Management of Companies and Enterprises
+2016,32,322,322000,Paper Manufacturing,62309.22872,Manufacturing
+2016,54,541,541000,"Professional, Scientific, and Technical Services",62292.79843,"Professional, Scientific, and Technical Services"
+2016,49,492,492000,Couriers and Messengers,61942.42857,Transportation and Warehousing
+2016,21,212,212000,Mining (except Oil and Gas),61671.95402,"Mining, Quarrying, and Oil and Gas Extraction"
+2016,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",61107.51256,Manufacturing
+2016,23,236,236000,Construction of Buildings,60833.60887,Construction
+2016,51,512,512000,Motion Picture and Sound Recording Industries,60536.65653,Information
+2016,56,562,562000,Waste Management and Remediation Services,60487.10396,Administrative and Support and Waste Management and Remediation Services
+2016,62,621,621000,Ambulatory Health Care Services,60328.49711,Health Care and Social Assistance
+2016,62,622,622000,Hospitals,60155.64456,Health Care and Social Assistance
+2016,99,999,999000,"Federal, State, and Local Government (excluding state and local schools and hospitals)",59704.67898,
+2016,33,333,333000,Machinery Manufacturing,59304.42777,Manufacturing
+2016,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,58397.98669,Wholesale Trade
+2016,33,331,331000,Primary Metal Manufacturing,58160.44776,Manufacturing
+2016,33,339,339000,Miscellaneous Manufacturing,57885.27728,Manufacturing
+2016,23,237,237000,Heavy and Civil Engineering Construction,57414.16826,Construction
+2016,31,315,315000,Apparel Manufacturing,57214.3913,Manufacturing
+2016,42,424,424000,"Merchant Wholesalers, Nondurable Goods",56764.93314,Wholesale Trade
+2016,32,326,326000,Plastics and Rubber Products Manufacturing,56177.66355,Manufacturing
+2016,48,488,488000,Support Activities for Transportation,56047.04403,Transportation and Warehousing
+2016,33,332,332000,Fabricated Metal Product Manufacturing,56008.51272,Manufacturing
+2016,42,423,423000,"Merchant Wholesalers, Durable Goods",55752.72969,Wholesale Trade
+2016,31,316,316000,Leather and Allied Product Manufacturing,55633.60825,Manufacturing
+2016,61,611,611000,Educational Services,55630.34612,Educational Services
+2016,44,443,443000,Electronics and Appliance Stores,55516.07843,Retail Trade
+2016,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",54666.16257,"Arts, Entertainment, and Recreation"
+2016,45,454,454000,Nonstore Retailers,54369.82796,Retail Trade
+2016,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",54046.49606,Other Services (except Public Administration)
+2016,32,323,323000,Printing and Related Support Activities,53859.49405,Manufacturing
+2016,31,313,313000,Textile Mills,53788.46154,Manufacturing
+2016,53,531,531000,Real Estate,53764.42561,Real Estate and Rental and Leasing
+2016,32,327,327000,Nonmetallic Mineral Product Manufacturing,53519.43262,Manufacturing
+2016,49,493,493000,Warehousing and Storage,53375.09901,Transportation and Warehousing
+2016,31,312,312000,Beverage and Tobacco Product Manufacturing,53272.27811,Manufacturing
+2016,81,811,811000,Repair and Maintenance,53248.41584,Other Services (except Public Administration)
+2016,23,238,238000,Specialty Trade Contractors,53217.76596,Construction
+2016,31,311,311000,Food Manufacturing,52959.08922,Manufacturing
+2016,48,484,484000,Truck Transportation,52312.77174,Transportation and Warehousing
+2016,56,561,561000,Administrative and Support Services,51392.63441,Administrative and Support and Waste Management and Remediation Services
+2016,33,337,337000,Furniture and Related Product Manufacturing,50501.83562,Manufacturing
+2016,31,314,314000,Textile Product Mills,50416.94656,Manufacturing
+2016,53,532,532000,Rental and Leasing Services,50291.31783,Real Estate and Rental and Leasing
+2016,11,115,115000,Support Activities for Agriculture and Forestry,49726.72862,"Agriculture, Forestry, Fishing and Hunting"
+2016,44,446,446000,Health and Personal Care Stores,49646.71975,Retail Trade
+2016,32,321,321000,Wood Product Manufacturing,49454.35294,Manufacturing
+2016,71,712,712000,"Museums, Historical Sites, and Similar Institutions",48850.13363,"Arts, Entertainment, and Recreation"
+2016,48,485,485000,Transit and Ground Passenger Transportation,48104.73896,Transportation and Warehousing
+2016,62,623,623000,Nursing and Residential Care Facilities,47770.66277,Health Care and Social Assistance
+2016,44,441,441000,Motor Vehicle and Parts Dealers,47498.79581,Retail Trade
+2016,11,113,113000,Forestry and Logging,46885.35088,"Agriculture, Forestry, Fishing and Hunting"
+2016,71,713,713000,"Amusement, Gambling, and Recreation Industries",46628.89465,"Arts, Entertainment, and Recreation"
+2016,44,442,442000,Furniture and Home Furnishings Stores,46523.9404,Retail Trade
+2016,72,721,721000,Accommodation,45978.29268,Accommodation and Food Services
+2016,81,812,812000,Personal and Laundry Services,45793.06723,Other Services (except Public Administration)
+2016,62,624,624000,Social Assistance,45439.33333,Health Care and Social Assistance
+2016,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,45359.28571,Retail Trade
+2016,44,448,448000,Clothing and Clothing Accessories Stores,44660.35897,Retail Trade
+2016,45,452,452000,General Merchandise Stores,44334.43299,Retail Trade
+2016,48,487,487000,Scenic and Sightseeing Transportation,42296.95238,Transportation and Warehousing
+2016,44,445,445000,Food and Beverage Stores,41575.3406,Retail Trade
+2016,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",40670.41958,Retail Trade
+2016,45,453,453000,Miscellaneous Store Retailers,40276.02094,Retail Trade
+2016,44,447,447000,Gasoline Stations,38304.39614,Retail Trade
+2016,72,722,722000,Food Services and Drinking Places,37552.20065,Accommodation and Food Services
+2017,52,521,521000,Monetary Authorities-Central Bank,92277.8,Finance and Insurance
+2017,48,486,486000,Pipeline Transportation,87025.69672,Transportation and Warehousing
+2017,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",84507.2973,Finance and Insurance
+2017,21,211,211000,Oil and Gas Extraction,82950.27473,"Mining, Quarrying, and Oil and Gas Extraction"
+2017,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",79871.76471,Finance and Insurance
+2017,49,491,491000,Postal Service (federal government),76100.17241,Transportation and Warehousing
+2017,22,221,221000,Utilities,75766.26923,Utilities
+2017,51,517,517000,Telecommunications,74007.71772,Information
+2017,51,519,519000,Other Information Services,73660.97826,Information
+2017,51,518,518000,"Data Processing, Hosting, and Related Services",73640,Information
+2017,32,324,324000,Petroleum and Coal Products Manufacturing,72990.23739,Manufacturing
+2017,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),72953.65591,Real Estate and Rental and Leasing
+2017,33,334,334000,Computer and Electronic Product Manufacturing,72530.75099,Manufacturing
+2017,51,515,515000,Broadcasting (except Internet),71424.53571,Information
+2017,48,482,482000,Rail Transportation,71093.77005,Transportation and Warehousing
+2017,32,325,325000,Chemical Manufacturing,69714.03377,Manufacturing
+2017,51,511,511000,Publishing Industries (except Internet),69616.54354,Information
+2017,52,524,524000,Insurance Carriers and Related Activities,69578.59961,Finance and Insurance
+2017,48,481,481000,Air Transportation,69573.25806,Transportation and Warehousing
+2017,52,522,522000,Credit Intermediation and Related Activities,68105.12755,Finance and Insurance
+2017,33,336,336000,Transportation Equipment Manufacturing,68095.19553,Manufacturing
+2017,21,213,213000,Support Activities for Mining,66867.14976,"Mining, Quarrying, and Oil and Gas Extraction"
+2017,48,483,483000,Water Transportation,66240.69388,Transportation and Warehousing
+2017,55,551,551000,Management of Companies and Enterprises,64416.55135,Management of Companies and Enterprises
+2017,32,322,322000,Paper Manufacturing,63020.26596,Manufacturing
+2017,54,541,541000,"Professional, Scientific, and Technical Services",62987.42409,"Professional, Scientific, and Technical Services"
+2017,23,236,236000,Construction of Buildings,62937.249,Construction
+2017,21,212,212000,Mining (except Oil and Gas),62369.44134,"Mining, Quarrying, and Oil and Gas Extraction"
+2017,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",62123.85542,Manufacturing
+2017,62,621,621000,Ambulatory Health Care Services,61873.55556,Health Care and Social Assistance
+2017,33,333,333000,Machinery Manufacturing,61840.5,Manufacturing
+2017,49,492,492000,Couriers and Messengers,61838.65591,Transportation and Warehousing
+2017,62,622,622000,Hospitals,61516.98992,Health Care and Social Assistance
+2017,56,562,562000,Waste Management and Remediation Services,61392.9,Administrative and Support and Waste Management and Remediation Services
+2017,99,999,999000,"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",60648.55422,
+2017,51,512,512000,Motion Picture and Sound Recording Industries,60434.23333,Information
+2017,33,331,331000,Primary Metal Manufacturing,60279.95025,Manufacturing
+2017,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,59595.93698,Wholesale Trade
+2017,33,339,339000,Miscellaneous Manufacturing,59472.66667,Manufacturing
+2017,31,315,315000,Apparel Manufacturing,58954.17431,Manufacturing
+2017,23,237,237000,Heavy and Civil Engineering Construction,58045.23723,Construction
+2017,44,443,443000,Electronics and Appliance Stores,57565.9919,Retail Trade
+2017,33,332,332000,Fabricated Metal Product Manufacturing,57184.06439,Manufacturing
+2017,42,424,424000,"Merchant Wholesalers, Nondurable Goods",56827.58321,Wholesale Trade
+2017,42,423,423000,"Merchant Wholesalers, Durable Goods",56800.57069,Wholesale Trade
+2017,61,611,611000,Educational Services,56542.67364,Educational Services
+2017,32,326,326000,Plastics and Rubber Products Manufacturing,56466.13793,Manufacturing
+2017,48,488,488000,Support Activities for Transportation,56358.76953,Transportation and Warehousing
+2017,32,327,327000,Nonmetallic Mineral Product Manufacturing,56296.71463,Manufacturing
+2017,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",55971.69051,Other Services (except Public Administration)
+2017,45,454,454000,Nonstore Retailers,55621.86364,Retail Trade
+2017,53,531,531000,Real Estate,55407.42248,Real Estate and Rental and Leasing
+2017,31,312,312000,Beverage and Tobacco Product Manufacturing,55070.25788,Manufacturing
+2017,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",54694.84848,"Arts, Entertainment, and Recreation"
+2017,31,313,313000,Textile Mills,54506.31579,Manufacturing
+2017,23,238,238000,Specialty Trade Contractors,54505.36458,Construction
+2017,48,484,484000,Truck Transportation,54060.24064,Transportation and Warehousing
+2017,31,316,316000,Leather and Allied Product Manufacturing,53929.88506,Manufacturing
+2017,49,493,493000,Warehousing and Storage,53917.79817,Transportation and Warehousing
+2017,31,311,311000,Food Manufacturing,53765.79926,Manufacturing
+2017,32,323,323000,Printing and Related Support Activities,53643.99417,Manufacturing
+2017,81,811,811000,Repair and Maintenance,52831.95266,Other Services (except Public Administration)
+2017,53,532,532000,Rental and Leasing Services,52499.82072,Real Estate and Rental and Leasing
+2017,56,561,561000,Administrative and Support Services,52226.20241,Administrative and Support and Waste Management and Remediation Services
+2017,11,115,115000,Support Activities for Agriculture and Forestry,51178.91986,"Agriculture, Forestry, Fishing and Hunting"
+2017,44,446,446000,Health and Personal Care Stores,51132.54777,Retail Trade
+2017,48,485,485000,Transit and Ground Passenger Transportation,50911.23457,Transportation and Warehousing
+2017,33,337,337000,Furniture and Related Product Manufacturing,50909.36986,Manufacturing
+2017,31,314,314000,Textile Product Mills,50870.04367,Manufacturing
+2017,32,321,321000,Wood Product Manufacturing,50467.95213,Manufacturing
+2017,62,623,623000,Nursing and Residential Care Facilities,49345.04836,Health Care and Social Assistance
+2017,44,441,441000,Motor Vehicle and Parts Dealers,49090.63325,Retail Trade
+2017,71,712,712000,"Museums, Historical Sites, and Similar Institutions",48925.97727,"Arts, Entertainment, and Recreation"
+2017,11,113,113000,Forestry and Logging,48438.14159,"Agriculture, Forestry, Fishing and Hunting"
+2017,81,812,812000,Personal and Laundry Services,48333.82046,Other Services (except Public Administration)
+2017,72,721,721000,Accommodation,47274.23971,Accommodation and Food Services
+2017,71,713,713000,"Amusement, Gambling, and Recreation Industries",47221.85315,"Arts, Entertainment, and Recreation"
+2017,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,46768.69688,Retail Trade
+2017,45,452,452000,General Merchandise Stores,46756.89655,Retail Trade
+2017,44,448,448000,Clothing and Clothing Accessories Stores,46459.36652,Retail Trade
+2017,44,442,442000,Furniture and Home Furnishings Stores,46419.10345,Retail Trade
+2017,62,624,624000,Social Assistance,46327.98808,Health Care and Social Assistance
+2017,48,487,487000,Scenic and Sightseeing Transportation,43983.98104,Transportation and Warehousing
+2017,44,445,445000,Food and Beverage Stores,43513.02949,Retail Trade
+2017,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",42511.50943,Retail Trade
+2017,45,453,453000,Miscellaneous Store Retailers,39929.02778,Retail Trade
+2017,72,722,722000,Food Services and Drinking Places,39590.15528,Accommodation and Food Services
+2017,44,447,447000,Gasoline Stations,36825.42714,Retail Trade
+2018,52,521,521000,Monetary Authorities-Central Bank,96128.47682,Finance and Insurance
+2018,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",86214.90446,Finance and Insurance
+2018,48,486,486000,Pipeline Transportation,86148.56604,Transportation and Warehousing
+2018,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",85502.48,Finance and Insurance
+2018,21,211,211000,Oil and Gas Extraction,84694.54301,"Mining, Quarrying, and Oil and Gas Extraction"
+2018,22,221,221000,Utilities,77752.35632,Utilities
+2018,49,491,491000,Postal Service (federal government),77350.30043,Transportation and Warehousing
+2018,32,324,324000,Petroleum and Coal Products Manufacturing,75690.84548,Manufacturing
+2018,51,519,519000,Other Information Services,75178.88889,Information
+2018,51,517,517000,Telecommunications,74515.68513,Information
+2018,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),74138.52273,Real Estate and Rental and Leasing
+2018,51,515,515000,Broadcasting (except Internet),73831.5625,Information
+2018,51,518,518000,"Data Processing, Hosting, and Related Services",73340.94276,Information
+2018,33,334,334000,Computer and Electronic Product Manufacturing,72925.73614,Manufacturing
+2018,48,481,481000,Air Transportation,72471.78344,Transportation and Warehousing
+2018,48,482,482000,Rail Transportation,72256.93548,Transportation and Warehousing
+2018,51,511,511000,Publishing Industries (except Internet),71902.6738,Information
+2018,32,325,325000,Chemical Manufacturing,71272.94118,Manufacturing
+2018,52,524,524000,Insurance Carriers and Related Activities,70944.18972,Finance and Insurance
+2018,33,336,336000,Transportation Equipment Manufacturing,68944.01852,Manufacturing
+2018,52,522,522000,Credit Intermediation and Related Activities,68091.73575,Finance and Insurance
+2018,48,483,483000,Water Transportation,68023.30798,Transportation and Warehousing
+2018,21,213,213000,Support Activities for Mining,66761.82243,"Mining, Quarrying, and Oil and Gas Extraction"
+2018,55,551,551000,Management of Companies and Enterprises,66170.54359,Management of Companies and Enterprises
+2018,54,541,541000,"Professional, Scientific, and Technical Services",63928.94072,"Professional, Scientific, and Technical Services"
+2018,32,322,322000,Paper Manufacturing,63895.18006,Manufacturing
+2018,21,212,212000,Mining (except Oil and Gas),63605.71429,"Mining, Quarrying, and Oil and Gas Extraction"
+2018,33,333,333000,Machinery Manufacturing,63194.06844,Manufacturing
+2018,49,492,492000,Couriers and Messengers,62952.8125,Transportation and Warehousing
+2018,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",62835.58376,Manufacturing
+2018,62,622,622000,Hospitals,62772.09125,Health Care and Social Assistance
+2018,51,512,512000,Motion Picture and Sound Recording Industries,62644.44079,Information
+2018,62,621,621000,Ambulatory Health Care Services,62526.34074,Health Care and Social Assistance
+2018,56,562,562000,Waste Management and Remediation Services,62200.92457,Administrative and Support and Waste Management and Remediation Services
+2018,23,236,236000,Construction of Buildings,61932.49004,Construction
+2018,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,61908.27883,Wholesale Trade
+2018,99,999,999000,"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",61839.09329,
+2018,33,339,339000,Miscellaneous Manufacturing,61413.69963,Manufacturing
+2018,33,331,331000,Primary Metal Manufacturing,60920.60241,Manufacturing
+2018,23,237,237000,Heavy and Civil Engineering Construction,60134.55696,Construction
+2018,31,315,315000,Apparel Manufacturing,59464.22727,Manufacturing
+2018,44,443,443000,Electronics and Appliance Stores,58834.24242,Retail Trade
+2018,61,611,611000,Educational Services,58556.63826,Educational Services
+2018,33,332,332000,Fabricated Metal Product Manufacturing,57977.78641,Manufacturing
+2018,42,424,424000,"Merchant Wholesalers, Nondurable Goods",57868.81935,Wholesale Trade
+2018,42,423,423000,"Merchant Wholesalers, Durable Goods",57738.54545,Wholesale Trade
+2018,32,327,327000,Nonmetallic Mineral Product Manufacturing,57640.54502,Manufacturing
+2018,48,488,488000,Support Activities for Transportation,57569.60526,Transportation and Warehousing
+2018,45,454,454000,Nonstore Retailers,57435.4386,Retail Trade
+2018,31,313,313000,Textile Mills,57346.91358,Manufacturing
+2018,31,312,312000,Beverage and Tobacco Product Manufacturing,57175.44944,Manufacturing
+2018,32,326,326000,Plastics and Rubber Products Manufacturing,57109.72789,Manufacturing
+2018,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",56866.84416,Other Services (except Public Administration)
+2018,53,531,531000,Real Estate,56792.52408,Real Estate and Rental and Leasing
+2018,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",56016.53775,"Arts, Entertainment, and Recreation"
+2018,31,311,311000,Food Manufacturing,55701.75824,Manufacturing
+2018,23,238,238000,Specialty Trade Contractors,55477.70903,Construction
+2018,49,493,493000,Warehousing and Storage,55269.93274,Transportation and Warehousing
+2018,48,484,484000,Truck Transportation,55230.15748,Transportation and Warehousing
+2018,31,316,316000,Leather and Allied Product Manufacturing,55177.09091,Manufacturing
+2018,32,323,323000,Printing and Related Support Activities,55101.44543,Manufacturing
+2018,53,532,532000,Rental and Leasing Services,54971.29094,Real Estate and Rental and Leasing
+2018,44,446,446000,Health and Personal Care Stores,53735.12121,Retail Trade
+2018,33,337,337000,Furniture and Related Product Manufacturing,53550.0274,Manufacturing
+2018,56,561,561000,Administrative and Support Services,53312.75349,Administrative and Support and Waste Management and Remediation Services
+2018,11,115,115000,Support Activities for Agriculture and Forestry,52683.48754,"Agriculture, Forestry, Fishing and Hunting"
+2018,32,321,321000,Wood Product Manufacturing,51862.57813,Manufacturing
+2018,31,314,314000,Textile Product Mills,51657.29958,Manufacturing
+2018,81,811,811000,Repair and Maintenance,51646.20493,Other Services (except Public Administration)
+2018,48,485,485000,Transit and Ground Passenger Transportation,51563.72,Transportation and Warehousing
+2018,71,712,712000,"Museums, Historical Sites, and Similar Institutions",51020.30769,"Arts, Entertainment, and Recreation"
+2018,62,623,623000,Nursing and Residential Care Facilities,50576.71906,Health Care and Social Assistance
+2018,44,441,441000,Motor Vehicle and Parts Dealers,50480.30303,Retail Trade
+2018,44,448,448000,Clothing and Clothing Accessories Stores,49962.99065,Retail Trade
+2018,11,113,113000,Forestry and Logging,49468.72727,"Agriculture, Forestry, Fishing and Hunting"
+2018,81,812,812000,Personal and Laundry Services,48726.59091,Other Services (except Public Administration)
+2018,71,713,713000,"Amusement, Gambling, and Recreation Industries",48338.26667,"Arts, Entertainment, and Recreation"
+2018,44,442,442000,Furniture and Home Furnishings Stores,48237.26073,Retail Trade
+2018,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,47739.2623,Retail Trade
+2018,72,721,721000,Accommodation,47245.37367,Accommodation and Food Services
+2018,62,624,624000,Social Assistance,46470.89985,Health Care and Social Assistance
+2018,45,452,452000,General Merchandise Stores,45849.41909,Retail Trade
+2018,48,487,487000,Scenic and Sightseeing Transportation,43739.36073,Transportation and Warehousing
+2018,44,445,445000,Food and Beverage Stores,42452.25627,Retail Trade
+2018,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",41956.35135,Retail Trade
+2018,45,453,453000,Miscellaneous Store Retailers,41326.54867,Retail Trade
+2018,72,722,722000,Food Services and Drinking Places,41149.93651,Accommodation and Food Services
+2018,44,447,447000,Gasoline Stations,41106.94581,Retail Trade
+2019,52,521,521000,Monetary Authorities-Central Bank,97022.97297,Finance and Insurance
+2019,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",87595.37879,Finance and Insurance
+2019,21,211,211000,Oil and Gas Extraction,87420.20408,"Mining, Quarrying, and Oil and Gas Extraction"
+2019,48,486,486000,Pipeline Transportation,86403.7247,Transportation and Warehousing
+2019,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",85761.78344,Finance and Insurance
+2019,22,221,221000,Utilities,79298.28185,Utilities
+2019,51,519,519000,Other Information Services,78959.51311,Information
+2019,32,324,324000,Petroleum and Coal Products Manufacturing,77491.46067,Manufacturing
+2019,49,491,491000,Postal Service (federal government),77413.8009,Transportation and Warehousing
+2019,51,517,517000,Telecommunications,76298.66873,Information
+2019,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),75563.46821,Real Estate and Rental and Leasing
+2019,51,518,518000,"Data Processing, Hosting, and Related Services",74927.71429,Information
+2019,51,515,515000,Broadcasting (except Internet),74223.20896,Information
+2019,33,334,334000,Computer and Electronic Product Manufacturing,74086.17647,Manufacturing
+2019,51,511,511000,Publishing Industries (except Internet),74082.62108,Information
+2019,48,482,482000,Rail Transportation,73801.48997,Transportation and Warehousing
+2019,48,481,481000,Air Transportation,73320.47138,Transportation and Warehousing
+2019,49,492,492000,Couriers and Messengers,71535.07614,Transportation and Warehousing
+2019,32,325,325000,Chemical Manufacturing,71502.91262,Manufacturing
+2019,52,524,524000,Insurance Carriers and Related Activities,71325.24896,Finance and Insurance
+2019,52,522,522000,Credit Intermediation and Related Activities,69894.18367,Finance and Insurance
+2019,55,551,551000,Management of Companies and Enterprises,68394.35345,Management of Companies and Enterprises
+2019,33,336,336000,Transportation Equipment Manufacturing,68208.88889,Manufacturing
+2019,48,483,483000,Water Transportation,67934.26295,Transportation and Warehousing
+2019,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,67725.44858,Wholesale Trade
+2019,21,213,213000,Support Activities for Mining,67418.10384,"Mining, Quarrying, and Oil and Gas Extraction"
+2019,51,512,512000,Motion Picture and Sound Recording Industries,66760.95082,Information
+2019,32,322,322000,Paper Manufacturing,65189.45559,Manufacturing
+2019,54,541,541000,"Professional, Scientific, and Technical Services",65003.04217,"Professional, Scientific, and Technical Services"
+2019,62,622,622000,Hospitals,64629.08609,Health Care and Social Assistance
+2019,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",64450.92141,Manufacturing
+2019,33,333,333000,Machinery Manufacturing,64276.74905,Manufacturing
+2019,21,212,212000,Mining (except Oil and Gas),63993.83598,"Mining, Quarrying, and Oil and Gas Extraction"
+2019,62,621,621000,Ambulatory Health Care Services,63810.30488,Health Care and Social Assistance
+2019,99,999,999000,"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)",62866.24658,
+2019,33,339,339000,Miscellaneous Manufacturing,62396.36528,Manufacturing
+2019,42,424,424000,"Merchant Wholesalers, Nondurable Goods",62297.63605,Wholesale Trade
+2019,56,562,562000,Waste Management and Remediation Services,62020.6235,Administrative and Support and Waste Management and Remediation Services
+2019,23,236,236000,Construction of Buildings,61901.80894,Construction
+2019,42,423,423000,"Merchant Wholesalers, Durable Goods",61834.41041,Wholesale Trade
+2019,33,331,331000,Primary Metal Manufacturing,61259.4132,Manufacturing
+2019,23,237,237000,Heavy and Civil Engineering Construction,61065.73359,Construction
+2019,31,312,312000,Beverage and Tobacco Product Manufacturing,60403.23034,Manufacturing
+2019,31,315,315000,Apparel Manufacturing,59907.01835,Manufacturing
+2019,61,611,611000,Educational Services,59818.06389,Educational Services
+2019,48,488,488000,Support Activities for Transportation,59546.40562,Transportation and Warehousing
+2019,44,443,443000,Electronics and Appliance Stores,59393.66972,Retail Trade
+2019,45,454,454000,Nonstore Retailers,58763.09955,Retail Trade
+2019,32,327,327000,Nonmetallic Mineral Product Manufacturing,58738.41346,Manufacturing
+2019,33,332,332000,Fabricated Metal Product Manufacturing,58602.95276,Manufacturing
+2019,31,313,313000,Textile Mills,58396.98347,Manufacturing
+2019,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",58132.57516,Other Services (except Public Administration)
+2019,53,531,531000,Real Estate,58086.92469,Real Estate and Rental and Leasing
+2019,32,326,326000,Plastics and Rubber Products Manufacturing,57827.83217,Manufacturing
+2019,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",57516.8797,"Arts, Entertainment, and Recreation"
+2019,23,238,238000,Specialty Trade Contractors,57181.4433,Construction
+2019,31,311,311000,Food Manufacturing,56903.97388,Manufacturing
+2019,49,493,493000,Warehousing and Storage,56821.62844,Transportation and Warehousing
+2019,48,484,484000,Truck Transportation,56755.82447,Transportation and Warehousing
+2019,32,323,323000,Printing and Related Support Activities,56216.52038,Manufacturing
+2019,48,485,485000,Transit and Ground Passenger Transportation,56010.99174,Transportation and Warehousing
+2019,53,532,532000,Rental and Leasing Services,55914.78873,Real Estate and Rental and Leasing
+2019,56,561,561000,Administrative and Support Services,54871.80529,Administrative and Support and Waste Management and Remediation Services
+2019,44,446,446000,Health and Personal Care Stores,53992.13376,Retail Trade
+2019,11,115,115000,Support Activities for Agriculture and Forestry,53611.20623,"Agriculture, Forestry, Fishing and Hunting"
+2019,33,337,337000,Furniture and Related Product Manufacturing,53517.71831,Manufacturing
+2019,31,314,314000,Textile Product Mills,53416.99588,Manufacturing
+2019,81,811,811000,Repair and Maintenance,53268.39015,Other Services (except Public Administration)
+2019,44,441,441000,Motor Vehicle and Parts Dealers,52342.96392,Retail Trade
+2019,31,316,316000,Leather and Allied Product Manufacturing,52143.03448,Manufacturing
+2019,32,321,321000,Wood Product Manufacturing,52069.40701,Manufacturing
+2019,71,712,712000,"Museums, Historical Sites, and Similar Institutions",51985.84821,"Arts, Entertainment, and Recreation"
+2019,11,113,113000,Forestry and Logging,51381.19266,"Agriculture, Forestry, Fishing and Hunting"
+2019,62,623,623000,Nursing and Residential Care Facilities,51325.65302,Health Care and Social Assistance
+2019,81,812,812000,Personal and Laundry Services,50021.64502,Other Services (except Public Administration)
+2019,72,721,721000,Accommodation,49092.57752,Accommodation and Food Services
+2019,71,713,713000,"Amusement, Gambling, and Recreation Industries",48616.66667,"Arts, Entertainment, and Recreation"
+2019,44,442,442000,Furniture and Home Furnishings Stores,47913.4106,Retail Trade
+2019,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,47899.42149,Retail Trade
+2019,44,448,448000,Clothing and Clothing Accessories Stores,47687.29592,Retail Trade
+2019,62,624,624000,Social Assistance,47220.31496,Health Care and Social Assistance
+2019,45,452,452000,General Merchandise Stores,45752.41071,Retail Trade
+2019,48,487,487000,Scenic and Sightseeing Transportation,44684.09524,Transportation and Warehousing
+2019,44,445,445000,Food and Beverage Stores,44302.67045,Retail Trade
+2019,45,453,453000,Miscellaneous Store Retailers,42885.23529,Retail Trade
+2019,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",42700.58182,Retail Trade
+2019,72,722,722000,Food Services and Drinking Places,41633.58553,Accommodation and Food Services
+2019,44,447,447000,Gasoline Stations,39011.12245,Retail Trade
+2020,52,521,521000,Monetary Authorities-Central Bank,97735.37313,Finance and Insurance
+2020,21,211,211000,Oil and Gas Extraction,89893.09598,"Mining, Quarrying, and Oil and Gas Extraction"
+2020,52,525,525000,"Funds, Trusts, and Other Financial Vehicles",89769.02098,Finance and Insurance
+2020,52,523,523000,"Securities, Commodity Contracts, and Other Financial Investments and Related Activities",87958.51485,Finance and Insurance
+2020,48,486,486000,Pipeline Transportation,86622.01717,Transportation and Warehousing
+2020,51,519,519000,Other Information Services,83150.81181,Information
+2020,22,221,221000,Utilities,82374.28283,Utilities
+2020,32,324,324000,Petroleum and Coal Products Manufacturing,80857.29345,Manufacturing
+2020,51,515,515000,Broadcasting (except Internet),79619.88372,Information
+2020,49,491,491000,Postal Service (federal government),79056.0181,Transportation and Warehousing
+2020,51,518,518000,"Data Processing, Hosting, and Related Services",77934.36567,Information
+2020,48,482,482000,Rail Transportation,77550.73955,Transportation and Warehousing
+2020,33,334,334000,Computer and Electronic Product Manufacturing,77460.59761,Manufacturing
+2020,51,517,517000,Telecommunications,77275.04587,Information
+2020,53,533,533000,Lessors of Nonfinancial Intangible Assets (except Copyrighted Works),77069.76608,Real Estate and Rental and Leasing
+2020,51,511,511000,Publishing Industries (except Internet),76901.6954,Information
+2020,48,481,481000,Air Transportation,76124.4086,Transportation and Warehousing
+2020,52,524,524000,Insurance Carriers and Related Activities,73519.70711,Finance and Insurance
+2020,32,325,325000,Chemical Manufacturing,71847.77996,Manufacturing
+2020,52,522,522000,Credit Intermediation and Related Activities,71575.41026,Finance and Insurance
+2020,48,483,483000,Water Transportation,71329.00826,Transportation and Warehousing
+2020,21,213,213000,Support Activities for Mining,70614.35644,"Mining, Quarrying, and Oil and Gas Extraction"
+2020,49,492,492000,Couriers and Messengers,70300.98655,Transportation and Warehousing
+2020,55,551,551000,Management of Companies and Enterprises,70153.43716,Management of Companies and Enterprises
+2020,33,336,336000,Transportation Equipment Manufacturing,69846.73828,Manufacturing
+2020,51,512,512000,Motion Picture and Sound Recording Industries,68505.14196,Information
+2020,54,541,541000,"Professional, Scientific, and Technical Services",67335.34068,"Professional, Scientific, and Technical Services"
+2020,62,622,622000,Hospitals,66739.56,Health Care and Social Assistance
+2020,33,335,335000,"Electrical Equipment, Appliance, and Component Manufacturing",66544.93404,Manufacturing
+2020,33,333,333000,Machinery Manufacturing,66361.57282,Manufacturing
+2020,32,322,322000,Paper Manufacturing,66095.10929,Manufacturing
+2020,21,212,212000,Mining (except Oil and Gas),65737.96196,"Mining, Quarrying, and Oil and Gas Extraction"
+2020,99,999,999000,"Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OEWS Designation)",65560.13599,
+2020,62,621,621000,Ambulatory Health Care Services,65177.20497,Health Care and Social Assistance
+2020,56,562,562000,Waste Management and Remediation Services,65128.56115,Administrative and Support and Waste Management and Remediation Services
+2020,42,425,425000,Wholesale Electronic Markets and Agents and Brokers,64681.95489,Wholesale Trade
+2020,33,339,339000,Miscellaneous Manufacturing,64143.17343,Manufacturing
+2020,23,237,237000,Heavy and Civil Engineering Construction,62775.27002,Construction
+2020,33,331,331000,Primary Metal Manufacturing,62769.37028,Manufacturing
+2020,23,236,236000,Construction of Buildings,62724.62626,Construction
+2020,31,312,312000,Beverage and Tobacco Product Manufacturing,62459.94382,Manufacturing
+2020,48,488,488000,Support Activities for Transportation,62332.95117,Transportation and Warehousing
+2020,42,424,424000,"Merchant Wholesalers, Nondurable Goods",61970.25449,Wholesale Trade
+2020,31,315,315000,Apparel Manufacturing,61480.31674,Manufacturing
+2020,61,611,611000,Educational Services,61399.98033,Educational Services
+2020,33,332,332000,Fabricated Metal Product Manufacturing,61252.63581,Manufacturing
+2020,42,423,423000,"Merchant Wholesalers, Durable Goods",61066.19493,Wholesale Trade
+2020,71,711,711000,"Performing Arts, Spectator Sports, and Related Industries",60905.81395,"Arts, Entertainment, and Recreation"
+2020,45,454,454000,Nonstore Retailers,60892.03091,Retail Trade
+2020,31,313,313000,Textile Mills,60876.22318,Manufacturing
+2020,44,443,443000,Electronics and Appliance Stores,60451.33047,Retail Trade
+2020,32,327,327000,Nonmetallic Mineral Product Manufacturing,59933.26034,Manufacturing
+2020,32,326,326000,Plastics and Rubber Products Manufacturing,59855.09434,Manufacturing
+2020,81,813,813000,"Religious, Grantmaking, Civic, Professional, and Similar Organizations",59800.84677,Other Services (except Public Administration)
+2020,23,238,238000,Specialty Trade Contractors,59165.89655,Construction
+2020,31,311,311000,Food Manufacturing,59007.7757,Manufacturing
+2020,48,485,485000,Transit and Ground Passenger Transportation,58618.35341,Transportation and Warehousing
+2020,53,531,531000,Real Estate,58525.02058,Real Estate and Rental and Leasing
+2020,48,484,484000,Truck Transportation,58462.34973,Transportation and Warehousing
+2020,49,493,493000,Warehousing and Storage,58164.87119,Transportation and Warehousing
+2020,32,323,323000,Printing and Related Support Activities,57677.5,Manufacturing
+2020,33,337,337000,Furniture and Related Product Manufacturing,57438.38983,Manufacturing
+2020,56,561,561000,Administrative and Support Services,56747.30038,Administrative and Support and Waste Management and Remediation Services
+2020,53,532,532000,Rental and Leasing Services,56435.28226,Real Estate and Rental and Leasing
+2020,81,811,811000,Repair and Maintenance,55681.68279,Other Services (except Public Administration)
+2020,44,446,446000,Health and Personal Care Stores,55304.04908,Retail Trade
+2020,11,115,115000,Support Activities for Agriculture and Forestry,54964.18251,"Agriculture, Forestry, Fishing and Hunting"
+2020,31,314,314000,Textile Product Mills,54691.92,Manufacturing
+2020,31,316,316000,Leather and Allied Product Manufacturing,54474.8951,Manufacturing
+2020,44,441,441000,Motor Vehicle and Parts Dealers,54364.55471,Retail Trade
+2020,32,321,321000,Wood Product Manufacturing,53814.40217,Manufacturing
+2020,71,712,712000,"Museums, Historical Sites, and Similar Institutions",53062.05674,"Arts, Entertainment, and Recreation"
+2020,62,623,623000,Nursing and Residential Care Facilities,51764.41584,Health Care and Social Assistance
+2020,81,812,812000,Personal and Laundry Services,50659.30283,Other Services (except Public Administration)
+2020,11,113,113000,Forestry and Logging,50565.15152,"Agriculture, Forestry, Fishing and Hunting"
+2020,72,721,721000,Accommodation,50379.54733,Accommodation and Food Services
+2020,62,624,624000,Social Assistance,49778.28528,Health Care and Social Assistance
+2020,71,713,713000,"Amusement, Gambling, and Recreation Industries",49641.26866,"Arts, Entertainment, and Recreation"
+2020,44,444,444000,Building Material and Garden Equipment and Supplies Dealers,48908.38624,Retail Trade
+2020,44,448,448000,Clothing and Clothing Accessories Stores,48735.44974,Retail Trade
+2020,44,442,442000,Furniture and Home Furnishings Stores,48488.90071,Retail Trade
+2020,48,487,487000,Scenic and Sightseeing Transportation,47580.10256,Transportation and Warehousing
+2020,45,451,451000,"Sporting Goods, Hobby, Musical Instrument, and Book Stores",46099.24242,Retail Trade
+2020,45,452,452000,General Merchandise Stores,46027.61905,Retail Trade
+2020,44,445,445000,Food and Beverage Stores,45237.73913,Retail Trade
+2020,45,453,453000,Miscellaneous Store Retailers,44463.71601,Retail Trade
+2020,72,722,722000,Food Services and Drinking Places,41882.00669,Accommodation and Food Services
+2020,44,447,447000,Gasoline Stations,40525.64516,Retail Trade

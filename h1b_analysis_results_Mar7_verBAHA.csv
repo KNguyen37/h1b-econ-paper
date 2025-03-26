@@ -1,0 +1,22 @@
+NAICS Code,Denial Rate 2012-2015,Denial Rate 2018-2019,Change Denial Rate,Industry Share 2012-2015,Industry Share 2018-2019,Change Industry Share,Approval_Percentage 2012-2015,Approval_Percentage 2018-2019,Approval Change
+"('11', 'Agriculture, Forestry, Fishing and Hunting')",7%,25%,18%,0.12,0.07,-0.05,0.11,0.09,-0.02
+"('21', 'Mining, Quarrying, and Oil and Gas Extraction')",2%,7%,5%,0.6,0.25,-0.35,0.58,0.27,-0.32
+"('22', 'Utilities')",2%,6%,4%,0.32,0.25,-0.07,0.24,0.24,0.00
+"('23', 'Construction')",5%,11%,6%,0.49,0.58,0.09,0.51,0.96,0.45
+"('31-33', 'Manufacturing')",2%,6%,3%,10.93,9.83,-1.1,10.32,12.16,1.84
+"('42', 'Wholesale Trade')",7%,11%,5%,1.36,1.47,0.11,1.30,1.37,0.07
+"('44-45', 'Retail Trade')",4%,9%,5%,2.64,2.99,0.35,2.22,2.86,0.64
+"('48-49', 'Transportation and Warehousing')",6%,10%,4%,0.49,0.56,0.07,0.40,0.54,0.14
+"('51', 'Information')",3%,8%,5%,5.08,6.11,1.03,4.81,6.03,1.22
+"('52', 'Finance and Insurance')",2%,6%,4%,5.79,7.94,2.15,4.16,6.93,2.77
+"('53', 'Real Estate and Rental and Leasing')",9%,14%,5%,0.32,0.42,0.1,0.30,0.49,0.19
+"('54', 'Professional, Scientific, and Technical Services')",7%,23%,16%,52.38,55.6,3.22,54.40,47.86,-6.54
+"('55', 'Management of Companies and Enterprises')",2%,10%,8%,0.48,0.32,-0.16,0.35,0.49,0.14
+"('56', 'Administrative and Support and Waste Management and Remediation Services')",8%,18%,10%,1.05,1.28,0.23,0.97,1.27,0.29
+"('61', 'Educational Services')",3%,4%,2%,9.61,6.76,-2.85,11.47,11.48,0.01
+"('62', 'Health Care and Social Assistance')",5%,5%,1%,5.65,4.22,-1.43,5.54,5.49,-0.05
+"('71', 'Arts, Entertainment, and Recreation')",11%,19%,9%,0.26,0.14,-0.12,0.28,0.15,-0.12
+"('72', 'Accommodation and Food Services')",16%,21%,5%,0.4,0.27,-0.13,0.30,0.22,-0.07
+"('81', 'Other Services (except Public Administration)')",9%,13%,5%,0.52,0.34,-0.18,0.56,0.40,-0.16
+"('92', 'Public Administration')",5%,9%,4%,0.21,0.18,-0.03,0.21,0.22,0.00
+"('Unknown', 'Unknown or Unclassified Industries')",12%,22%,10%,1.26,0.42,-0.84,0.93,0.48,-0.45
