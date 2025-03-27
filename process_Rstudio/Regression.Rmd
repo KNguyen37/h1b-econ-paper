@@ -1,0 +1,465 @@
+---
+title: "Regression"
+output: html_document
+---
+```{r}
+# H-1B Dependency and Wage Analysis
+# Analysis of "Buy American, Hire American" policy effects on wages
+
+# ---- 1. Setup and Data Loading ----
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(plm)
+library(lmtest)
+library(sandwich)
+library(fixest)
+
+# Set base path
+base_path <- "/Users/kietnguyen/Documents/GitHub/h1b-econ-paper"
+
+# Load and combine all USCIS data (2010-2022)
+load_uscis_data <- function(base_path, years = 2010:2022) {
+  uscis_list <- list()
+  
+  for(year in years) {
+    file_path <- paste0(base_path, "/H1B_cleaned_data/processed_uscis_", year, ".csv")
+    if(file.exists(file_path)) {
+      df <- read.csv(file_path, stringsAsFactors = FALSE)
+      uscis_list[[as.character(year)]] <- df
+    }
+  }
+  
+  # Combine all years
+  uscis_combined <- do.call(rbind, uscis_list)
+  return(uscis_combined)
+}
+
+# Load all datasets
+uscis_data <- load_uscis_data(base_path, 2010:2022)
+wages_data <- read.csv(paste0(base_path, "/original_data/avg_wage_and_total_emp_by_industry_year.csv"), 
+                       stringsAsFactors = FALSE)
+emp_data <- read.csv(paste0(base_path, "/original_data/total_emp_by_industry.csv"), 
+                     stringsAsFactors = FALSE)
+inflation_data <- read.csv(paste0(base_path, "/original_data/united-states-inflation-rate-cpi.csv"), 
+                          stringsAsFactors = FALSE, skip = 7)
+
+# ---- 2. Data Cleaning and Preprocessing ----
+# Extract 2-digit NAICS codes from USCIS data
+uscis_data$naics_2digit <- str_extract(uscis_data$Industry_NAICS_Standardized, "'([^']+)'")
+uscis_data$naics_2digit <- gsub("'", "", uscis_data$naics_2digit)
+
+# Filter out unknown NAICS
+uscis_data <- uscis_data %>% filter(naics_2digit != "Unknown")
+
+# Aggregate H-1B data by industry and year
+# First, convert character columns to numeric
+uscis_data <- uscis_data %>%
+  mutate(
+    Initial.Approval = as.numeric(Initial.Approval),
+    Initial.Denial = as.numeric(Initial.Denial),
+    Continuing.Approval = as.numeric(Continuing.Approval),
+    Continuing.Denial = as.numeric(Continuing.Denial)
+  )
+
+# Then run your aggregation code
+h1b_by_industry <- uscis_data %>%
+  group_by(Fiscal.Year, naics_2digit) %>%
+  summarize(
+    initial_approvals = sum(Initial.Approval, na.rm = TRUE),
+    initial_denials = sum(Initial.Denial, na.rm = TRUE),
+    continuing_approvals = sum(Continuing.Approval, na.rm = TRUE),
+    continuing_denials = sum(Continuing.Denial, na.rm = TRUE),
+    total_approvals = initial_approvals + continuing_approvals,
+    total_denials = initial_denials + continuing_denials,
+    total_applications = total_approvals + total_denials,
+    denial_rate = total_denials / total_applications
+  ) %>%
+  filter(!is.na(naics_2digit), naics_2digit != "") %>%
+  rename(year = Fiscal.Year)
+
+# Clean employment data
+emp_data <- emp_data %>%
+  mutate(TOTAL_EMP = as.numeric(as.character(TOTAL_EMP)))
+
+# Extract 2-digit NAICS from employment data
+emp_data$naics_2digit <- substr(emp_data$INDUSTRY_CODE, 1, 2)
+
+# Aggregate employment by 2-digit NAICS
+emp_by_industry <- emp_data %>%
+  group_by(YEAR, naics_2digit) %>%
+  summarize(total_employment = sum(TOTAL_EMP, na.rm = TRUE)) %>%
+  rename(year = YEAR)
+
+# Clean wages data
+wages_data$naics_2digit <- as.character(wages_data$X2.digit)
+wages_data <- wages_data %>%
+  rename(year = YEAR) %>%
+  select(year, naics_2digit, AVG_WAGE)
+
+# Clean inflation data
+inflation_data <- inflation_data %>%
+  rename(year = Date, inflation_rate = GDP..Billions.of.US...) %>%
+  mutate(
+    year = as.numeric(substr(year, 1, 4)),
+    inflation_rate = as.numeric(as.character(inflation_rate))
+  ) %>%
+  select(year, inflation_rate)
+
+# Standardize wages data using case_when
+wages_data <- wages_data %>%
+  mutate(naics_standardized = case_when(
+    naics_2digit %in% c("31", "32", "33") ~ "31-33",
+    naics_2digit %in% c("44", "45") ~ "44-45",
+    naics_2digit %in% c("48", "49") ~ "48-49",
+    TRUE ~ naics_2digit  # Default case: keep the original code
+  ))
+
+# Then aggregate wages by standardized NAICS codes
+wages_standardized <- wages_data %>%
+  group_by(year, naics_standardized) %>%
+  summarize(AVG_WAGE = mean(AVG_WAGE, na.rm = TRUE)) %>%
+  rename(naics_2digit = naics_standardized)
+
+# Apply the same standardization to employment data
+emp_data <- emp_data %>%
+  mutate(naics_standardized = case_when(
+    naics_2digit %in% c("31", "32", "33") ~ "31-33",
+    naics_2digit %in% c("44", "45") ~ "44-45",
+    naics_2digit %in% c("48", "49") ~ "48-49",
+    TRUE ~ naics_2digit
+  ))
+
+# Aggregate employment by standardized NAICS
+emp_standardized <- emp_data %>%
+  group_by(YEAR, naics_standardized) %>%
+  summarize(total_employment = sum(TOTAL_EMP, na.rm = TRUE)) %>%
+  rename(naics_2digit = naics_standardized)
+
+# Now merge all datasets with standardized NAICS codes
+emp_standardized <- emp_standardized %>%  rename(year=YEAR)
+analysis_data <- h1b_by_industry %>%
+  left_join(emp_standardized, by = c("year", "naics_2digit")) %>%
+  left_join(wages_standardized, by = c("year", "naics_2digit")) %>%
+  left_join(inflation_data, by = "year") %>%
+  filter(!is.na(AVG_WAGE), !is.na(total_employment))
+
+
+
+# Filter to years with complete data (2012-2020)
+analysis_data <- analysis_data %>%
+  filter(year >= 2012, year <= 2020)
+
+# ---- 3. Calculate H-1B Dependency Measures ----
+# Calculate pre-period (2012-2016) average employment by industry
+pre_period_emp <- analysis_data %>%
+  filter(year < 2017) %>%
+  group_by(naics_2digit) %>%
+  summarize(pre_period_employment = mean(total_employment, na.rm = TRUE))
+
+# Join pre-period employment to main dataset
+analysis_data <- analysis_data %>%
+  left_join(pre_period_emp, by = "naics_2digit")
+
+# Calculate different H-1B dependency measures
+analysis_data <- analysis_data %>%
+  mutate(
+    # Current year dependency
+    h1b_dependency_current = total_approvals / total_employment,
+    
+    # Pre-period normalized dependency (professor's recommendation)
+    h1b_dependency_preperiod = total_approvals / pre_period_employment,
+    
+    # Applications-based dependency
+    h1b_dependency_applications = total_applications / total_employment,
+    
+    # Calculate real wages (adjusted for inflation)
+    real_wage = AVG_WAGE / (1 + (inflation_rate/100))
+  )
+
+# Calculate average pre-period dependency
+pre_period_dependency <- analysis_data %>%
+  filter(year < 2017) %>%
+  group_by(naics_2digit) %>%
+  summarize(
+    avg_preperiod_dependency = mean(h1b_dependency_preperiod, na.rm = TRUE)
+  )
+
+# Join to main dataset
+analysis_data <- analysis_data %>%
+  left_join(pre_period_dependency, by = "naics_2digit")
+
+# Create binary dependency indicators
+analysis_data <- analysis_data %>%
+  mutate(
+    # Above median dependency
+    high_dependency_median = avg_preperiod_dependency > median(avg_preperiod_dependency, na.rm = TRUE),
+    
+    # Top 25% dependency
+    high_dependency_top25 = avg_preperiod_dependency > quantile(avg_preperiod_dependency, 0.75, na.rm = TRUE),
+    
+    # Using 5% threshold
+    high_dependency_5pct = avg_preperiod_dependency > 0.05,
+    
+    # Three-tier classification
+    dependency_category = case_when(
+      avg_preperiod_dependency < 0.01 ~ "Low",
+      avg_preperiod_dependency < 0.05 ~ "Medium",
+      TRUE ~ "High"
+    ),
+    
+    # Treatment period indicator
+    post_treatment = year >= 2017
+  )
+
+# Create interaction terms for DiD
+analysis_data <- analysis_data %>%
+  mutate(
+    # Different interaction terms
+    did_median = high_dependency_median * post_treatment,
+    did_top25 = high_dependency_top25 * post_treatment,
+    did_5pct = high_dependency_5pct * post_treatment,
+    
+    # Continuous treatment interaction
+    did_continuous = avg_preperiod_dependency * post_treatment,
+    
+    # Triple interaction with denial rate
+    triple_int_median = high_dependency_median * post_treatment * denial_rate,
+    triple_int_5pct = high_dependency_5pct * post_treatment * denial_rate,
+    
+    # Log transformation of key variables
+    log_wage = log(AVG_WAGE),
+    log_real_wage = log(real_wage)
+  )
+
+# Factor variables for fixed effects
+analysis_data$naics_factor <- as.factor(analysis_data$naics_2digit)
+analysis_data$year_factor <- as.factor(analysis_data$year)
+
+# ---- 4. Save processed data ----
+write.csv(analysis_data, paste0(base_path, "/processed_data_for_analysis.csv"), row.names = FALSE)
+
+# ---- 5. Simple DiD Models ----
+# Basic DiD with binary treatment (median split)
+model1 <- lm(log_real_wage ~ high_dependency_median + post_treatment + did_median, 
+             data = analysis_data)
+
+# With fixed effects
+model1_fe <- lm(log_real_wage ~ high_dependency_median + post_treatment + did_median + 
+                naics_factor + year_factor, 
+                data = analysis_data)
+
+# Using 5% threshold
+model1b <- lm(log_real_wage ~ high_dependency_5pct + post_treatment + did_5pct, 
+              data = analysis_data)
+
+model1b_fe <- lm(log_real_wage ~ high_dependency_5pct + post_treatment + did_5pct + 
+                 naics_factor + year_factor, 
+                 data = analysis_data)
+
+# ---- 6. Continuous Treatment Models ----
+# Continuous dependency measure
+model2 <- lm(log_real_wage ~ avg_preperiod_dependency + post_treatment + did_continuous, 
+             data = analysis_data)
+
+model2_fe <- lm(log_real_wage ~ avg_preperiod_dependency + post_treatment + did_continuous + 
+                naics_factor + year_factor, 
+                data = analysis_data)
+
+# ---- 7. Models with Denial Rates ----
+# Adding denial rates
+model3 <- lm(log_real_wage ~ high_dependency_5pct + denial_rate + post_treatment + 
+             high_dependency_5pct:denial_rate + did_5pct, 
+             data = analysis_data)
+
+model3_fe <- lm(log_real_wage ~ high_dependency_5pct + denial_rate + post_treatment + 
+                high_dependency_5pct:denial_rate + did_5pct + 
+                naics_factor + year_factor, 
+                data = analysis_data)
+
+# Triple interaction (fully specified model)
+model3b <- lm(log_real_wage ~ high_dependency_5pct + denial_rate + post_treatment + 
+              high_dependency_5pct:denial_rate + high_dependency_5pct:post_treatment + 
+              denial_rate:post_treatment + triple_int_5pct, 
+              data = analysis_data)
+
+model3b_fe <- lm(log_real_wage ~ high_dependency_5pct + denial_rate + post_treatment + 
+                high_dependency_5pct:denial_rate + high_dependency_5pct:post_treatment + 
+                denial_rate:post_treatment + triple_int_5pct + 
+                naics_factor + year_factor, 
+                data = analysis_data)
+
+# ---- 8. Panel Data Models ----
+# Create panel data structure
+panel_data <- pdata.frame(analysis_data, index = c("naics_2digit", "year"))
+
+# Basic panel model with two-way fixed effects
+model4 <- plm(log_real_wage ~ high_dependency_5pct:post_treatment, 
+              data = panel_data, effect = "twoways", model = "within")
+
+# Panel model with continuous treatment
+model4b <- plm(log_real_wage ~ avg_preperiod_dependency:post_treatment, 
+               data = panel_data, effect = "twoways", model = "within")
+
+# Panel model with denial rates
+model4c <- plm(log_real_wage ~ high_dependency_5pct:post_treatment + 
+               denial_rate + high_dependency_5pct:denial_rate + 
+               denial_rate:post_treatment + triple_int_5pct,
+               data = panel_data, effect = "twoways", model = "within")
+
+# ---- 9. Event Study ----
+# Create event-time dummies
+analysis_data <- analysis_data %>%
+  mutate(event_time = year - 2017)
+
+# Create interaction terms
+for(t in sort(unique(analysis_data$event_time))) {
+  if(t != 0) { # Omit t=0 as reference
+    var_name <- paste0("event_", t)
+    int_name <- paste0("int_", t)
+    
+    analysis_data[[var_name]] <- analysis_data$event_time == t
+    analysis_data[[int_name]] <- analysis_data[[var_name]] * analysis_data$high_dependency_5pct
+  }
+}
+
+# Event study regression
+event_vars <- names(analysis_data)[grep("^int_", names(analysis_data))]
+formula_str <- paste("log_real_wage ~", paste(event_vars, collapse = " + "), 
+                    "+ naics_factor + year_factor")
+
+model5 <- lm(as.formula(formula_str), data = analysis_data)
+
+# Plot event study
+coefs <- coef(model5)[grep("^int_", names(coef(model5)))]
+ses <- sqrt(diag(vcovHC(model5, type = "HC1")))[grep("^int_", names(coef(model5)))]
+
+event_df <- data.frame(
+  time = as.numeric(gsub("int_", "", names(coefs))),
+  estimate = coefs,
+  lower = coefs - 1.96 * ses,
+  upper = coefs + 1.96 * ses
+)
+
+event_df <- event_df[order(event_df$time), ]
+
+ggplot(event_df, aes(x = time, y = estimate)) +
+  geom_point() +
+  geom_line() +
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.2) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  theme_minimal() +
+  labs(x = "Years Relative to Policy Change (2017)", 
+       y = "Effect on Log Real Wage",
+       title = "Event Study: Effect of H-1B Dependency on Wages")
+
+# ---- 10. Advanced Fixed Effects Models ----
+# High-dimensional fixed effects with clustering
+model6 <- feols(log_real_wage ~ high_dependency_5pct:post_treatment | naics_2digit + year, 
+                data = analysis_data, cluster = "naics_2digit")
+
+# With continuous treatment
+model6b <- feols(log_real_wage ~ avg_preperiod_dependency:post_treatment | naics_2digit + year, 
+                 data = analysis_data, cluster = "naics_2digit")
+
+# With denial rates (most sophisticated model)
+model6c <- feols(log_real_wage ~ denial_rate + high_dependency_5pct:denial_rate + 
+                 denial_rate:post_treatment + high_dependency_5pct:post_treatment + triple_int_5pct | 
+                 naics_2digit + year, 
+                 data = analysis_data, cluster = "naics_2digit")
+
+# ---- 11. Placebo Test ----
+# Use pre-policy period only
+placebo_data <- analysis_data %>%
+  filter(year < 2017) %>%
+  mutate(
+    placebo_post = year >= 2014,
+    placebo_int = high_dependency_5pct * placebo_post
+  )
+
+# Placebo models
+placebo_model <- lm(log_real_wage ~ high_dependency_5pct + placebo_post + placebo_int,
+                    data = placebo_data)
+
+placebo_model_fe <- lm(log_real_wage ~ high_dependency_5pct + placebo_post + placebo_int + 
+                       naics_factor + year_factor,
+                       data = placebo_data)
+
+placebo_panel <- pdata.frame(placebo_data, index = c("naics_2digit", "year"))
+placebo_model_panel <- plm(log_real_wage ~ placebo_int, 
+                           data = placebo_panel, effect = "twoways", model = "within")
+
+# Extract placebo results
+placebo_results <- data.frame(
+  Model = c("Simple", "With FE", "Panel"),
+  Coefficient = c(
+    coef(placebo_model)["placebo_int"],
+    coef(placebo_model_fe)["placebo_int"],
+    coef(placebo_model_panel)["placebo_int"]
+  ),
+  SE = c(
+    sqrt(diag(vcovHC(placebo_model, type = "HC1")))["placebo_int"],
+    sqrt(diag(vcovHC(placebo_model_fe, type = "HC1")))["placebo_int"],
+    sqrt(diag(vcovHC(placebo_model_panel, type = "HC1")))["placebo_int"]
+  )
+)
+
+placebo_results$P_Value <- 2 * pt(abs(placebo_results$Coefficient/placebo_results$SE), 
+                                 c(df.residual(placebo_model), 
+                                   df.residual(placebo_model_fe),
+                                   df.residual(placebo_model_panel)), lower.tail = FALSE)
+
+write.csv(placebo_results, paste0(base_path, "/h1b_placebo_test_results.csv"), row.names = FALSE)
+
+# ---- 12. Visualize Results ----
+# Plot wage trends by dependency
+ggplot(analysis_data %>% 
+         filter(high_dependency_5pct %in% c(TRUE, FALSE)) %>%
+         mutate(dep_label = ifelse(high_dependency_5pct, "High H-1B Dependency", "Low H-1B Dependency")),
+       aes(x = year, y = log_real_wage, color = dep_label, group = dep_label)) +
+  stat_summary(fun = "mean", geom = "point") +
+  stat_summary(fun = "mean", geom = "line") +
+  geom_vline(xintercept = 2017, linetype = "dashed", color = "red") +
+  theme_minimal() +
+  labs(x = "Year", y = "Log Real Average Wage", color = "Industry Type",
+       title = "Wage Trends by H-1B Dependency",
+       subtitle = "Vertical line indicates 'Buy American, Hire American' policy in 2017")
+
+# Plot denial rates over time
+ggplot(analysis_data %>% 
+         group_by(year, high_dependency_5pct) %>%
+         summarize(avg_denial_rate = mean(denial_rate, na.rm = TRUE)) %>%
+         mutate(dep_label = ifelse(high_dependency_5pct, "High H-1B Dependency", "Low H-1B Dependency")),
+       aes(x = year, y = avg_denial_rate, color = dep_label, group = dep_label)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 2017, linetype = "dashed", color = "red") +
+  theme_minimal() +
+  labs(x = "Year", y = "Average Denial Rate", color = "Industry Type",
+       title = "H-1B Denial Rates by Industry Dependency",
+       subtitle = "Vertical line indicates 'Buy American, Hire American' policy in 2017")
+
+# ---- 13. Final Model Summary ----
+summary(model6c)
+
+# Calculate economic significance
+coef_value <- coef(model6c)["high_dependency_5pct:post_treatment"]
+economic_effect <- (exp(coef_value) - 1) * 100
+
+cat("The estimate suggests that the 'Buy American, Hire American' policy resulted in a", 
+    round(economic_effect, 2), "% change in real wages for high H-1B dependency industries relative to others.\n")
+
+# Save results
+sink(paste0(base_path, "/h1b_wage_analysis_results.txt"))
+cat("ANALYSIS OF 'BUY AMERICAN, HIRE AMERICAN' POLICY EFFECTS ON WAGES\n\n")
+cat("FINAL MODEL SUMMARY (Most Sophisticated Model):\n")
+print(summary(model6c))
+cat("\nECONOMIC INTERPRETATION:\n")
+cat("The estimate suggests that the 'Buy American, Hire American' policy resulted in a", 
+    round(economic_effect, 2), "% change in real wages for high H-1B dependency industries.\n\n")
+cat("PLACEBO TEST RESULTS:\n")
+print(placebo_results)
+sink()
+```
