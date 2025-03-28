@@ -1,0 +1,460 @@
+---
+title: "data_exploration"
+output: html_document
+---
+
+```{r}
+# ---- Data Exploration: H-1B Policy Impact on Wages ----
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(corrplot)
+library(knitr)
+library(scales)
+library(gridExtra)
+library(kableExtra)
+library(reshape2)
+library(patchwork)
+library(ggthemes)
+library(viridis)
+library(ggrepel)
+
+# Set theme for consistent visualizations
+theme_set(theme_minimal() + 
+          theme(text = element_text(family = "serif"),
+                plot.title = element_text(face = "bold", size = 12),
+                plot.subtitle = element_text(size = 10),
+                axis.title = element_text(size = 10),
+                legend.position = "bottom"))
+
+# ---- 1. Load and Prepare Data ----
+# Load the processed dataset
+analysis_data <- read.csv("~/Documents/GitHub/h1b-econ-paper/improved_processed_data_for_analysis.csv")
+
+# Convert relevant columns to factors
+analysis_data$naics_2digit <- as.factor(analysis_data$naics_2digit)
+analysis_data$year_factor <- as.factor(analysis_data$year) 
+
+# Create period indicator for pre/post policy
+analysis_data$period <- factor(ifelse(analysis_data$year < 2017, 
+                                     "Pre-Policy (2012-2016)", 
+                                     "Post-Policy (2017-2020)"),
+                              levels = c("Pre-Policy (2012-2016)", "Post-Policy (2017-2020)"))
+
+# Create three-tier dependency categorization for better analysis
+analysis_data$dependency_category <- cut(analysis_data$avg_preperiod_dependency,
+                                        breaks = c(-Inf, 
+                                                  quantile(analysis_data$avg_preperiod_dependency, 0.33, na.rm = TRUE),
+                                                  quantile(analysis_data$avg_preperiod_dependency, 0.67, na.rm = TRUE), 
+                                                  Inf),
+                                        labels = c("Low", "Medium", "High"))
+
+# Fix numeric versions of binary variables for correlation analysis
+analysis_data$high_dependency_median_num <- as.numeric(analysis_data$high_dependency_median)
+analysis_data$post_treatment_num <- as.numeric(analysis_data$post_treatment)
+analysis_data$did_median_num <- as.numeric(analysis_data$did_median)
+
+# ---- 2. Summary Statistics ----
+# Function to create a nicely formatted summary statistics table
+create_summary_table <- function(data, vars, digits = 2) {
+  summary_stats <- data %>%
+    summarise(across(all_of(vars), 
+                    list(
+                      n = ~sum(!is.na(.)),
+                      min = ~min(., na.rm = TRUE),
+                      q25 = ~quantile(., 0.25, na.rm = TRUE),
+                      median = ~median(., na.rm = TRUE),
+                      mean = ~mean(., na.rm = TRUE),
+                      q75 = ~quantile(., 0.75, na.rm = TRUE),
+                      max = ~max(., na.rm = TRUE),
+                      sd = ~sd(., na.rm = TRUE)
+                    )))
+  
+  # Reshape for better presentation
+  summary_long <- summary_stats %>%
+    pivot_longer(cols = everything(),
+                 names_to = c("variable", "stat"),
+                 names_pattern = "(.*)_(.*)") %>%
+    pivot_wider(names_from = stat, values_from = value)
+  
+  return(summary_long)
+}
+
+# Variables to include in summary statistics
+wage_vars <- c("log_wage", "log_real_wage", "AVG_WAGE", "real_wage")
+h1b_vars <- c("denial_rate", "avg_preperiod_dependency", "h1b_dependency_preperiod")
+employment_vars <- c("total_employment", "total_approvals", "total_denials", "total_applications")
+
+# Create summary tables
+wage_summary <- create_summary_table(analysis_data, wage_vars)
+h1b_summary <- create_summary_table(analysis_data, h1b_vars)
+emp_summary <- create_summary_table(analysis_data, employment_vars)
+
+# Summary by period (pre vs post policy)
+period_summary <- analysis_data %>%
+  group_by(period) %>%
+  summarise(
+    n = n(),
+    mean_wage = mean(real_wage, na.rm = TRUE),
+    mean_log_wage = mean(log_real_wage, na.rm = TRUE),
+    mean_denial_rate = mean(denial_rate, na.rm = TRUE),
+    median_denial_rate = median(denial_rate, na.rm = TRUE)
+  )
+
+# Summary by dependency category (fixed to ensure multiple rows)
+dependency_summary <- analysis_data %>%
+  group_by(dependency_category) %>%
+  summarise(
+    n = n(),
+    mean_wage = mean(real_wage, na.rm = TRUE),
+    mean_log_wage = mean(log_real_wage, na.rm = TRUE),
+    mean_denial_rate = mean(denial_rate, na.rm = TRUE),
+    median_denial_rate = median(denial_rate, na.rm = TRUE)
+  )
+
+# Industry-specific summary (important for your research design)
+industry_summary <- analysis_data %>%
+  group_by(industry_category, high_dependency_median) %>%
+  summarise(
+    n = n(),
+    mean_wage = mean(real_wage, na.rm = TRUE),
+    mean_log_wage = mean(log_real_wage, na.rm = TRUE),
+    mean_denial_rate = mean(denial_rate, na.rm = TRUE),
+    avg_dependency = mean(avg_preperiod_dependency, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(avg_dependency))
+
+# DiD summary - wages by dependency and period (improved for clarity)
+did_summary <- analysis_data %>%
+  group_by(period, high_dependency_median) %>%
+  summarise(
+    n = n(),
+    mean_log_wage = mean(log_real_wage, na.rm = TRUE),
+    mean_denial_rate = mean(denial_rate, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(dependency_group = ifelse(high_dependency_median, "High H-1B Dependency", "Low H-1B Dependency")) %>%
+  select(-high_dependency_median)
+
+# Format the table to show the DiD structure clearly
+did_wide <- did_summary %>%
+  pivot_wider(
+    id_cols = dependency_group,
+    names_from = period,
+    values_from = c(n, mean_log_wage, mean_denial_rate)
+  ) %>%
+  mutate(
+    change_log_wage = `mean_log_wage_Post-Policy (2017-2020)` - `mean_log_wage_Pre-Policy (2012-2016)`,
+    change_denial_rate = `mean_denial_rate_Post-Policy (2017-2020)` - `mean_denial_rate_Pre-Policy (2012-2016)`
+  )
+
+# Check for outliers in key variables
+outliers_check <- data.frame(
+  Variable = c("log_real_wage", "denial_rate", "avg_preperiod_dependency"),
+  Outliers_Count = c(
+    length(boxplot.stats(analysis_data$log_real_wage)$out),
+    length(boxplot.stats(analysis_data$denial_rate)$out),
+    length(boxplot.stats(analysis_data$avg_preperiod_dependency)$out)
+  ),
+  Outliers_Percent = c(
+    length(boxplot.stats(analysis_data$log_real_wage)$out) / nrow(analysis_data) * 100,
+    length(boxplot.stats(analysis_data$denial_rate)$out) / nrow(analysis_data) * 100,
+    length(boxplot.stats(analysis_data$avg_preperiod_dependency)$out) / nrow(analysis_data) * 100
+  )
+)
+
+# Missing data patterns
+missing_data <- colSums(is.na(analysis_data)) 
+missing_data <- missing_data[missing_data > 0]
+
+# Save summary tables
+write.csv(wage_summary, "wage_summary.csv", row.names = FALSE)
+write.csv(h1b_summary, "h1b_summary.csv", row.names = FALSE)
+write.csv(emp_summary, "emp_summary.csv", row.names = FALSE)
+write.csv(period_summary, "period_summary.csv", row.names = FALSE)
+write.csv(dependency_summary, "dependency_summary.csv", row.names = FALSE)
+write.csv(industry_summary, "industry_summary.csv", row.names = FALSE)
+write.csv(did_wide, "did_summary.csv", row.names = FALSE)
+write.csv(outliers_check, "outliers_check.csv", row.names = FALSE)
+
+# ---- 3. Correlation Matrix ----
+# Key variables for correlation matrix (using numeric versions of binary variables)
+cor_vars <- c("log_real_wage", "denial_rate", "avg_preperiod_dependency", 
+              "high_dependency_median_num", "post_treatment_num", "did_median_num",
+              "total_approvals", "total_denials")
+
+# Create correlation matrix for all data
+cor_matrix <- cor(analysis_data[, cor_vars], use = "pairwise.complete.obs")
+write.csv(cor_matrix, "correlation_matrix.csv")
+
+# For period-specific correlations, select variables with non-zero variance
+pre_data <- analysis_data %>% filter(period == "Pre-Policy (2012-2016)")
+post_data <- analysis_data %>% filter(period == "Post-Policy (2017-2020)")
+
+# Variables with non-zero variance in pre-period
+pre_cor_vars <- c("log_real_wage", "denial_rate", "avg_preperiod_dependency", 
+                 "high_dependency_median_num", "total_approvals", "total_denials")
+pre_cor <- cor(pre_data[, pre_cor_vars], use = "pairwise.complete.obs")
+write.csv(pre_cor, "pre_correlation.csv")
+
+# Variables with non-zero variance in post-period
+post_cor_vars <- c("log_real_wage", "denial_rate", "avg_preperiod_dependency", 
+                  "high_dependency_median_num", "did_median_num", 
+                  "total_approvals", "total_denials")
+post_cor <- cor(post_data[, post_cor_vars], use = "pairwise.complete.obs")
+write.csv(post_cor, "post_correlation.csv")
+
+# Correlation visualization with better formatting
+pdf("correlation_matrices.pdf", width = 10, height = 12)
+par(mfrow = c(3, 1))
+
+# Main correlation matrix
+corrplot(cor_matrix, method = "color", 
+         type = "upper", order = "original", 
+         addCoef.col = "black", 
+         tl.col = "black", tl.srt = 45,
+         diag = FALSE,
+         title = "All Data (2012-2020)",
+         mar = c(0, 0, 2, 0))
+
+# Pre-policy correlation
+corrplot(pre_cor, method = "color", 
+         type = "upper", order = "original", 
+         addCoef.col = "black", 
+         tl.col = "black", tl.srt = 45,
+         diag = FALSE,
+         title = "Pre-Policy (2012-2016)",
+         mar = c(0, 0, 2, 0))
+
+# Post-policy correlation
+corrplot(post_cor, method = "color", 
+         type = "upper", order = "original", 
+         addCoef.col = "black", 
+         tl.col = "black", tl.srt = 45,
+         diag = FALSE,
+         title = "Post-Policy (2017-2020)",
+         mar = c(0, 0, 2, 0))
+
+dev.off()
+
+# ---- 4. Data Visualization ----
+# GRAPH 1: Time Series of Denial Rates by Dependency (Line Chart)
+denial_time_data <- analysis_data %>%
+  group_by(year, high_dependency_median) %>%
+  summarise(
+    avg_denial_rate = mean(denial_rate, na.rm = TRUE),
+    se = sd(denial_rate, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  ) %>%
+  mutate(dependency = ifelse(!high_dependency_median, "High H-1B Dependency", "Low H-1B Dependency"))
+
+plot1 <- ggplot(denial_time_data, aes(x = year, y = avg_denial_rate, color = dependency, group = dependency)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  geom_ribbon(aes(ymin = avg_denial_rate - se, ymax = avg_denial_rate + se, fill = dependency), 
+              alpha = 0.2, color = NA) +
+  geom_vline(xintercept = 2017, linetype = "dashed", color = "gray40") +
+  annotate("text", x = 2017.2, y = max(denial_time_data$avg_denial_rate) * 0.3, 
+           label = "Buy American,\nHire American\nPolicy (2017)", 
+           hjust = 0, size = 3) +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_color_manual(values = c("darkred", "steelblue")) +
+  scale_fill_manual(values = c("darkred", "steelblue")) +
+  labs(
+    title = "H-1B Visa Denial Rates Over Time (2012-2020)",
+    subtitle = "Comparing industries with high vs. low H-1B dependency",
+    x = "Year",
+    y = "Average Denial Rate",
+    color = "Industry Category",
+    fill = "Industry Category"
+  ) +
+  theme(legend.position = "bottom")
+
+# Save plot
+ggsave("denial_rates_time_series.png", plot1, width = 10, height = 6, dpi = 300)
+
+# GRAPH 2: Wage Trends by H-1B Dependency (Line Chart with Bands)
+wage_time_data <- analysis_data %>%
+  group_by(year, high_dependency_median) %>%
+  summarise(
+    avg_log_wage = mean(log_real_wage, na.rm = TRUE),
+    se = sd(log_real_wage, na.rm = TRUE) / sqrt(n()),
+    .groups = "drop"
+  ) %>%
+  mutate(dependency = ifelse(high_dependency_median, "High H-1B Dependency", "Low H-1B Dependency"))
+
+plot2 <- ggplot(wage_time_data, aes(x = year, y = avg_log_wage, color = dependency, group = dependency)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 3) +
+  geom_ribbon(aes(ymin = avg_log_wage - se, ymax = avg_log_wage + se, fill = dependency), 
+              alpha = 0.2, color = NA) +
+  geom_vline(xintercept = 2017, linetype = "dashed", color = "gray40") +
+  annotate("text", x = 2017.2, y = min(wage_time_data$avg_log_wage), 
+           label = "Policy Change", hjust = 0, size = 3) +
+  scale_color_manual(values = c("steelblue", "darkred")) +
+  scale_fill_manual(values = c("steelblue", "darkred")) +
+  labs(
+    title = "Wage Trends by H-1B Dependency (2012-2020)",
+    subtitle = "Log real wages showing parallel trends before policy and divergence after",
+    x = "Year",
+    y = "Average Log Real Wage",
+    color = "Industry Category",
+    fill = "Industry Category"
+  ) +
+  theme(legend.position = "bottom")
+
+# Save plot
+ggsave("wage_trends_by_dependency.png", plot2, width = 10, height = 6, dpi = 300)
+
+# GRAPH 3: Industry H-1B Dependency and Denial Rate Changes (Scatter Plot)
+# Calculate average denial rates by industry for pre and post periods
+industry_denial_change <- analysis_data %>%
+  group_by(industry_category, naics_2digit, period) %>%
+  summarise(
+    mean_denial_rate = mean(denial_rate, na.rm = TRUE),
+    dependency = mean(avg_preperiod_dependency, na.rm = TRUE),
+    high_dependency = high_dependency_median[1],
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    id_cols = c(industry_category, naics_2digit, dependency, high_dependency),
+    names_from = period,
+    values_from = mean_denial_rate,
+    names_prefix = "denial_rate_"
+  ) %>%
+  mutate(
+    denial_rate_change = `denial_rate_Post-Policy (2017-2020)` - `denial_rate_Pre-Policy (2012-2016)`,
+    dependency_group = ifelse(high_dependency, "High H-1B Dependency", "Low H-1B Dependency")
+  )
+
+plot3 <- ggplot(industry_denial_change, aes(x = dependency, y = denial_rate_change,
+                                          color = dependency_group)) +
+  geom_point(size = 4, alpha = 0.7) +
+  geom_text_repel(aes(label = industry_category), size = 3, max.overlaps = 15) +
+  geom_smooth(method = "lm", se = TRUE, color = "black", linetype = "dashed") +
+  scale_color_manual(values = c("steelblue", "darkred")) +
+  labs(
+    title = "H-1B Dependency and Denial Rate Changes After Policy Implementation",
+    subtitle = "By industry (2012-2016 vs. 2017-2020)",
+    x = "H-1B Dependency Ratio",
+    y = "Change in Denial Rate (Post - Pre Policy)",
+    color = "Dependency Category"
+  ) +
+  theme(legend.position = "bottom")
+
+# Save plot
+ggsave("dependency_denial_change_scatter.png", plot3, width = 10, height = 6, dpi = 300)
+
+# GRAPH 4: Wage Impact by Industry (Bar Chart)
+# Calculate wage changes by industry
+industry_wage_change <- analysis_data %>%
+  group_by(industry_category, naics_2digit, period) %>%
+  summarise(
+    mean_log_wage = mean(log_real_wage, na.rm = TRUE),
+    dependency = mean(avg_preperiod_dependency, na.rm = TRUE),
+    high_dependency = high_dependency_median[1],
+    .groups = "drop"
+  ) %>%
+  pivot_wider(
+    id_cols = c(industry_category, naics_2digit, dependency, high_dependency),
+    names_from = period,
+    values_from = mean_log_wage,
+    names_prefix = "wage_"
+  ) %>%
+  mutate(
+    wage_change = `wage_Post-Policy (2017-2020)` - `wage_Pre-Policy (2012-2016)`,
+    dependency_group = ifelse(high_dependency, "High H-1B Dependency", "Low H-1B Dependency")
+  ) %>%
+  arrange(desc(dependency))
+
+# Order industries by dependency
+industry_wage_change$industry_category <- factor(industry_wage_change$industry_category, 
+                                              levels = industry_wage_change$industry_category[order(industry_wage_change$dependency, decreasing = TRUE)])
+
+plot4 <- ggplot(industry_wage_change, aes(x = industry_category, y = wage_change, fill = dependency_group)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  coord_flip() +
+  scale_fill_manual(values = c("steelblue", "darkred")) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
+  labs(
+    title = "Wage Changes by Industry After H-1B Visa Restrictions",
+    subtitle = "Change in log real wages from pre-policy to post-policy period",
+    y = "Change in Log Real Wage",
+    x = "Industry",
+    fill = "Dependency Category"
+  ) +
+  theme(legend.position = "bottom",
+        axis.text.y = element_text(size = 8))
+
+# Save plot
+ggsave("industry_wage_changes_bar.png", plot4, width = 10, height = 8, dpi = 300)
+
+# ---- 5. T-Tests ----
+# T-test 1: Difference in wages between high and low dependency industries (pre-policy)
+t_test1 <- t.test(log_real_wage ~ high_dependency_median, 
+                 data = filter(analysis_data, period == "Pre-Policy (2012-2016)"))
+
+# T-test 2: Difference in wages between high and low dependency industries (post-policy)
+t_test2 <- t.test(log_real_wage ~ high_dependency_median, 
+                 data = filter(analysis_data, period == "Post-Policy (2017-2020)"))
+
+# T-test 3: Difference in denial rates before and after policy
+t_test3 <- t.test(denial_rate ~ period, data = analysis_data)
+
+# T-test 4: Difference in differences - testing the DiD effect
+# For this test, we use the industry-level wage changes
+t_test4 <- t.test(wage_change ~ high_dependency, data = industry_wage_change)
+
+# Create a comprehensive table of t-test results
+t_test_results <- data.frame(
+  Test = c("Pre-Policy Wage Difference (High vs. Low Dependency)", 
+           "Post-Policy Wage Difference (High vs. Low Dependency)", 
+           "Denial Rate Increase (Post vs. Pre Policy)", 
+           "DiD: Wage Change Difference (High vs. Low Dependency)"),
+  t_statistic = c(t_test1$statistic, t_test2$statistic, t_test3$statistic, t_test4$statistic),
+  p_value = c(t_test1$p.value, t_test2$p.value, t_test3$p.value, t_test4$p.value),
+  mean_diff = c(t_test1$estimate[2] - t_test1$estimate[1], 
+                t_test2$estimate[2] - t_test2$estimate[1], 
+                t_test3$estimate[2] - t_test3$estimate[1], 
+                t_test4$estimate[2] - t_test4$estimate[1]),
+  conf_int_lower = c(t_test1$conf.int[1], t_test2$conf.int[1], 
+                    t_test3$conf.int[1], t_test4$conf.int[1]),
+  conf_int_upper = c(t_test1$conf.int[2], t_test2$conf.int[2], 
+                    t_test3$conf.int[2], t_test4$conf.int[2]),
+  significant = c(t_test1$p.value < 0.05, t_test2$p.value < 0.05, 
+                  t_test3$p.value < 0.05, t_test4$p.value < 0.05)
+)
+
+# Save t-test results
+write.csv(t_test_results, "t_test_results.csv", row.names = FALSE)
+
+# Create a visualization of the DiD t-test
+plot5 <- ggplot(industry_wage_change, aes(x = dependency_group, y = wage_change, fill = dependency_group)) +
+  geom_boxplot(alpha = 0.7, width = 0.5) +
+  geom_jitter(width = 0.2, alpha = 0.6) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
+  scale_fill_manual(values = c("steelblue", "darkred")) +
+  labs(
+    title = "Difference-in-Differences: Wage Impact of H-1B Restrictions",
+    subtitle = paste0("t = ", round(t_test4$statistic, 2), 
+                    ", p-value = ", round(t_test4$p.value, 3),
+                    ", mean difference = ", round(t_test4$estimate[2] - t_test4$estimate[1], 3)),
+    x = "Industry Category",
+    y = "Change in Log Real Wage (Post - Pre Policy)",
+    fill = "Industry Category"
+  ) +
+  theme(legend.position = "none")
+
+# Save plot
+ggsave("did_ttest_visualization.png", plot5, width = 10, height = 6, dpi = 300)
+
+# ---- 6. Create Combined Plots for Report ----
+# Combine all plots for a comprehensive figure
+combined_plots <- (plot1 | plot2) / (plot3 | plot4)
+ggsave("combined_data_exploration_plots.pdf", combined_plots, width = 14, height = 10, dpi = 300)
+
+# Print confirmation
+cat("Data exploration complete. Results saved for LaTeX report.\n")
+```

@@ -1,0 +1,3 @@
+"dependency_group","n_Pre-Policy (2012-2016)","n_Post-Policy (2017-2020)","mean_log_wage_Pre-Policy (2012-2016)","mean_log_wage_Post-Policy (2017-2020)","mean_denial_rate_Pre-Policy (2012-2016)","mean_denial_rate_Post-Policy (2017-2020)","change_log_wage","change_denial_rate"
+"Low H-1B Dependency",50,40,10.8414000690258,10.9290316735362,0.0849122105338379,0.109618670048182,0.087631604510424,0.0247064595143442
+"High H-1B Dependency",47,36,10.9844785877014,11.076184038703,0.0404658631708436,0.077615986557269,0.0917054510015696,0.0371501233864254

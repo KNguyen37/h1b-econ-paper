@@ -145,8 +145,6 @@ analysis_data <- h1b_by_industry %>%
   left_join(inflation_data, by = "year") %>%
   filter(!is.na(AVG_WAGE), !is.na(total_employment))
 
-
-
 # Filter to years with complete data (2012-2020)
 analysis_data <- analysis_data %>%
   filter(year >= 2012, year <= 2020)
@@ -204,8 +202,8 @@ analysis_data <- analysis_data %>%
     
     # Three-tier classification
     dependency_category = case_when(
-      avg_preperiod_dependency < 0.01 ~ "Low",
-      avg_preperiod_dependency < 0.05 ~ "Medium",
+      avg_preperiod_dependency < 0.005 ~ "Low",
+      avg_preperiod_dependency < 0.008 ~ "Medium",
       TRUE ~ "High"
     ),
     
