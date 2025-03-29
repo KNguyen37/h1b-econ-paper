@@ -260,8 +260,8 @@ plot1 <- ggplot(denial_time_data, aes(x = year, y = avg_denial_rate, color = dep
            label = "Buy American,\nHire American\nPolicy (2017)", 
            hjust = 0, size = 3) +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  scale_color_manual(values = c("darkred", "steelblue")) +
-  scale_fill_manual(values = c("darkred", "steelblue")) +
+  scale_color_manual(values = c("steelblue", "darkred")) +
+  scale_fill_manual(values = c("steelblue", "darkred")) +
   labs(
     title = "H-1B Visa Denial Rates Over Time (2012-2020)",
     subtitle = "Comparing industries with high vs. low H-1B dependency",
@@ -273,7 +273,7 @@ plot1 <- ggplot(denial_time_data, aes(x = year, y = avg_denial_rate, color = dep
   theme(legend.position = "bottom")
 
 # Save plot
-ggsave("denial_rates_time_series.png", plot1, width = 10, height = 6, dpi = 300)
+ggsave("~/Documents/GitHub/h1b-econ-paper/analysis_result/graphs/denial_rates_time_series.png", plot1, width = 10, height = 6, dpi = 300)
 
 # GRAPH 2: Wage Trends by H-1B Dependency (Line Chart with Bands)
 wage_time_data <- analysis_data %>%
