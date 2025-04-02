@@ -572,7 +572,7 @@ model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependen
 #             data = final_dataset_complete)
 
 # With fixed effects using factors
-model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit),
+model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit) + inflation_rate,
             data = final_dataset_complete)
 
 # Compare models
