@@ -562,14 +562,17 @@ model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependen
 
 # With imputed union data
 model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
-               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
-               union_pct_combined,
+               unemployment_rate_winsorized + offshoring_per_1000_employees_combined,
             data = final_dataset_complete)
 
+# # With fixed effects using factors
+# model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
+#                unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
+#                factor(naics_2digit) + factor(year),
+#             data = final_dataset_complete)
+
 # With fixed effects using factors
-model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
-               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
-               union_pct_combined + factor(naics_2digit) + factor(year),
+model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit),
             data = final_dataset_complete)
 
 # Compare models
