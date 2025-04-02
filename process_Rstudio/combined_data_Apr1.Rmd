@@ -552,17 +552,17 @@ cat("Number of variables:", ncol(final_dataset_complete), "\n\n")
 # Run different specifications of your DiD model
 
 # Base model
-model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median,
+model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + did_top10 + did_top25,
             data = final_dataset_complete)
 
 # With controls
 model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
-               unemployment_rate_winsorized + offshoring_per_1000_employees_combined,
+               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + did_top10 + did_top25 ,
             data = final_dataset_complete)
 
 # With imputed union data
-model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
-               unemployment_rate_winsorized + offshoring_per_1000_employees_combined,
+model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + 
+               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + did_top10 + did_top25,
             data = final_dataset_complete)
 
 # # With fixed effects using factors
@@ -572,7 +572,7 @@ model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependen
 #             data = final_dataset_complete)
 
 # With fixed effects using factors
-model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit) + inflation_rate,
+model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit) + inflation_rate + did_top10 + did_top25,
             data = final_dataset_complete)
 
 # Compare models
@@ -584,7 +584,7 @@ model_comparison <- list(
 ) %>%
   lapply(tidy) %>%
   bind_rows(.id = "model") %>%
-  filter(term %in% c("denial_rate", "high_dependency_median", "did_median")) %>%
+  # filter(term %in% c("denial_rate", "high_dependency_median", "did_median")) %>%
   select(model, term, estimate, std.error, p.value)
 
 print(model_comparison)
