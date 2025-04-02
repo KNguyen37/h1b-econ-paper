@@ -1,0 +1,126 @@
+---
+title: "combine_55-56_script"
+output: html_document
+---
+
+```{r}
+# R script to combine NAICS 55 and 56 into a new category - FIXED VERSION
+# Created: April 1, 2025
+
+# Load required libraries
+library(dplyr)
+library(readr)
+library(tidyr)
+
+# Read the dataset
+data <- read_csv("~/Documents/GitHub/h1b-econ-paper/improved_processed_data_for_analysis_April1st.csv")
+
+# Create a copy of the original dataset
+data_original <- data
+
+# Filter out rows with NAICS codes 55 and 56
+data_filtered <- data %>%
+  filter(naics_2digit != "55" & naics_2digit != 55 & 
+         naics_2digit != "56" & naics_2digit != 56)
+
+# Process the data for NAICS 55 and 56 by year
+combined_data <- data %>%
+  filter(naics_2digit == "55" | naics_2digit == 55 | 
+         naics_2digit == "56" | naics_2digit == 56) %>%
+  mutate(naics_2digit = as.character(naics_2digit)) %>%
+  group_by(year) %>%
+  summarize(
+    # New NAICS code
+    naics_2digit = "55-56",
+    
+    # Sum the applications and approvals/denials
+    initial_approvals = sum(initial_approvals),
+    initial_denials = sum(initial_denials),
+    continuing_approvals = sum(continuing_approvals),
+    continuing_denials = sum(continuing_denials),
+    total_approvals = sum(total_approvals),
+    total_denials = sum(total_denials),
+    total_applications = sum(total_applications),
+    
+    # Weighted average for denial rate based on total applications
+    denial_rate = sum(denial_rate * total_applications) / sum(total_applications),
+    
+    # Sum employment
+    total_employment = sum(total_employment),
+    pre_period_employment = sum(pre_period_employment),
+    
+    # Weighted average for wages based on employment
+    AVG_WAGE = sum(AVG_WAGE * total_employment) / sum(total_employment),
+    real_wage = sum(real_wage * total_employment) / sum(total_employment),
+    log_wage = log(AVG_WAGE),
+    log_real_wage = log(real_wage),
+    
+    # Use common inflation rate
+    inflation_rate = first(inflation_rate),
+    
+    # Weighted average for H-1B dependency
+    h1b_dependency_current = sum(h1b_dependency_current * total_employment) / sum(total_employment),
+    h1b_dependency_preperiod = sum(h1b_dependency_preperiod * total_employment) / sum(total_employment),
+    avg_preperiod_dependency = sum(avg_preperiod_dependency * total_employment) / sum(total_employment),
+    
+    # Logical variables - if either is TRUE, set combined to TRUE
+    post_treatment = first(post_treatment),
+    high_dependency_median = any(high_dependency_median),
+    high_dependency_top25 = any(high_dependency_top25),
+    high_dependency_top10 = any(high_dependency_top10),
+    
+    # Calculate DiD variables - safer approach summing the products
+    # Instead of using weighted.mean which requires equal lengths
+    did_median = if(all(is.na(did_median))) NA_real_ else sum(did_median * total_employment, na.rm = TRUE) / sum(total_employment[!is.na(did_median)], na.rm = TRUE),
+    did_top25 = if(all(is.na(did_top25))) NA_real_ else sum(did_top25 * total_employment, na.rm = TRUE) / sum(total_employment[!is.na(did_top25)], na.rm = TRUE),
+    did_top10 = if(all(is.na(did_top10))) NA_real_ else sum(did_top10 * total_employment, na.rm = TRUE) / sum(total_employment[!is.na(did_top10)], na.rm = TRUE),
+    did_continuous = if(all(is.na(did_continuous))) NA_real_ else sum(did_continuous * total_employment, na.rm = TRUE) / sum(total_employment[!is.na(did_continuous)], na.rm = TRUE),
+    triple_int_median = if(all(is.na(triple_int_median))) NA_real_ else sum(triple_int_median * total_employment, na.rm = TRUE) / sum(total_employment[!is.na(triple_int_median)], na.rm = TRUE),
+    triple_int_top25 = if(all(is.na(triple_int_top25))) NA_real_ else sum(triple_int_top25 * total_employment, na.rm = TRUE) / sum(total_employment[!is.na(triple_int_top25)], na.rm = TRUE),
+    
+    # Factor variables
+    naics_factor = "55-56",
+    year_factor = first(year_factor),
+    
+    # New industry category
+    industry_category = "Management of Companies and Enterprises and Administrative and Support and Waste Management and Remediation Services"
+  )
+
+# Combine the filtered data with the new combined category
+data_combined <- bind_rows(data_filtered, combined_data)
+
+# Sort the data by NAICS code and year
+data_combined <- data_combined %>%
+  arrange(year, naics_2digit)
+
+# Write the combined dataset to a new CSV file
+write_csv(data_combined, "55-56_improved_processed_data_with_combined_naics.csv")
+
+# Generate summary statistics for verification
+summary_stats <- data_combined %>%
+  filter(naics_2digit == "55-56") %>%
+  select(year, naics_2digit, total_employment, AVG_WAGE, h1b_dependency_current, denial_rate)
+
+# Print summary statistics to verify the combination
+print(summary_stats)
+
+# Optional: Compare original vs. combined statistics
+comparison <- data %>%
+  filter(naics_2digit == "55" | naics_2digit == 55 | 
+         naics_2digit == "56" | naics_2digit == 56) %>%
+  group_by(year, naics_2digit) %>%
+  summarize(
+    total_employment = sum(total_employment),
+    AVG_WAGE = mean(AVG_WAGE),
+    h1b_dependency_current = mean(h1b_dependency_current),
+    denial_rate = mean(denial_rate),
+    .groups = "drop"  # This suppresses the grouping message
+  ) %>%
+  arrange(year, naics_2digit)
+
+print("Original statistics:")
+print(comparison)
+
+# Print success message
+cat("\nCombination complete! New combined dataset saved as 'improved_processed_data_with_combined_naics.csv'\n")
+```

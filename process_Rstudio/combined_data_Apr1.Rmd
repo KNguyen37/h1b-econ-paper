@@ -1,0 +1,617 @@
+---
+title: "H-1B Visa Restrictions and Wage Impact Analysis - Improved Code"
+output: html_document
+author: "Kiet Nguyen & Lien Tran"
+date: "2025-04-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r load-libraries}
+# Load required libraries
+library(dplyr)
+library(tidyr)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(broom)
+library(naniar)      # For advanced missing data visualization
+library(mice)        # For multiple imputation
+library(zoo)         # For time series functions
+```
+
+## 1. Data Loading and Initial Processing
+
+```{r data-loading}
+# Read the main analysis dataset
+analysis_data <- read_csv("~/Documents/GitHub/h1b-econ-paper/process_Rstudio/55-56_improved_processed_data_with_combined_naics.csv")
+
+# Read and process the offshoring data
+offshoring_data <- read_csv("/Users/kietnguyen/Downloads/offshoring.csv") %>%
+  # Clean any commas in numeric values
+  mutate(across(c(`2012`, `2013`, `2014`, `2015`, `2016`, `2017`, `2018`, `2019`, `2020`), 
+                ~as.numeric(str_replace_all(., ",", ""))))
+
+# Process unemployment data
+# Read with all columns as character type to avoid type issues
+unemployment_data <- read_csv("/Users/kietnguyen/Downloads/unemployment.csv", 
+                              col_names = FALSE, 
+                              col_types = cols(.default = "c"))  # All columns as character
+
+# Extract the years row (row 2 in the file)
+unemployment_years <- as.character(unemployment_data[2, ])
+
+# Extract data rows (from row 3 onwards)
+unemployment_values <- unemployment_data[3:nrow(unemployment_data), ]
+
+# Get column names
+col_names <- c("Code", "Name")
+for (i in 3:11) {
+  col_names <- c(col_names, paste0("total_", unemployment_years[i]))
+}
+col_names <- c(col_names, "empty")
+for (i in 13:21) {
+  col_names <- c(col_names, paste0("rate_", unemployment_years[i]))
+}
+
+# Set column names
+colnames(unemployment_values) <- col_names
+
+# Process union data
+union_data <- read_csv("/Users/kietnguyen/Downloads/unionrate.csv", 
+                       col_names = FALSE, 
+                       col_types = cols(.default = "c"))  # All columns as character
+```
+
+## 2. Standardized Data Processing Functions
+
+```{r data-processing-functions}
+# Function to correctly handle combined NAICS codes
+standardize_naics <- function(df) {
+  df %>%
+    mutate(
+      naics_2digit = as.character(Code),
+      # For special combined cases, explicitly handle them
+      naics_2digit_for_join = case_when(
+        naics_2digit == "31-33" ~ "31-33",
+        naics_2digit == "44-45" ~ "44-45",
+        naics_2digit == "48-49" ~ "48-49",
+        naics_2digit == "55-56" ~ "55-56",
+        # For regular codes or if it contains a hyphen but isn't one of the special cases
+        str_detect(naics_2digit, "-") ~ str_replace(naics_2digit, "-.*", ""),
+        TRUE ~ naics_2digit
+      )
+    )
+}
+
+# Function to extract union data for a specific year - improved with error handling
+extract_union_data <- function(data, year, year_pos, members_pos, members_pct_pos, 
+                              represented_pos, represented_pct_pos) {
+  # Extract rows with actual data (row 4 onwards)
+  union_rows <- data[4:nrow(data), ]
+  
+  # Extract key columns with validation
+  result <- tryCatch({
+    union_rows %>%
+      select(1, 2, all_of(year_pos), all_of(members_pos), all_of(members_pct_pos), 
+             all_of(represented_pos), all_of(represented_pct_pos)) %>%
+      rename(
+        Code = 1,
+        Name = 2,
+        union_total_employed = all_of(year_pos),
+        union_members = all_of(members_pos),
+        union_pct = all_of(members_pct_pos),
+        represented = all_of(represented_pos),
+        represented_pct = all_of(represented_pct_pos)
+      )
+  }, error = function(e) {
+    # Return a dataframe with the right structure but no data if there's an error
+    warning(paste("Error in union data extraction for year", year, ":", e$message))
+    return(data.frame(
+      Code = character(),
+      Name = character(),
+      union_total_employed = numeric(),
+      union_members = numeric(),
+      union_pct = numeric(),
+      represented = numeric(),
+      represented_pct = numeric()
+    ))
+  })
+  
+  # Add year column
+  result$year <- as.integer(year)
+  
+  # Ensure all required columns exist (even if empty)
+  required_cols <- c("Code", "Name", "union_total_employed", "union_members", 
+                     "union_pct", "represented", "represented_pct", "year")
+  missing_cols <- setdiff(required_cols, names(result))
+  
+  if (length(missing_cols) > 0) {
+    for (col in missing_cols) {
+      result[[col]] <- NA
+    }
+  }
+  
+  return(result)
+}
+
+# Function to clean numeric data - handles different formats
+clean_numeric <- function(x) {
+  if (is.character(x)) {
+    x <- str_replace_all(x, "[,$%]", "")  # Remove commas, dollar signs, and percent signs
+    x <- str_trim(x)  # Trim whitespace
+    x <- suppressWarnings(as.numeric(x))  # Convert to numeric
+  }
+  return(x)
+}
+
+# Function to calculate H1B dependency with protection against division by zero
+calculate_h1b_dependency <- function(h1b_workers, total_employment, cap = 0.50) {
+  result <- ifelse(is.na(total_employment) | total_employment <= 0, 
+                  NA, 
+                  h1b_workers / total_employment)
+  
+  # Cap extremely high values (likely errors)
+  result <- ifelse(is.na(result) | result <= cap, result, cap)
+  
+  return(result)
+}
+```
+
+## 3. Improved Data Transformation and Processing
+
+```{r transform-offshoring-data}
+# Transform offshoring data to long format
+offshoring_long <- offshoring_data %>%
+  pivot_longer(
+    cols = c(`2012`, `2013`, `2014`, `2015`, `2016`, `2017`, `2018`, `2019`, `2020`),
+    names_to = "year",
+    values_to = "offshoring_value"
+  ) %>%
+  mutate(year = as.integer(year))
+```
+
+```{r process-unemployment-data}
+# Process each year separately to avoid type issues
+unemployment_long_list <- list()
+
+for (year in 2012:2020) {
+  year_str <- as.character(year)
+  
+  # Extract relevant columns for this year
+  total_col <- paste0("total_", year_str)
+  rate_col <- paste0("rate_", year_str)
+  
+  # Skip if columns don't exist
+  if (!(total_col %in% colnames(unemployment_values)) || 
+      !(rate_col %in% colnames(unemployment_values))) {
+    next
+  }
+  
+  # Process year data
+  year_data <- unemployment_values %>%
+    select(Code, Name, !!total_col, !!rate_col) %>%
+    rename(
+      unemployment_total = !!total_col,
+      unemployment_rate = !!rate_col
+    ) %>%
+    mutate(
+      year = as.integer(year_str),
+      # Clean and convert numeric data
+      unemployment_total = clean_numeric(unemployment_total),
+      unemployment_rate = clean_numeric(unemployment_rate)
+    )
+  
+  unemployment_long_list[[year_str]] <- year_data
+}
+
+# Combine all years
+unemployment_long <- bind_rows(unemployment_long_list)
+```
+
+```{r process-union-data}
+# Based on the row examined, create a mapping of years to column positions
+year_mapping <- list(
+  "2020" = list(year_pos = 3, members_pos = 4, members_pct_pos = 5, represented_pos = 6, represented_pct_pos = 7),
+  "2019" = list(year_pos = 8, members_pos = 9, members_pct_pos = 10, represented_pos = 11, represented_pct_pos = 12),
+  "2018" = list(year_pos = 13, members_pos = 14, members_pct_pos = 15, represented_pos = 16, represented_pct_pos = 17),
+  "2017" = list(year_pos = 18, members_pos = 19, members_pct_pos = 20, represented_pos = 21, represented_pct_pos = 22),
+  "2016" = list(year_pos = 23, members_pos = 24, members_pct_pos = 25, represented_pos = 26, represented_pct_pos = 27),
+  "2015" = list(year_pos = 28, members_pos = 29, members_pct_pos = 30, represented_pos = 31, represented_pct_pos = 32),
+  "2014" = list(year_pos = 33, members_pos = 34, members_pct_pos = 35, represented_pos = 36, represented_pct_pos = 37),
+  "2013" = list(year_pos = 38, members_pos = 39, members_pct_pos = 40, represented_pos = 41, represented_pct_pos = 42),
+  "2012" = list(year_pos = 43, members_pos = 44, members_pct_pos = 45, represented_pos = 46, represented_pct_pos = 47)
+)
+
+# Process each year and add to a list
+union_long_list <- list()
+
+for (year in names(year_mapping)) {
+  positions <- year_mapping[[year]]
+  
+  # Use tryCatch to handle potential errors
+  tryCatch({
+    year_data <- extract_union_data(
+      union_data, 
+      year = year,
+      year_pos = positions$year_pos,
+      members_pos = positions$members_pos,
+      members_pct_pos = positions$members_pct_pos,
+      represented_pos = positions$represented_pos,
+      represented_pct_pos = positions$represented_pct_pos
+    )
+    
+    union_long_list[[year]] <- year_data
+  }, error = function(e) {
+    warning(paste("Error processing union data for year", year, ":", e$message))
+  })
+}
+
+# Combine all union data
+union_long <- bind_rows(union_long_list)
+
+# Clean numeric columns
+union_long <- union_long %>%
+  mutate(across(c(union_total_employed, union_members, union_pct, represented, represented_pct),
+                ~clean_numeric(.)))
+```
+
+## 4. Standardize NAICS Codes and Join Datasets
+
+```{r standardize-and-join}
+# Apply NAICS standardization
+unemployment_long <- standardize_naics(unemployment_long)
+offshoring_long <- standardize_naics(offshoring_long)
+union_long <- standardize_naics(union_long)
+
+# When joining, use the new field for joining but keep the original format
+# Ensure consistent type in analysis data
+analysis_data <- analysis_data %>%
+  mutate(
+    year = as.integer(year),
+    naics_2digit = as.character(naics_2digit),
+    # Create the join key that will match the standardized codes
+    naics_2digit_for_join = case_when(
+      naics_2digit == "31-33" ~ "31-33",
+      naics_2digit == "44-45" ~ "44-45",
+      naics_2digit == "48-49" ~ "48-49",
+      naics_2digit == "55-56" ~ "55-56",
+      TRUE ~ naics_2digit
+    )
+  )
+
+# Join datasets using the standardized joining field
+# Modified to validate matching success
+combined_data <- analysis_data %>%
+  # Join with unemployment data
+  left_join(
+    unemployment_long %>% 
+      select(year, naics_2digit_for_join, unemployment_total, unemployment_rate),
+    by = c("year", "naics_2digit_for_join")
+  ) %>%
+  # Join with offshoring data
+  left_join(
+    offshoring_long %>% 
+      select(year, naics_2digit_for_join, offshoring_value),
+    by = c("year", "naics_2digit_for_join")
+  ) %>%
+  # Join with union data
+  left_join(
+    union_long %>% 
+      select(year, naics_2digit_for_join, union_total_employed, union_members, union_pct, represented, represented_pct),
+    by = c("year", "naics_2digit_for_join")
+  )
+
+# Check join success
+join_success <- combined_data %>%
+  group_by(year) %>%
+  summarize(
+    unemployment_missing = mean(is.na(unemployment_rate)) * 100,
+    offshoring_missing = mean(is.na(offshoring_value)) * 100,
+    union_missing = mean(is.na(union_pct)) * 100
+  )
+
+print(join_success)
+```
+
+## 5. Fix the Infinity Problem and Create Analytical Variables
+
+```{r create-analytical-variables}
+# Create analytical variables with improved handling of missing/problematic values
+initial_dataset <- combined_data %>%
+  # First, fix the h1b_dependency_current calculation
+  mutate(
+    # Fix h1b_dependency_current - cap at 50% max
+    h1b_dependency_current_fixed = calculate_h1b_dependency(
+      total_approvals, total_employment, cap = 0.50
+    ),
+    
+    # Scale offshoring to be per 1000 employees instead of per employee
+    offshoring_per_1000_employees = ifelse(
+      !is.na(offshoring_value) & !is.na(total_employment) & total_employment > 0,
+      (offshoring_value / total_employment) * 1000,
+      NA
+    ),
+    
+    # Keep the original for consistency with existing analysis
+    h1b_dependency_current_original = h1b_dependency_current
+  )
+
+# Check the impact of our fix
+cat("Before fix - summary of h1b_dependency_current:\n")
+print(summary(initial_dataset$h1b_dependency_current_original))
+cat("\nAfter fix - summary of h1b_dependency_current_fixed:\n")
+print(summary(initial_dataset$h1b_dependency_current_fixed))
+```
+
+```{r create-additional-variables}
+# Create the final dataset with all analytical variables
+final_dataset <- initial_dataset %>%
+  # Now create all analytical variables using the fixed dependency ratio
+  mutate(
+    # Use the fixed version for all calculations
+    h1b_dependency_current = h1b_dependency_current_fixed,
+    
+    # Calculate unemployment-adjusted H1B dependency
+    h1b_unemployment_ratio = ifelse(
+      !is.na(unemployment_rate) & unemployment_rate > 0,
+      h1b_dependency_current / (unemployment_rate/100),
+      NA
+    ),
+    
+    # Union impact variables - with protection against division by zero
+    union_h1b_ratio = ifelse(
+      !is.na(union_pct) & union_pct > 0,
+      h1b_dependency_current / (union_pct/100),
+      NA
+    ),
+    
+    # Log transformations - adding 1 to handle zeros
+    log_unemployment = ifelse(!is.na(unemployment_total), log(unemployment_total + 1), NA),
+    log_offshoring = ifelse(!is.na(offshoring_value), log(offshoring_value + 1), NA),
+    log_union = ifelse(!is.na(union_members), log(union_members + 1), NA),
+    
+    # IMPROVED: Create binary indicators - keep NAs as NAs, don't convert to FALSE
+    high_unemployment = ifelse(
+      !is.na(unemployment_rate),
+      unemployment_rate > median(unemployment_rate, na.rm = TRUE),
+      NA
+    ),
+    
+    high_union = ifelse(
+      !is.na(union_pct), 
+      union_pct > median(union_pct, na.rm = TRUE),
+      NA
+    ),
+    
+    high_offshoring = ifelse(
+      !is.na(offshoring_per_1000_employees),
+      offshoring_per_1000_employees > median(offshoring_per_1000_employees, na.rm = TRUE),
+      NA
+    ),
+    
+    # Create interaction terms - now properly handling NAs
+    did_unemployment = ifelse(
+      !is.na(did_median) & !is.na(high_unemployment),
+      did_median * as.integer(high_unemployment),
+      NA
+    ),
+    
+    did_union = ifelse(
+      !is.na(did_median) & !is.na(high_union),
+      did_median * as.integer(high_union),
+      NA
+    ),
+    
+    did_offshoring = ifelse(
+      !is.na(did_median) & !is.na(high_offshoring),
+      did_median * as.integer(high_offshoring),
+      NA
+    ),
+    
+    # Outlier handling for unemployment
+    unemployment_rate_winsorized = ifelse(
+      !is.na(unemployment_rate),
+      pmin(pmax(unemployment_rate, 
+                quantile(unemployment_rate, 0.05, na.rm = TRUE)),
+           quantile(unemployment_rate, 0.95, na.rm = TRUE)),
+      NA
+    )
+  )
+```
+
+## 6. Missing Data Analysis and Imputation
+
+```{r missing-data-analysis}
+# Create a visualization of missing data patterns
+gg_miss_var(final_dataset[, c("unemployment_rate", "offshoring_value", 
+                              "union_pct", "h1b_dependency_current")], 
+            show_pct = TRUE)
+
+# Count missing values
+missing_summary <- final_dataset %>%
+  summarise(across(everything(), ~sum(is.na(.)))) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "missing_count") %>%
+  filter(missing_count > 0) %>%
+  arrange(desc(missing_count))
+
+print(missing_summary)
+```
+
+```{r imputation-setup}
+# Identify variables for imputation 
+vars_to_impute <- c("union_pct", "offshoring_per_1000_employees")
+
+# Create a subset for imputation
+impute_data <- final_dataset %>%
+  select(year, naics_2digit, unemployment_rate, union_pct, offshoring_per_1000_employees,
+         h1b_dependency_current, total_approvals, total_denials, denial_rate)
+
+# Set up the imputation method
+impute_method <- make.method(impute_data)
+impute_method[vars_to_impute] <- "pmm"  # Predictive mean matching
+
+# Run the imputation
+set.seed(123)  # For reproducibility
+imputed_data <- mice(impute_data, method = impute_method, m = 5, maxit = 10, printFlag = FALSE)
+
+# Get the first imputed dataset as an example
+imputed_dataset <- complete(imputed_data, 1)
+```
+
+```{r merge-imputed-data}
+# Merge imputed variables back to the main dataset
+final_dataset_with_imputation <- final_dataset %>%
+  # Create columns for imputed values
+  mutate(
+    union_pct_imputed = imputed_dataset$union_pct[match(paste(year, naics_2digit), 
+                                                       paste(imputed_dataset$year, imputed_dataset$naics_2digit))],
+    offshoring_per_1000_employees_imputed = imputed_dataset$offshoring_per_1000_employees[
+      match(paste(year, naics_2digit), paste(imputed_dataset$year, imputed_dataset$naics_2digit))
+    ],
+    
+    # Create a flag for whether we used imputed values
+    using_imputed_union = is.na(union_pct),
+    using_imputed_offshoring = is.na(offshoring_per_1000_employees)
+  )
+
+# Use either original or imputed values
+final_dataset_complete <- final_dataset_with_imputation %>%
+  mutate(
+    union_pct_combined = ifelse(is.na(union_pct), union_pct_imputed, union_pct),
+    offshoring_per_1000_employees_combined = ifelse(
+      is.na(offshoring_per_1000_employees), 
+      offshoring_per_1000_employees_imputed, 
+      offshoring_per_1000_employees
+    )
+  )
+```
+
+## 7. Check for Outliers and Data Quality
+
+```{r outlier-analysis}
+# Check distribution of key variables
+key_vars <- c("denial_rate", "unemployment_rate", "offshoring_per_1000_employees_combined", 
+              "union_pct_combined", "h1b_dependency_current", "real_wage")
+
+# Plot histograms for key variables
+lapply(key_vars, function(var) {
+  if (var %in% colnames(final_dataset_complete)) {
+    ggplot(final_dataset_complete, aes_string(x = var)) +
+      geom_histogram(bins = 20, fill = "steelblue", alpha = 0.7) +
+      theme_minimal() +
+      labs(title = paste("Distribution of", var))
+  }
+})
+
+# Identify outliers using the IQR method
+outlier_summary <- lapply(key_vars, function(var) {
+  if (var %in% colnames(final_dataset_complete)) {
+    x <- final_dataset_complete[[var]]
+    x <- x[!is.na(x)]
+    q1 <- quantile(x, 0.25)
+    q3 <- quantile(x, 0.75)
+    iqr <- q3 - q1
+    lower_bound <- q1 - 1.5 * iqr
+    upper_bound <- q3 + 1.5 * iqr
+    outliers <- x[x < lower_bound | x > upper_bound]
+    data.frame(
+      variable = var,
+      n_outliers = length(outliers),
+      pct_outliers = length(outliers) / length(x) * 100,
+      min_outlier = min(outliers, na.rm = TRUE),
+      max_outlier = max(outliers, na.rm = TRUE)
+    )
+  }
+})
+
+outlier_df <- do.call(rbind, outlier_summary)
+print(outlier_df)
+```
+
+## 8. Save Final Dataset
+
+```{r save-datasets}
+# Save both versions of the dataset
+write_csv(final_dataset, "~/Documents/GitHub/h1b-econ-paper/process_Rstudio/combined_labor_market_analysis_data_original.csv")
+write_csv(final_dataset_complete, "~/Documents/GitHub/h1b-econ-paper/process_Rstudio/combined_labor_market_analysis_data_imputed.csv")
+
+# Print summary information
+cat("\n=== Data Processing Complete ===\n")
+cat("Original dataset saved as 'combined_labor_market_analysis_data_original.csv'\n")
+cat("Imputed dataset saved as 'combined_labor_market_analysis_data_imputed.csv'\n")
+cat("Number of observations:", nrow(final_dataset_complete), "\n")
+cat("Number of variables:", ncol(final_dataset_complete), "\n\n")
+```
+
+## 9. Test Robustness of Your DiD Model
+
+```{r did-robustness}
+# Run different specifications of your DiD model
+
+# Base model
+model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median,
+            data = final_dataset_complete)
+
+# With controls
+model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
+               unemployment_rate_winsorized + offshoring_per_1000_employees_combined,
+            data = final_dataset_complete)
+
+# With imputed union data
+model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
+               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
+               union_pct_combined,
+            data = final_dataset_complete)
+
+# With fixed effects using factors
+model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
+               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
+               union_pct_combined + factor(naics_2digit) + factor(year),
+            data = final_dataset_complete)
+
+# Compare models
+model_comparison <- list(
+  Original = model1,
+  With_Controls = model2,
+  With_Union = model3,
+  With_FE = model4
+) %>%
+  lapply(tidy) %>%
+  bind_rows(.id = "model") %>%
+  filter(term %in% c("denial_rate", "high_dependency_median", "did_median")) %>%
+  select(model, term, estimate, std.error, p.value)
+
+print(model_comparison)
+```
+
+## 10. Visualize Key Findings
+
+```{r visualize-findings}
+# Create a visualization of the DiD effect
+
+# Prepare data for visualization
+plot_data <- final_dataset_complete %>%
+  group_by(year, high_dependency_median) %>%
+  summarize(avg_log_wage = mean(log_real_wage, na.rm = TRUE),
+            avg_denial_rate = mean(denial_rate, na.rm = TRUE),
+            .groups = "drop") %>%
+  mutate(treatment_group = ifelse(high_dependency_median, "High H-1B Dependency", "Low H-1B Dependency"))
+
+# Plot the DiD
+ggplot(plot_data, aes(x = year, y = avg_log_wage, color = treatment_group, group = treatment_group)) +
+  geom_line(size = 1) +
+  geom_vline(xintercept = 2017, linetype = "dashed", color = "red") +
+  annotate("text", x = 2017, y = min(plot_data$avg_log_wage), label = "Buy American, Hire American", 
+           angle = 90, vjust = -0.5, hjust = -0.2) +
+  theme_minimal() +
+  labs(
+    title = "Difference-in-Differences: Log Real Wage by H-1B Dependency",
+    subtitle = "Before and After the 'Buy American, Hire American' Executive Order",
+    x = "Year",
+    y = "Average Log Real Wage",
+    color = "Industry Group"
+  )
+```

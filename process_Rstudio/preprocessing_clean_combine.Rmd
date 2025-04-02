@@ -176,9 +176,15 @@ analysis_data <- analysis_data %>%
   mutate(
     # Current year dependency (original measure)
     h1b_dependency_current = total_approvals / total_employment,
-    
+
     # Pre-period normalized dependency (professor's recommendation)
     h1b_dependency_preperiod = total_approvals / pre_period_employment,
+    
+    # # Current year dependency (original measure) _ total
+    # h1b_dependency_current = total_applications / total_employment,
+    # 
+    # # Pre-period normalized dependency (professor's recommendation) _ total 
+    # h1b_dependency_preperiod = total_applications / pre_period_employment,
     
     # Calculate real wages (adjusted for inflation)
     real_wage = AVG_WAGE / (1 + (inflation_rate/100))
@@ -240,6 +246,12 @@ analysis_data$year_factor <- as.factor(analysis_data$year)
 analysis_data <- analysis_data %>%
   mutate(
     industry_category = case_when(
+      naics_2digit == "48-49" ~ "Transportation and Warehousing",
+      naics_2digit == "71" ~ "Arts, Entertainment, and Recreation",
+      naics_2digit == "55" ~ "Management of Companies and Enterprises",
+      naics_2digit == "21" ~ "Mining, Quarrying, and Oil and Gas Extraction",
+      naics_2digit == "22" ~ "Utilities",
+      naics_2digit == "11" ~ "Agriculture, Forestry, Fishing and Hunting",
       naics_2digit == "51" ~ "Information Technology",
       naics_2digit == "54" ~ "Professional Services",
       naics_2digit == "52" ~ "Finance and Insurance",
@@ -275,7 +287,7 @@ summary_stats <- analysis_data %>%
 print(summary_stats)
 
 # Save processed data for analysis
-write.csv(analysis_data, paste0(base_path, "/improved_processed_data_for_analysis.csv"), row.names = FALSE)
+write.csv(analysis_data, paste0(base_path, "/improved_processed_data_for_analysis_April1st.csv"), row.names = FALSE)
 
 # ---- 5. Basic Regression Analysis ----
 # Model 1: Basic DiD with median split treatment
