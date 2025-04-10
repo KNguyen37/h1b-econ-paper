@@ -549,45 +549,45 @@ cat("Number of variables:", ncol(final_dataset_complete), "\n\n")
 ## 9. Test Robustness of Your DiD Model
 
 ```{r did-robustness}
-# Run different specifications of your DiD model
-
-# Base model
-model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + did_top10 + did_top25,
-            data = final_dataset_complete)
-
-# With controls
-model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
-               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + did_top10 + did_top25 ,
-            data = final_dataset_complete)
-
-# With imputed union data
-model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + 
-               unemployment_rate_winsorized + offshoring_per_1000_employees_combined + did_top10 + did_top25,
-            data = final_dataset_complete)
-
-# # With fixed effects using factors
-# model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
-#                unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
-#                factor(naics_2digit) + factor(year),
+# # Run different specifications of your DiD model
+# 
+# # Base model
+# model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + did_top10 + did_top25,
 #             data = final_dataset_complete)
-
-# With fixed effects using factors
-model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit) + inflation_rate + did_top10 + did_top25,
-            data = final_dataset_complete)
-
-# Compare models
-model_comparison <- list(
-  Original = model1,
-  With_Controls = model2,
-  With_Union = model3,
-  With_FE = model4
-) %>%
-  lapply(tidy) %>%
-  bind_rows(.id = "model") %>%
-  # filter(term %in% c("denial_rate", "high_dependency_median", "did_median")) %>%
-  select(model, term, estimate, std.error, p.value)
-
-print(model_comparison)
+# 
+# # With controls
+# model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
+#                unemployment_rate_winsorized + offshoring_per_1000_employees_combined + did_top10 + did_top25 ,
+#             data = final_dataset_complete)
+# 
+# # With imputed union data
+# model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + 
+#                unemployment_rate_winsorized + offshoring_per_1000_employees_combined + did_top10 + did_top25,
+#             data = final_dataset_complete)
+# 
+# # # With fixed effects using factors
+# # model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median +
+# #                unemployment_rate_winsorized + offshoring_per_1000_employees_combined + 
+# #                factor(naics_2digit) + factor(year),
+# #             data = final_dataset_complete)
+# 
+# # With fixed effects using factors
+# model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + h1b_dependency_preperiod + avg_preperiod_dependency + did_median + factor(naics_2digit) + inflation_rate + did_top10 + did_top25,
+#             data = final_dataset_complete)
+# 
+# # Compare models
+# model_comparison <- list(
+#   Original = model1,
+#   With_Controls = model2,
+#   With_Union = model3,
+#   With_FE = model4
+# ) %>%
+#   lapply(tidy) %>%
+#   bind_rows(.id = "model") %>%
+#   # filter(term %in% c("denial_rate", "high_dependency_median", "did_median")) %>%
+#   select(model, term, estimate, std.error, p.value)
+# 
+# print(model_comparison)
 ```
 ## 9*. Model using Stargazing
 
@@ -596,86 +596,86 @@ library(stargazer)
 library(broom)
 library(dplyr)
 
-# Run different specifications of your DiD model
-# Base model
-model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-             h1b_dependency_preperiod +  
-             did_median + did_top10 + did_top25, 
-             data = final_dataset_complete)
-
-# # With controls
-# model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# # Run different specifications of your DiD model
+# # Base model
+# # model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# #              h1b_dependency_preperiod +  
+# #              did_median + did_top10 + did_top25, 
+# #              data = final_dataset_complete)
+# 
+# # # With controls
+# # model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# #              h1b_dependency_preperiod + 
+# #              did_median + unemployment_rate_winsorized + 
+# #              offshoring_per_1000_employees_combined + inflation_rate +
+# #              did_top10 + did_top25, 
+# #              data = final_dataset_complete)
+# # 
+# # # With imputed union data
+# # model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# #              h1b_dependency_preperiod +  
+# #              did_median + unemployment_rate_winsorized + 
+# #              offshoring_per_1000_employees_combined + inflation_rate +
+# #              union_pct_combined +
+# #              did_top10 + did_top25, 
+# #              data = final_dataset_complete)
+# # 
+# # # With fixed effects using factors
+# # model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# #              h1b_dependency_preperiod +  
+# #              did_median + inflation_rate + 
+# #              factor(naics_2digit), 
+# #              data = final_dataset_complete)
+# 
+# # # With fixed effects (industry and time) using factors and controls
+# # model6 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# #              h1b_dependency_preperiod + 
+# #              did_median + inflation_rate + 
+# #               offshoring_per_1000_employees_combined + 
+# #               unemployment_rate_winsorized +
+# #              factor(naics_2digit) + factor(year), 
+# #              data = final_dataset_complete)
+# 
+# # With fixed effects using factors and controls
+# model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
 #              h1b_dependency_preperiod + 
-#              did_median + unemployment_rate_winsorized + 
-#              offshoring_per_1000_employees_combined + inflation_rate +
-#              did_top10 + did_top25, 
-#              data = final_dataset_complete)
-# 
-# # With imputed union data
-# model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-#              h1b_dependency_preperiod +  
-#              did_median + unemployment_rate_winsorized + 
-#              offshoring_per_1000_employees_combined + inflation_rate +
-#              union_pct_combined +
-#              did_top10 + did_top25, 
-#              data = final_dataset_complete)
-# 
-# # With fixed effects using factors
-# model4 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-#              h1b_dependency_preperiod +  
 #              did_median + inflation_rate + 
+#                offshoring_per_1000_employees_combined + 
+#               unemployment_rate_winsorized +
 #              factor(naics_2digit), 
 #              data = final_dataset_complete)
-
-# With fixed effects using factors and controls
-model5 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-             h1b_dependency_preperiod + 
-             did_median + inflation_rate + 
-               offshoring_per_1000_employees_combined + 
-              unemployment_rate_winsorized +
-             factor(naics_2digit), 
-             data = final_dataset_complete)
-
-# With fixed effects using factors and controls
-model6 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-             h1b_dependency_preperiod + 
-             inflation_rate + 
-               offshoring_per_1000_employees_combined + 
-              unemployment_rate_winsorized +
-             factor(naics_2digit) + did_top25, 
-             data = final_dataset_complete)
-
-# # With fixed effects (industry and time) using factors and controls
-# model6 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+# 
+# # With fixed effects using factors and controls
+# model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
 #              h1b_dependency_preperiod + 
-#              did_median + inflation_rate + 
-#               offshoring_per_1000_employees_combined + 
+#              inflation_rate + 
+#                offshoring_per_1000_employees_combined + 
 #               unemployment_rate_winsorized +
-#              factor(naics_2digit) + factor(year), 
+#              factor(naics_2digit) + did_top25, 
 #              data = final_dataset_complete)
-
-# Create a publication-ready table using stargazer
-# Output to HTML for better formatting in reports/documents
-stargazer_output <- stargazer(model4, model5, model6,
-                      title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
-                      column.labels = c( "With Fixed Effects", "With FE and Controls", "FE (Time and Industry + Control") ,
-                      dep.var.labels = "Log Real Wage",
-                      # covariate.labels = c("DiD Median", "Denial Rate"
-                      #                     ,"Unemployment Rate", "Offshoring per 1000 Employees"),
-                      omit = c("factor"),
-                      omit.stat = c("f", "ser"),
-                      notes = "Note: Fixed effects for industry (NAICS 2-digit) included in Model 4 but not shown.",
-                      notes.append = FALSE,
-                      model.numbers = TRUE,
-                      digits = 3,
-                      header = FALSE,
-                      type = "text")
-
-# Write the HTML output to a file
-writeLines(stargazer_output, "regression_results.html")
-
-# Save to HTML file
-cat(key_table_formatted, file = "key_results_table.html")
+# 
+# # Create a publication-ready table using stargazer
+# # Output to HTML for better formatting in reports/documents
+# stargazer_output <- stargazer(model1, model2,
+#                       title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
+#                       column.labels = c("With FE and Controls", "FE (Time and Industry + Control") ,
+#                       dep.var.labels = "Log Real Wage",
+#                       # covariate.labels = c("DiD Median", "Denial Rate"
+#                       #                     ,"Unemployment Rate", "Offshoring per 1000 Employees"),
+#                       omit = c("factor"),
+#                       omit.stat = c("f", "ser"),
+#                       notes = "Note: Fixed effects for industry (NAICS 2-digit) included in Model 4 but not shown.",
+#                       notes.append = FALSE,
+#                       model.numbers = TRUE,
+#                       digits = 3,
+#                       header = FALSE,
+#                       type = "text")
+# 
+# # Write the HTML output to a file
+# writeLines(stargazer_output, "regression_results.html")
+# 
+# # # Save to HTML file
+# # cat(key_table_formatted, file = "key_results_table.html")
 ```
 ##9** Cleaned Models:
 ```{r clean model}
@@ -683,33 +683,45 @@ library(stargazer)
 library(broom)
 library(dplyr)
 
-# Define the models with consistent variable ordering
-model1 <- lm(log_real_wage ~ did_median  + denial_rate, 
-             data = final_dataset_complete)
-
 # With fixed effects using factors
-model2 <- lm(log_real_wage ~ did_median  + denial_rate + 
-             inflation_rate + unemployment_rate_winsorized +
+model1 <- lm(log_real_wage ~ did_median  + denial_rate + 
+             unemployment_rate_winsorized +
              offshoring_per_1000_employees_combined + 
              factor(naics_2digit), 
              data = final_dataset_complete)
 
 # With fixed effects using factors and controls
-model3 <- lm(log_real_wage ~ did_top25 + denial_rate + 
-             inflation_rate + unemployment_rate_winsorized +
-             offshoring_per_1000_employees_combined +
-             factor(naics_2digit), 
+model2 <- lm(log_real_wage ~ did_median  + denial_rate + 
+             unemployment_rate_winsorized +
+             offshoring_per_1000_employees_combined + 
+             factor(naics_2digit) + factor(year), 
+             data = final_dataset_complete)
+
+# Create a dummy variable for NAICS 54 (Professional Services)
+final_dataset_complete <- final_dataset_complete %>%
+  mutate(naics_54 = ifelse(naics_2digit == "54", 1, 0))
+
+# Also create an interaction term between NAICS 54 and denial rate
+final_dataset_complete <- final_dataset_complete %>%
+  mutate(naics54_denial_rate = naics_54 * denial_rate)
+
+model3 <- lm(log_real_wage ~ naics_54 + denial_rate + naics54_denial_rate +
+             unemployment_rate_winsorized +
+             offshoring_per_1000_employees_combined + 
+             factor(year), 
              data = final_dataset_complete)
 
 # Create a publication-ready table using stargazer
 stargazer_output <- stargazer(model1, model2, model3,
                       title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
-                      column.labels = c("Base Model", "Median With Fixed Effects", "Top 25 With Fixed Effects"),
+                      column.labels = c("Median Dependency With Industry FE", "Median Dependency With Industry and Year FEs", "NAICS 54 vs Others"),
                       dep.var.labels = "Log Real Wage",
-                      covariate.labels = c("DiD Median", "DiD Top 25%", "Denial Rate", 
-                                          "Inflation Rate", "Unemployment Rate", 
-                                          "Offshoring per 1000 Employees"),
-                      omit = c("factor"),
+                      covariate.labels = c("DiD Median", "NAICS 54 (Professional Services)","Denial Rate", 
+                                           "NAICS 54 × Denial Rate", 
+                                           "Unemployment Rate", 
+                                           "Offshoring per 1000 Employees"),
+                                        
+                      omit = c("factor","Constant"),
                       omit.stat = c("f", "ser"),
                       notes = "Note: Fixed effects for industry (NAICS 2-digit) included but not shown. Significance levels: * p<0.1, ** p<0.05, *** p<0.01.",
                       notes.append = FALSE,
@@ -765,326 +777,334 @@ writeLines(ind54_table, "industry54_analysis.html")
 ```
 
 ```{r results='asis'}
-# Load required libraries
-library(ggplot2)
-library(dplyr)
-library(scales)
-library(gridExtra)
-library(tidyr)
-
-# ----- PART 1: Create Conceptual DiD Diagram -----
-# Create sample data for DiD visualization
-treatment_data <- data.frame(
-  time = rep(c("Pre-treatment", "Post-treatment"), 2),
-  group = rep(c("High H-1B Dependency", "Low H-1B Dependency"), each = 2),
-  value = c(4.8, 6.8, 3.0, 4.2),  # Pre/Post values for Treatment, then Pre/Post for Control
-  counterfactual = c(NA, 6.0, NA, NA)  # Counterfactual for treatment group
-)
-
-# Convert variables to factors with specific ordering
-treatment_data$time <- factor(treatment_data$time, levels = c("Pre-treatment", "Post-treatment"))
-treatment_data$group <- factor(treatment_data$group, levels = c("High H-1B Dependency", "Low H-1B Dependency"))
-
-# Create the conceptual DiD plot
-did_concept <- ggplot(treatment_data, aes(x = time, y = value, group = group, color = group)) +
-  geom_line(size = 1.2) +
-  geom_point(size = 3) +
-  geom_line(data = treatment_data %>% filter(!is.na(counterfactual)), 
-            aes(y = counterfactual), linetype = "dashed", size = 1.2) +
-  annotate("segment", x = 2, xend = 2, y = 6.0, yend = 6.8, 
-           arrow = arrow(length = unit(0.3, "cm")), color = "black") +
-  annotate("text", x = 2.03, y = 6.4, label = "Treatment\nEffect", hjust = 0) +
-  geom_text(data = treatment_data %>% filter(time == "Post-treatment" & group == "High H-1B Dependency"),
-            aes(label = "Actual", y = value + 0.4), color = "black", vjust = 0) +
-  geom_text(data = treatment_data %>% filter(time == "Post-treatment" & group == "High H-1B Dependency"),
-            aes(label = "Counterfactual", y = counterfactual - 0.4), color = "black", vjust = 1) +
-  scale_y_continuous(
-    name = "Real Wage",
-    limits = c(0, 10),
-    breaks = seq(0, 10, by = 2),
-    labels = function(x) paste0("$", x, "k")
-  ) +
-  scale_color_manual(values = c("High H-1B Dependency" = "#2C3E92", "Low H-1B Dependency" = "#E07932")) +
-  labs(
-    title = "Difference-in-Differences Estimation",
-    subtitle = "Impact of H-1B Visa Restrictions on Wages",
-    x = "",
-    color = "Industry Group"
-  ) +
-  theme_minimal() +
-  theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
-    plot.subtitle = element_text(size = 12),
-    axis.title.y = element_text(face = "bold"),
-    legend.title = element_text(face = "bold")
-  ) +
-  geom_vline(xintercept = 1.5, linetype = "dotted", color = "gray50")
-
-# Print the conceptual diagram
-print(did_concept)
-ggsave("did_concept_diagram.png", did_concept, width = 8, height = 6, dpi = 300)
-
-# ----- PART 2: Create Data-Driven DiD Visualization -----
-# Load your data 
-# Note: Replace this with your actual data loading code
-data <- read.csv("combined_labor_market_analysis_data_imputed.csv", stringsAsFactors = FALSE)
-
-# Ensure correct data types
-data$year <- as.numeric(data$year)
-data$real_wage <- as.numeric(data$real_wage)
-data$log_real_wage <- as.numeric(data$log_real_wage)
-data$high_dependency_median <- as.logical(data$high_dependency_median)
-data$high_dependency_top25 <- as.logical(data$high_dependency_top25)
-data$high_dependency_top10 <- as.logical(data$high_dependency_top10)
-data$post_treatment <- as.logical(data$post_treatment)
-
-# 1. Calculate average wages by year and dependency group
-wage_trends <- data %>%
-  group_by(year, post_treatment) %>%
-  summarize(
-    # Median split
-    high_dep_real_wage = mean(real_wage[high_dependency_median], na.rm = TRUE),
-    low_dep_real_wage = mean(real_wage[!high_dependency_median], na.rm = TRUE),
-    high_dep_log_wage = mean(log_real_wage[high_dependency_median], na.rm = TRUE),
-    low_dep_log_wage = mean(log_real_wage[!high_dependency_median], na.rm = TRUE),
-    
-    # Top 25% split
-    high_dep25_real_wage = mean(real_wage[high_dependency_top25], na.rm = TRUE),
-    low_dep25_real_wage = mean(real_wage[!high_dependency_top25], na.rm = TRUE),
-    high_dep25_log_wage = mean(log_real_wage[high_dependency_top25], na.rm = TRUE),
-    low_dep25_log_wage = mean(log_real_wage[!high_dependency_top25], na.rm = TRUE),
-    
-    # Top 10% split
-    high_dep10_real_wage = mean(real_wage[high_dependency_top10], na.rm = TRUE),
-    low_dep10_real_wage = mean(real_wage[!high_dependency_top10], na.rm = TRUE),
-    high_dep10_log_wage = mean(log_real_wage[high_dependency_top10], na.rm = TRUE),
-    low_dep10_log_wage = mean(log_real_wage[!high_dependency_top10], na.rm = TRUE)
-  )
-
-# 2. Calculate counterfactual trends
-# Function to predict linear trend
-predict_trend <- function(pre_data, years) {
-  model <- lm(value ~ year, data = pre_data)
-  return(predict(model, newdata = data.frame(year = years)))
-}
-
-# Prepare pre-treatment data for trend estimation
-pre_data_median <- wage_trends %>%
-  filter(!post_treatment) %>%
-  select(year, high_dep_real_wage, low_dep_real_wage, high_dep_log_wage, low_dep_log_wage)
-
-# Create long format for easier modeling
-pre_data_high <- pre_data_median %>%
-  select(year, high_dep_real_wage) %>%
-  rename(value = high_dep_real_wage) %>%
-  mutate(group = "High Dependency")
-
-pre_data_low <- pre_data_median %>%
-  select(year, low_dep_real_wage) %>%
-  rename(value = low_dep_real_wage) %>%
-  mutate(group = "Low Dependency")
-
-pre_data_combined <- bind_rows(pre_data_high, pre_data_low)
-
-# Get post-treatment years
-post_years <- wage_trends$year[wage_trends$post_treatment]
-
-# Predict counterfactual for high dependency group
-high_dep_model <- lm(high_dep_real_wage ~ year, data = pre_data_median)
-high_counterfactual <- predict(high_dep_model, newdata = data.frame(year = post_years))
-
-# Predict counterfactual for low dependency group
-low_dep_model <- lm(low_dep_real_wage ~ year, data = pre_data_median)
-low_counterfactual <- predict(low_dep_model, newdata = data.frame(year = post_years))
-
-# Create complete dataset with counterfactuals
-did_visual_data <- wage_trends %>%
-  select(year, post_treatment, high_dep_real_wage, low_dep_real_wage) %>%
-  rename(
-    "High H-1B Dependency" = high_dep_real_wage,
-    "Low H-1B Dependency" = low_dep_real_wage
-  )
-
-# Add counterfactual values
-counterfactual_data <- data.frame(
-  year = post_years,
-  post_treatment = TRUE,
-  high_counterfactual = high_counterfactual,
-  low_counterfactual = low_counterfactual
-)
-
-# Join counterfactual data
-did_visual_data <- did_visual_data %>%
-  left_join(counterfactual_data, by = c("year", "post_treatment"))
-
-# Convert to long format for plotting
-did_long <- did_visual_data %>%
-  pivot_longer(
-    cols = c("High H-1B Dependency", "Low H-1B Dependency"),
-    names_to = "group",
-    values_to = "actual_value"
-  )
-
-# Add indicator for whether to display counterfactual
-did_long <- did_long %>%
-  mutate(
-    counterfactual_value = case_when(
-      group == "High H-1B Dependency" & post_treatment ~ high_counterfactual,
-      group == "Low H-1B Dependency" & post_treatment ~ low_counterfactual,
-      TRUE ~ NA_real_
-    )
-  )
-
-# 3. Create the DiD visualization with actual data
-did_plot <- ggplot(did_long, aes(x = year, color = group)) +
-  # Actual lines
-  geom_line(aes(y = actual_value, group = group), size = 1.2) +
-  geom_point(aes(y = actual_value), size = 3) +
-  
-  # Counterfactual lines
-  geom_line(aes(y = counterfactual_value, group = paste0(group, "_cf")), 
-            linetype = "dashed", size = 1.2) +
-  
-  # Add vertical line for policy implementation
-  geom_vline(xintercept = 2017, linetype = "dashed", color = "gray50") +
-  annotate("text", x = 2017, y = max(did_long$actual_value, na.rm = TRUE) * 1.05, 
-           label = "Buy American,\nHire American", hjust = 0) +
-  
-  # Label for treatment effect
-  annotate("segment", 
-           x = 2020, xend = 2020, 
-           y = did_long$counterfactual_value[did_long$year == 2020 & did_long$group == "High H-1B Dependency"],
-           yend = did_long$actual_value[did_long$year == 2020 & did_long$group == "High H-1B Dependency"],
-           arrow = arrow(length = unit(0.3, "cm")), color = "black") +
-  
-  # Customize scales and labels
-  scale_y_continuous(
-    name = "Average Real Wage ($)",
-    labels = dollar_format(prefix = "$")
-  ) +
-  scale_color_manual(values = c("High H-1B Dependency" = "#2C3E92", "Low H-1B Dependency" = "#E07932")) +
-  scale_x_continuous(breaks = 2012:2020) +
-  
-  labs(
-    title = "Impact of \"Buy American, Hire American\" on Industry Wages",
-    subtitle = "Difference-in-Differences Analysis (2012-2020)",
-    x = "Year",
-    color = "Industry Group"
-  ) +
-  theme_minimal() +
-  theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank(),
-    plot.title = element_text(face = "bold", size = 14),
-    plot.subtitle = element_text(size = 12),
-    axis.title = element_text(face = "bold"),
-    legend.title = element_text(face = "bold")
-  )
-
-# Print the DiD plot
-print(did_plot)
-ggsave("h1b_did_analysis.png", did_plot, width = 10, height = 7, dpi = 300)
-
-# ----- PART 3: Create a version with log wages -----
-# Create similar plot for log wages
-# Similar steps but using log wage variables
-
-# ----- PART 4: Create DiD Regression Table -----
-# Run different specifications of your DiD model
-# Base model
-model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-             h1b_dependency_preperiod + avg_preperiod_dependency + 
-             did_median + did_top10 + did_top25, 
-             data = data)
-
-# With controls
-model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-             h1b_dependency_preperiod + avg_preperiod_dependency + 
-             did_median + unemployment_rate_winsorized + 
-             offshoring_per_1000_employees_combined + inflation_rate +
-             did_top10 + did_top25, 
-             data = data)
-
-# With fixed effects for industry
-model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
-             h1b_dependency_preperiod + avg_preperiod_dependency + 
-             did_median + unemployment_rate_winsorized + 
-             offshoring_per_1000_employees_combined + inflation_rate +
-             did_top10 + did_top25 + 
-             factor(naics_2digit), 
-             data = data)
-
-# Create regression table
-# Note: You'll need to install stargazer if not already installed
-# install.packages("stargazer")
-library(stargazer)
-
-# Output to text format
-stargazer(model1, model2, model3,
-          title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
-          column.labels = c("Base Model", "With Controls", "With Fixed Effects"),
-          dep.var.labels = "Log Real Wage",
-          covariate.labels = c("Denial Rate", "H-1B Dependency (Current)", 
-                              "H-1B Dependency (Pre-Period)", "Avg Pre-Period Dependency",
-                              "DiD Median", "Unemployment Rate", 
-                              "Offshoring per 1000 Employees",
-                              "Inflation Rate", "DiD Top 10%", "DiD Top 25%"),
-          omit = c("factor"),
-          omit.stat = c("f", "ser"),
-          notes = "Note: Fixed effects for industry (NAICS 2-digit) included in Model 3 but not shown.",
-          notes.append = FALSE,
-          model.numbers = TRUE,
-          digits = 3,
-          type = "text",
-          out = "h1b_regression_results.txt")
+# # Load required libraries
+# library(ggplot2)
+# library(dplyr)
+# library(scales)
+# library(gridExtra)
+# library(tidyr)
+# 
+# # ----- PART 1: Create Conceptual DiD Diagram -----
+# # Create sample data for DiD visualization
+# treatment_data <- data.frame(
+#   time = rep(c("Pre-treatment", "Post-treatment"), 2),
+#   group = rep(c("High H-1B Dependency", "Low H-1B Dependency"), each = 2),
+#   value = c(4.8, 6.8, 3.0, 4.2),  # Pre/Post values for Treatment, then Pre/Post for Control
+#   counterfactual = c(NA, 6.0, NA, NA)  # Counterfactual for treatment group
+# )
+# 
+# # Convert variables to factors with specific ordering
+# treatment_data$time <- factor(treatment_data$time, levels = c("Pre-treatment", "Post-treatment"))
+# treatment_data$group <- factor(treatment_data$group, levels = c("High H-1B Dependency", "Low H-1B Dependency"))
+# 
+# # Create the conceptual DiD plot
+# did_concept <- ggplot(treatment_data, aes(x = time, y = value, group = group, color = group)) +
+#   geom_line(size = 1.2) +
+#   geom_point(size = 3) +
+#   geom_line(data = treatment_data %>% filter(!is.na(counterfactual)), 
+#             aes(y = counterfactual), linetype = "dashed", size = 1.2) +
+#   annotate("segment", x = 2, xend = 2, y = 6.0, yend = 6.8, 
+#            arrow = arrow(length = unit(0.3, "cm")), color = "black") +
+#   annotate("text", x = 2.03, y = 6.4, label = "Treatment\nEffect", hjust = 0) +
+#   geom_text(data = treatment_data %>% filter(time == "Post-treatment" & group == "High H-1B Dependency"),
+#             aes(label = "Actual", y = value + 0.4), color = "black", vjust = 0) +
+#   geom_text(data = treatment_data %>% filter(time == "Post-treatment" & group == "High H-1B Dependency"),
+#             aes(label = "Counterfactual", y = counterfactual - 0.4), color = "black", vjust = 1) +
+#   scale_y_continuous(
+#     name = "Real Wage",
+#     limits = c(0, 10),
+#     breaks = seq(0, 10, by = 2),
+#     labels = function(x) paste0("$", x, "k")
+#   ) +
+#   scale_color_manual(values = c("High H-1B Dependency" = "#2C3E92", "Low H-1B Dependency" = "#E07932")) +
+#   labs(
+#     title = "Difference-in-Differences Estimation",
+#     subtitle = "Impact of H-1B Visa Restrictions on Wages",
+#     x = "",
+#     color = "Industry Group"
+#   ) +
+#   theme_minimal() +
+#   theme(
+#     legend.position = "bottom",
+#     panel.grid.minor = element_blank(),
+#     plot.title = element_text(face = "bold", size = 14),
+#     plot.subtitle = element_text(size = 12),
+#     axis.title.y = element_text(face = "bold"),
+#     legend.title = element_text(face = "bold")
+#   ) +
+#   geom_vline(xintercept = 1.5, linetype = "dotted", color = "gray50")
+# 
+# # Print the conceptual diagram
+# print(did_concept)
+# ggsave("did_concept_diagram.png", did_concept, width = 8, height = 6, dpi = 300)
+# 
+# # ----- PART 2: Create Data-Driven DiD Visualization -----
+# # Load your data 
+# # Note: Replace this with your actual data loading code
+# data <- read.csv("combined_labor_market_analysis_data_imputed.csv", stringsAsFactors = FALSE)
+# 
+# # Ensure correct data types
+# data$year <- as.numeric(data$year)
+# data$real_wage <- as.numeric(data$real_wage)
+# data$log_real_wage <- as.numeric(data$log_real_wage)
+# data$high_dependency_median <- as.logical(data$high_dependency_median)
+# data$high_dependency_top25 <- as.logical(data$high_dependency_top25)
+# data$high_dependency_top10 <- as.logical(data$high_dependency_top10)
+# data$post_treatment <- as.logical(data$post_treatment)
+# 
+# # 1. Calculate average wages by year and dependency group
+# wage_trends <- data %>%
+#   group_by(year, post_treatment) %>%
+#   summarize(
+#     # Median split
+#     high_dep_real_wage = mean(real_wage[high_dependency_median], na.rm = TRUE),
+#     low_dep_real_wage = mean(real_wage[!high_dependency_median], na.rm = TRUE),
+#     high_dep_log_wage = mean(log_real_wage[high_dependency_median], na.rm = TRUE),
+#     low_dep_log_wage = mean(log_real_wage[!high_dependency_median], na.rm = TRUE),
+#     
+#     # Top 25% split
+#     high_dep25_real_wage = mean(real_wage[high_dependency_top25], na.rm = TRUE),
+#     low_dep25_real_wage = mean(real_wage[!high_dependency_top25], na.rm = TRUE),
+#     high_dep25_log_wage = mean(log_real_wage[high_dependency_top25], na.rm = TRUE),
+#     low_dep25_log_wage = mean(log_real_wage[!high_dependency_top25], na.rm = TRUE),
+#     
+#     # Top 10% split
+#     high_dep10_real_wage = mean(real_wage[high_dependency_top10], na.rm = TRUE),
+#     low_dep10_real_wage = mean(real_wage[!high_dependency_top10], na.rm = TRUE),
+#     high_dep10_log_wage = mean(log_real_wage[high_dependency_top10], na.rm = TRUE),
+#     low_dep10_log_wage = mean(log_real_wage[!high_dependency_top10], na.rm = TRUE)
+#   )
+# 
+# # 2. Calculate counterfactual trends
+# # Function to predict linear trend
+# predict_trend <- function(pre_data, years) {
+#   model <- lm(value ~ year, data = pre_data)
+#   return(predict(model, newdata = data.frame(year = years)))
+# }
+# 
+# # Prepare pre-treatment data for trend estimation
+# pre_data_median <- wage_trends %>%
+#   filter(!post_treatment) %>%
+#   select(year, high_dep_real_wage, low_dep_real_wage, high_dep_log_wage, low_dep_log_wage)
+# 
+# # Create long format for easier modeling
+# pre_data_high <- pre_data_median %>%
+#   select(year, high_dep_real_wage) %>%
+#   rename(value = high_dep_real_wage) %>%
+#   mutate(group = "High Dependency")
+# 
+# pre_data_low <- pre_data_median %>%
+#   select(year, low_dep_real_wage) %>%
+#   rename(value = low_dep_real_wage) %>%
+#   mutate(group = "Low Dependency")
+# 
+# pre_data_combined <- bind_rows(pre_data_high, pre_data_low)
+# 
+# # Get post-treatment years
+# post_years <- wage_trends$year[wage_trends$post_treatment]
+# 
+# # Predict counterfactual for high dependency group
+# high_dep_model <- lm(high_dep_real_wage ~ year, data = pre_data_median)
+# high_counterfactual <- predict(high_dep_model, newdata = data.frame(year = post_years))
+# 
+# # Predict counterfactual for low dependency group
+# low_dep_model <- lm(low_dep_real_wage ~ year, data = pre_data_median)
+# low_counterfactual <- predict(low_dep_model, newdata = data.frame(year = post_years))
+# 
+# # Create complete dataset with counterfactuals
+# did_visual_data <- wage_trends %>%
+#   select(year, post_treatment, high_dep_real_wage, low_dep_real_wage) %>%
+#   rename(
+#     "High H-1B Dependency" = high_dep_real_wage,
+#     "Low H-1B Dependency" = low_dep_real_wage
+#   )
+# 
+# # Add counterfactual values
+# counterfactual_data <- data.frame(
+#   year = post_years,
+#   post_treatment = TRUE,
+#   high_counterfactual = high_counterfactual,
+#   low_counterfactual = low_counterfactual
+# )
+# 
+# # Join counterfactual data
+# did_visual_data <- did_visual_data %>%
+#   left_join(counterfactual_data, by = c("year", "post_treatment"))
+# 
+# # Convert to long format for plotting
+# did_long <- did_visual_data %>%
+#   pivot_longer(
+#     cols = c("High H-1B Dependency", "Low H-1B Dependency"),
+#     names_to = "group",
+#     values_to = "actual_value"
+#   )
+# 
+# # Add indicator for whether to display counterfactual
+# did_long <- did_long %>%
+#   mutate(
+#     counterfactual_value = case_when(
+#       group == "High H-1B Dependency" & post_treatment ~ high_counterfactual,
+#       group == "Low H-1B Dependency" & post_treatment ~ low_counterfactual,
+#       TRUE ~ NA_real_
+#     )
+#   )
+# 
+# # 3. Create the DiD visualization with actual data
+# did_plot <- ggplot(did_long, aes(x = year, color = group)) +
+#   # Actual lines
+#   geom_line(aes(y = actual_value, group = group), size = 1.2) +
+#   geom_point(aes(y = actual_value), size = 3) +
+#   
+#   # Counterfactual lines
+#   geom_line(aes(y = counterfactual_value, group = paste0(group, "_cf")), 
+#             linetype = "dashed", size = 1.2) +
+#   
+#   # Add vertical line for policy implementation
+#   geom_vline(xintercept = 2017, linetype = "dashed", color = "gray50") +
+#   annotate("text", x = 2017, y = max(did_long$actual_value, na.rm = TRUE) * 1.05, 
+#            label = "Buy American,\nHire American", hjust = 0) +
+#   
+#   # Label for treatment effect
+#   annotate("segment", 
+#            x = 2020, xend = 2020, 
+#            y = did_long$counterfactual_value[did_long$year == 2020 & did_long$group == "High H-1B Dependency"],
+#            yend = did_long$actual_value[did_long$year == 2020 & did_long$group == "High H-1B Dependency"],
+#            arrow = arrow(length = unit(0.3, "cm")), color = "black") +
+#   
+#   # Customize scales and labels
+#   scale_y_continuous(
+#     name = "Average Real Wage ($)",
+#     labels = dollar_format(prefix = "$")
+#   ) +
+#   scale_color_manual(values = c("High H-1B Dependency" = "#2C3E92", "Low H-1B Dependency" = "#E07932")) +
+#   scale_x_continuous(breaks = 2012:2020) +
+#   
+#   labs(
+#     title = "Impact of \"Buy American, Hire American\" on Industry Wages",
+#     subtitle = "Difference-in-Differences Analysis (2012-2020)",
+#     x = "Year",
+#     color = "Industry Group"
+#   ) +
+#   theme_minimal() +
+#   theme(
+#     legend.position = "bottom",
+#     panel.grid.minor = element_blank(),
+#     plot.title = element_text(face = "bold", size = 14),
+#     plot.subtitle = element_text(size = 12),
+#     axis.title = element_text(face = "bold"),
+#     legend.title = element_text(face = "bold")
+#   )
+# 
+# # Print the DiD plot
+# print(did_plot)
+# ggsave("h1b_did_analysis.png", did_plot, width = 10, height = 7, dpi = 300)
+# 
+# # ----- PART 3: Create a version with log wages -----
+# # Create similar plot for log wages
+# # Similar steps but using log wage variables
+# 
+# # ----- PART 4: Create DiD Regression Table -----
+# # Run different specifications of your DiD model
+# # Base model
+# model1 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+#              h1b_dependency_preperiod + avg_preperiod_dependency + 
+#              did_median + did_top10 + did_top25, 
+#              data = data)
+# 
+# # With controls
+# model2 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+#              h1b_dependency_preperiod + avg_preperiod_dependency + 
+#              did_median + unemployment_rate_winsorized + 
+#              offshoring_per_1000_employees_combined + inflation_rate +
+#              did_top10 + did_top25, 
+#              data = data)
+# 
+# # With fixed effects for industry
+# model3 <- lm(log_real_wage ~ denial_rate + h1b_dependency_current + 
+#              h1b_dependency_preperiod + avg_preperiod_dependency + 
+#              did_median + unemployment_rate_winsorized + 
+#              offshoring_per_1000_employees_combined + inflation_rate +
+#              did_top10 + did_top25 + 
+#              factor(naics_2digit), 
+#              data = data)
+# 
+# # Create regression table
+# # Note: You'll need to install stargazer if not already installed
+# # install.packages("stargazer")
+# library(stargazer)
+# 
+# # Output to text format
+# stargazer(model1, model2, model3,
+#           title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
+#           column.labels = c("Base Model", "With Controls", "With Fixed Effects"),
+#           dep.var.labels = "Log Real Wage",
+#           covariate.labels = c("Denial Rate", "H-1B Dependency (Current)", 
+#                               "H-1B Dependency (Pre-Period)", "Avg Pre-Period Dependency",
+#                               "DiD Median", "Unemployment Rate", 
+#                               "Offshoring per 1000 Employees",
+#                               "Inflation Rate", "DiD Top 10%", "DiD Top 25%"),
+#           omit = c("factor"),
+#           omit.stat = c("f", "ser"),
+#           notes = "Note: Fixed effects for industry (NAICS 2-digit) included in Model 3 but not shown.",
+#           notes.append = FALSE,
+#           model.numbers = TRUE,
+#           digits = 3,
+#           type = "text",
+#           out = "h1b_regression_results.txt")
 ```
 ## 10. Visualize Key Findings
 
 ```{r visualize-findings}
-# Create a visualization of the DiD effect
-
-# Prepare data for visualization
-plot_data <- final_dataset_complete %>%
-  group_by(year, high_dependency_median) %>%
-  summarize(avg_log_wage = mean(log_real_wage, na.rm = TRUE),
-            avg_denial_rate = mean(denial_rate, na.rm = TRUE),
-            .groups = "drop") %>%
-  mutate(treatment_group = ifelse(high_dependency_median, "High H-1B Dependency", "Low H-1B Dependency"))
-
-# Plot the DiD
-ggplot(plot_data, aes(x = year, y = avg_log_wage, color = treatment_group, group = treatment_group)) +
-  geom_line(size = 1) +
-  geom_vline(xintercept = 2017, linetype = "dashed", color = "red") +
-  annotate("text", x = 2017, y = min(plot_data$avg_log_wage), label = "Buy American, Hire American", 
-           angle = 90, vjust = -0.5, hjust = -0.2) +
-  theme_minimal() +
-  labs(
-    title = "Difference-in-Differences: Log Real Wage by H-1B Dependency",
-    subtitle = "Before and After the 'Buy American, Hire American' Executive Order",
-    x = "Year",
-    y = "Average Log Real Wage",
-    color = "Industry Group"
-  )
-ggsave("did_event_study.png", width = 10, height = 7, dpi = 300)
+# # Create a visualization of the DiD effect
+# 
+# # Prepare data for visualization
+# plot_data <- final_dataset_complete %>%
+#   group_by(year, high_dependency_median) %>%
+#   summarize(avg_log_wage = mean(log_real_wage, na.rm = TRUE),
+#             avg_denial_rate = mean(denial_rate, na.rm = TRUE),
+#             .groups = "drop") %>%
+#   mutate(treatment_group = ifelse(high_dependency_median, "High H-1B Dependency", "Low H-1B Dependency"))
+# 
+# # Plot the DiD
+# ggplot(plot_data, aes(x = year, y = avg_log_wage, color = treatment_group, group = treatment_group)) +
+#   geom_line(size = 1) +
+#   geom_vline(xintercept = 2017, linetype = "dashed", color = "red") +
+#   annotate("text", x = 2017, y = min(plot_data$avg_log_wage), label = "Buy American, Hire American", 
+#            angle = 90, vjust = -0.5, hjust = -0.2) +
+#   theme_minimal() +
+#   labs(
+#     title = "Difference-in-Differences: Log Real Wage by H-1B Dependency",
+#     subtitle = "Before and After the 'Buy American, Hire American' Executive Order",
+#     x = "Year",
+#     y = "Average Log Real Wage",
+#     color = "Industry Group"
+#   )
+# ggsave("did_event_study.png", width = 10, height = 7, dpi = 300)
 ```
-## 11. Prediction graphs:
+## 11. Prediction graphs for 54:
 ```{r}
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(scales)
 
+target_naics <- "51"  # Change this to your industry of interest (Professional Services)
+
+# Filter dataset to only include the selected industry
+industry_data <- final_dataset_complete %>%
+  filter(naics_2digit == target_naics)
+
 # Create a prediction dataset spanning your time range
 years <- unique(final_dataset_complete$year)
 pred_data <- expand.grid(
   year = years,
-  naics_2digit = unique(final_dataset_complete$naics_2digit)[1]  # Just use one industry for predictions
+  naics_2digit = "51"  # Just use one industry for predictions
 )
 
+#print(unique(final_dataset_complete$naics_2digit)[1])
+
 # Get average values for control variables to use in predictions
-avg_controls <- final_dataset_complete %>%
+avg_controls <- industry_data %>%
   group_by(year) %>%
   summarize(
     unemployment_rate_winsorized = mean(unemployment_rate_winsorized, na.rm = TRUE),
@@ -1158,10 +1178,132 @@ ggplot() +
   geom_vline(xintercept = 2017, color = "red", linetype = "dashed", size = 1) +
   
   # Add policy label
-  annotate("text", x = 2013.8, y = max(effects_data$effect_value, na.rm = TRUE), 
-           label = "'Buy American, Hire American'", 
+  annotate("text", x = 2013.8, y = max(effects_data$effect_value, na.rm = TRUE),
+           label = "'Buy American, Hire American'",
            hjust = 0, vjust = 1, color = "red", fontface = "bold") +
   
+  # Format the plot
+  scale_color_manual(values = custom_colors) +
+  scale_y_continuous(limits = c(0, 0.15), breaks = seq(0, 0.1, by = 0.025)) +
+  scale_x_continuous(breaks = years) +
+  labs(
+    title = "Predicted Wage Effects from H-1B Visa Restrictions",
+    subtitle = "Component Effects Based on Regression Model",
+    x = "Year",
+    y = "Effect on Log Real Wage",
+    color = "Effect Component",
+    linetype = "Effect Component"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(size = 12),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    axis.title = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(fill = NA, color = "gray80")
+  )
+
+# # Save the plot
+ggsave("h1b_wage_effects_51.png", width = 10, height = 7, dpi = 300)
+```
+
+## 11. Prediction graphs for 72:
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+
+# Create a prediction dataset spanning your time range
+years <- unique(final_dataset_complete$year)
+pred_data <- expand.grid(
+  year = years,
+  naics_2digit = "72"  # Just use one industry for predictions
+)
+print(unique(final_dataset_complete$naics_2digit)[1])
+
+# Get average values for control variables to use in predictions
+avg_controls <- final_dataset_complete %>%
+  group_by(year) %>%
+  summarize(
+    unemployment_rate_winsorized = mean(unemployment_rate_winsorized, na.rm = TRUE),
+    inflation_rate = mean(inflation_rate, na.rm = TRUE),
+    offshoring_per_1000_employees_combined = mean(offshoring_per_1000_employees_combined, na.rm = TRUE),
+    denial_rate = mean(denial_rate, na.rm = TRUE)
+  )
+
+# Merge averages into prediction data
+pred_data <- merge(pred_data, avg_controls, by = "year")
+
+# Create specialized datasets for individual effect components
+# 1. Denial Rate effect
+denial_effect <- pred_data %>%
+  mutate(
+    effect_value = denial_rate * coef(model2)["denial_rate"],
+    effect_type = "Denial Rate Effect"
+  )
+
+# 2. Offshoring effect
+offshoring_effect <- pred_data %>%
+  mutate(
+    effect_value = offshoring_per_1000_employees_combined * coef(model2)["offshoring_per_1000_employees_combined"],
+    effect_type = "Offshoring Effect"
+  )
+
+# 3. Did_median effect (ONLY after 2017) - Create two separate datasets
+# First dataset: Pre-2017 (will be NA)
+did_effect_pre <- pred_data %>%
+  filter(year < 2017) %>%
+  mutate(
+    effect_value = NA,  # Set to NA so no line will be drawn
+    effect_type = "H-1B Dependency Effect (Post-2017)"
+  )
+
+# Second dataset: 2017 and after (with actual values)
+did_effect_post <- pred_data %>%
+  filter(year >= 2017) %>%
+  mutate(
+    effect_value = coef(model2)["did_median"],  # Apply the coefficient
+    effect_type = "H-1B Dependency Effect (Post-2017)"
+  )
+
+# Combine all effect datasets
+effects_data <- bind_rows(
+  denial_effect %>% select(year, effect_value, effect_type),
+  offshoring_effect %>% select(year, effect_value, effect_type),
+  did_effect_pre %>% select(year, effect_value, effect_type),
+  did_effect_post %>% select(year, effect_value, effect_type)
+)
+
+custom_colors <- c(
+  "Denial Rate Effect" = "#1f77b4",           # Blue
+  "Offshoring Effect" = "#2ca02c",            # Green
+  "H-1B Dependency Effect (Post-2017)" = "#d62728"  # Red
+)
+
+# Create the visualization
+ggplot() +
+  # Add effect lines
+  geom_line(data = effects_data,
+            aes(x = year, y = effect_value, color = effect_type, linetype = "solid"),
+            size = 1, na.rm = TRUE) +  # na.rm=TRUE ensures NA values don't connect
+
+  # Add a point at the start of the H-1B dependency effect (2017)
+  geom_point(data = did_effect_post %>% filter(year == 2017),
+             aes(x = year, y = effect_value, color = effect_type),
+             size = 4) +
+
+  # Add vertical line for 2017 policy
+  geom_vline(xintercept = 2017, color = "red", linetype = "dashed", size = 1) +
+
+  # Add policy label
+  annotate("text", x = 2013.8, y = max(effects_data$effect_value, na.rm = TRUE),
+           label = "'Buy American, Hire American'",
+           hjust = 0, vjust = 1, color = "red", fontface = "bold") +
+
   # Format the plot
   scale_color_manual(values = custom_colors) +
   scale_y_continuous(limits = c(0, 0.1), breaks = seq(0, 0.1, by = 0.025)) +
@@ -1187,5 +1329,51 @@ ggplot() +
   )
 
 # # Save the plot
-ggsave("h1b_wage_effects.png", width = 10, height = 7, dpi = 300)
+ggsave("h1b_wage_effects_72.png", width = 10, height = 7, dpi = 300)
 ```
+
+```{r}
+# Create subset for NAICS 54 only
+naics54_data <- final_dataset_complete %>% 
+  filter(naics_2digit == "54")
+
+# Create subset for all other industries
+other_industries_data <- final_dataset_complete %>% 
+  filter(naics_2digit != "54")
+
+# Run the same model on both subsets
+model_naics54 <- lm(log_real_wage ~ denial_rate + inflation_rate + 
+                    unemployment_rate_winsorized + 
+                    offshoring_per_1000_employees_combined + 
+                    factor(year), 
+                    data = naics54_data)
+
+model_others <- lm(log_real_wage ~ denial_rate + inflation_rate + 
+                   unemployment_rate_winsorized + 
+                   offshoring_per_1000_employees_combined + 
+                   factor(year), 
+                   data = other_industries_data)
+
+# Create a publication-ready table using stargazer
+stargazer_output <- stargazer(model_naics54, model_others,
+                      title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
+                      column.labels = c("Median Dependency With Industry FE", "Median Dependency With Industry and Year FEs", "NAICS 54 vs Others"),
+                      dep.var.labels = "Log Real Wage",
+                      # covariate.labels = c("DiD Median", "NAICS 54 (Professional Services)","Denial Rate", 
+                      #                      "NAICS 54 × Denial Rate", 
+                      #                      "Unemployment Rate", 
+                      #                      "Offshoring per 1000 Employees"),
+                                        
+                      omit = c("factor","Constant"),
+                      omit.stat = c("f", "ser"),
+                      notes = "Note: Fixed effects for industry (NAICS 2-digit) included but not shown. Significance levels: * p<0.1, ** p<0.05, *** p<0.01.",
+                      notes.append = FALSE,
+                      model.numbers = TRUE,
+                      digits = 3,
+                      header = FALSE,
+                      type = "text")
+
+# Write the output to a file
+writeLines(stargazer_output, "regression_results.html")
+```
+
