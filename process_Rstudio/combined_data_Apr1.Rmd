@@ -697,33 +697,17 @@ model2 <- lm(log_real_wage ~ did_median  + denial_rate +
              factor(naics_2digit) + factor(year), 
              data = final_dataset_complete)
 
-# Create a dummy variable for NAICS 54 (Professional Services)
-final_dataset_complete <- final_dataset_complete %>%
-  mutate(naics_54 = ifelse(naics_2digit == "54", 1, 0))
-
-# Also create an interaction term between NAICS 54 and denial rate
-final_dataset_complete <- final_dataset_complete %>%
-  mutate(naics54_denial_rate = naics_54 * denial_rate)
-
-model3 <- lm(log_real_wage ~ naics_54 + denial_rate + naics54_denial_rate +
-             unemployment_rate_winsorized +
-             offshoring_per_1000_employees_combined + 
-             factor(year), 
-             data = final_dataset_complete)
-
 # Create a publication-ready table using stargazer
-stargazer_output <- stargazer(model1, model2, model3,
+stargazer_output <- stargazer(model1, model2,
                       title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
-                      column.labels = c("Median Dependency With Industry FE", "Median Dependency With Industry and Year FEs", "NAICS 54 vs Others"),
+                      column.labels = c("Median Dependency With Industry FE", "Median Dependency With Industry and Year FEs"),
                       dep.var.labels = "Log Real Wage",
-                      covariate.labels = c("DiD Median", "NAICS 54 (Professional Services)","Denial Rate", 
-                                           "NAICS 54 × Denial Rate", 
+                      covariate.labels = c("DiD Median","Denial Rate", 
                                            "Unemployment Rate", 
                                            "Offshoring per 1000 Employees"),
-                                        
                       omit = c("factor","Constant"),
                       omit.stat = c("f", "ser"),
-                      notes = "Note: Fixed effects for industry (NAICS 2-digit) included but not shown. Significance levels: * p<0.1, ** p<0.05, *** p<0.01.",
+                      notes = "Note: Fixed effects for industry (NAICS 2-digit) and years  included but not shown. Significance levels: * p<0.1, ** p<0.05, *** p<0.01.",
                       notes.append = FALSE,
                       model.numbers = TRUE,
                       digits = 3,
@@ -1101,8 +1085,6 @@ pred_data <- expand.grid(
   naics_2digit = "51"  # Just use one industry for predictions
 )
 
-#print(unique(final_dataset_complete$naics_2digit)[1])
-
 # Get average values for control variables to use in predictions
 avg_controls <- industry_data %>%
   group_by(year) %>%
@@ -1207,7 +1189,7 @@ ggplot() +
   )
 
 # # Save the plot
-ggsave("h1b_wage_effects_51.png", width = 10, height = 7, dpi = 300)
+ggsave("h1b_wage_effects_51.png", width = 12, height = 8, dpi = 300)
 ```
 
 ## 11. Prediction graphs for 72:
@@ -1359,14 +1341,9 @@ stargazer_output <- stargazer(model_naics54, model_others,
                       title = "Regression Results: Impact of H-1B Visa Restrictions on Wages",
                       column.labels = c("Median Dependency With Industry FE", "Median Dependency With Industry and Year FEs", "NAICS 54 vs Others"),
                       dep.var.labels = "Log Real Wage",
-                      # covariate.labels = c("DiD Median", "NAICS 54 (Professional Services)","Denial Rate", 
-                      #                      "NAICS 54 × Denial Rate", 
-                      #                      "Unemployment Rate", 
-                      #                      "Offshoring per 1000 Employees"),
-                                        
                       omit = c("factor","Constant"),
                       omit.stat = c("f", "ser"),
-                      notes = "Note: Fixed effects for industry (NAICS 2-digit) included but not shown. Significance levels: * p<0.1, ** p<0.05, *** p<0.01.",
+                      notes = "Note: Fixed effects for industry (NAICS 2-digit) and year included but not shown. Significance levels: * p<0.1, ** p<0.05, *** p<0.01.",
                       notes.append = FALSE,
                       model.numbers = TRUE,
                       digits = 3,
@@ -1375,5 +1352,202 @@ stargazer_output <- stargazer(model_naics54, model_others,
 
 # Write the output to a file
 writeLines(stargazer_output, "regression_results.html")
+```
+
+```{r}
+# ---- NAICS 54 and 72 Prediction Graphs with Unified Layout ----
+# Using the same styling as the main visualization code
+
+# ---- Setup ----
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales)
+
+# Set global theme for all plots - matching your other visualizations
+poster_theme <- theme_minimal() +
+  theme(
+    text = element_text(family = "serif", size = 18),
+    plot.title = element_text(face = "bold", size = 22),
+    plot.subtitle = element_text(size = 20),
+    axis.title = element_text(size = 20, face = "bold"),
+    axis.text = element_text(size = 18),
+    legend.title = element_text(size = 18, face = "bold"),
+    legend.text = element_text(size = 18),
+    legend.position = "bottom",
+    legend.key.size = unit(1, "cm"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "gray90"),
+    plot.margin = margin(20, 20, 20, 20)
+  )
+
+# Colors for consistent branding
+high_dependency_color <- "#1F78B4"  # Blue
+low_dependency_color <- "#E31A1C"   # Red
+neutral_color <- "#33A02C"          # Green
+accent_color <- "#FF7F00"           # Orange
+
+# Define effect colors to match your other visualizations
+effect_colors <- c(
+  "Denial Rate Effect" = high_dependency_color,
+  "Offshoring Effect" = neutral_color,
+  "H-1B Dependency Effect" = low_dependency_color
+)
+
+# ---- Function to Create Prediction Graphs ----
+create_prediction_graph <- function(industry_code, industry_name, save_path = NULL) {
+  # Filter dataset to only include the selected industry
+  industry_data <- final_dataset_complete %>%
+    filter(naics_2digit == industry_code)
+  
+  # Check if industry has data
+  if(nrow(industry_data) == 0) {
+    warning(paste("No data found for industry", industry_code))
+    return(NULL)
+  }
+  
+  # Get industry-specific years
+  years <- unique(industry_data$year)
+  
+  # Create prediction dataset
+  pred_data <- data.frame(
+    year = years,
+    naics_2digit = rep(industry_code, length(years))
+  )
+  
+  # Get industry-specific control values by year
+  industry_controls <- industry_data %>%
+    group_by(year) %>%
+    summarize(
+      unemployment_rate_winsorized = mean(unemployment_rate_winsorized, na.rm = TRUE),
+      inflation_rate = mean(inflation_rate, na.rm = TRUE),
+      offshoring_per_1000_employees_combined = mean(offshoring_per_1000_employees_combined, na.rm = TRUE),
+      denial_rate = mean(denial_rate, na.rm = TRUE)
+    )
+  
+  # Merge controls into prediction data
+  pred_data <- merge(pred_data, industry_controls, by = "year")
+  
+  # Create datasets for individual effect components
+  # 1. Denial Rate effect
+  denial_effect <- pred_data %>%
+    mutate(
+      effect_value = denial_rate * coef(model2)["denial_rate"],
+      effect_type = "Denial Rate Effect"
+    )
+  
+  # 2. Offshoring effect
+  offshoring_effect <- pred_data %>%
+    mutate(
+      effect_value = offshoring_per_1000_employees_combined * 
+                     coef(model2)["offshoring_per_1000_employees_combined"],
+      effect_type = "Offshoring Effect"
+    )
+  
+  # 3. Check if industry is high-dependency (for DiD effect)
+  is_high_dependency <- any(industry_data$high_dependency_median, na.rm = TRUE)
+  
+  # Set DiD effect based on dependency status
+  did_effect_value <- if(is_high_dependency) coef(model2)["did_median"] else 0
+  
+  # Pre-2017 (no H-1B dependency effect)
+  did_effect_pre <- pred_data %>%
+    filter(year < 2017) %>%
+    mutate(
+      effect_value = 0,
+      effect_type = "H-1B Dependency Effect"
+    )
+  
+  # Post-2017 (with H-1B dependency effect if applicable)
+  did_effect_post <- pred_data %>%
+    filter(year >= 2017) %>%
+    mutate(
+      effect_value = did_effect_value,
+      effect_type = "H-1B Dependency Effect"
+    )
+  
+  # Combine all effects
+  effects_data <- bind_rows(
+    denial_effect %>% select(year, effect_value, effect_type),
+    offshoring_effect %>% select(year, effect_value, effect_type),
+    did_effect_pre %>% select(year, effect_value, effect_type),
+    did_effect_post %>% select(year, effect_value, effect_type)
+  )
+  
+  # Create area plot (showing stacked effects)
+  # First get individual effects
+  effects_area <- effects_data %>%
+    pivot_wider(
+      id_cols = year,
+      names_from = effect_type,
+      values_from = effect_value
+    ) %>%
+    mutate(
+      `Denial Rate Effect` = ifelse(is.na(`Denial Rate Effect`), 0, `Denial Rate Effect`),
+      `Offshoring Effect` = ifelse(is.na(`Offshoring Effect`), 0, `Offshoring Effect`),
+      `H-1B Dependency Effect` = ifelse(is.na(`H-1B Dependency Effect`), 0, `H-1B Dependency Effect`)
+    ) %>%
+    pivot_longer(
+      cols = c(`Denial Rate Effect`, `Offshoring Effect`, `H-1B Dependency Effect`),
+      names_to = "effect_type",
+      values_to = "effect_value"
+    )
+  
+  # Set factor levels for consistent ordering in graph
+  effects_area$effect_type <- factor(effects_area$effect_type, 
+                                   levels = c("Denial Rate Effect", 
+                                             "Offshoring Effect", 
+                                             "H-1B Dependency Effect"))
+  
+  # Calculate max Y value for annotation positioning
+  max_y_position <- max(effects_area %>% 
+                      group_by(year) %>% 
+                      summarise(total = sum(effect_value)) %>% 
+                      pull(total)) * 0.95
+  
+  # Create area plot
+  area_plot <- ggplot(effects_area, aes(x = year, y = effect_value, 
+                                      fill = effect_type)) +
+    geom_area(position = "stack", alpha = 0.8) +
+    geom_vline(xintercept = 2017, linetype = "dashed", color = "black", size = 1) +
+    annotate("text", x = 2017.2, y = max_y_position,
+             label = "'Buy American,\nHire American'\nPolicy (2017)",
+             hjust = 0, size = 6, fontface = "bold", color = "black") +
+    scale_fill_manual(values = effect_colors) +
+    scale_x_continuous(breaks = years) +
+    labs(
+      title = paste("Cumulative Wage Effects in", industry_name, "(NAICS", industry_code, ")"),
+      subtitle = "Stacked impact of policy components on log real wages",
+      x = "Year",
+      y = "Effect on Log Real Wage",
+      fill = "Policy Effects"
+    ) +
+    poster_theme
+  
+  # Save plot if path is provided
+  if(!is.null(save_path)) {
+    ggsave(save_path, area_plot, width = 12, height = 8, dpi = 300)
+  }
+  
+  return(area_plot)
+}
+
+# ---- Create and Save NAICS 54 Plot ----
+naics54_plot <- create_prediction_graph(
+  "54", 
+  "Professional Services", 
+  save_path = "naics54_area_plot_unified.png"
+)
+
+# ---- Create and Save NAICS 72 Plot ----
+naics72_plot <- create_prediction_graph(
+  "72", 
+  "Accommodation & Food Services", 
+  save_path = "naics72_area_plot_unified.png"
+)
+
+# Display plots (optional)
+print(naics54_plot)
+print(naics72_plot)
 ```
 
