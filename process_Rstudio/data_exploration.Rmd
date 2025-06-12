@@ -30,7 +30,7 @@ theme_set(theme_minimal() +
 
 # ---- 1. Load and Prepare Data ----
 # Load the processed dataset
-analysis_data <- read.csv("~/Documents/GitHub/h1b-econ-paper/improved_processed_data_for_analysis.csv")
+analysis_data <- read.csv("~/Documents/GitHub/h1b-econ-paper/improved_processed_data_for_analysis_April1st.csv")
 
 # Convert relevant columns to factors
 analysis_data$naics_2digit <- as.factor(analysis_data$naics_2digit)

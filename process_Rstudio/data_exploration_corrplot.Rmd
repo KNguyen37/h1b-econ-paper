@@ -1,0 +1,140 @@
+---
+title: "data_exploration"
+output: html_document
+---
+
+```{r}
+# ---- Improved Correlation Matrix Visualization ----
+# Load necessary libraries
+library(dplyr)
+library(corrplot)
+library(RColorBrewer)
+
+# ---- 1. Load Data ----
+# Replace with your actual data loading code
+analysis_data <- read.csv("~/Documents/GitHub/h1b-econ-paper/improved_processed_data_for_analysis_April1st.csv")
+
+# Fix numeric versions of binary variables for correlation analysis
+analysis_data$high_dependency_median_num <- as.numeric(analysis_data$high_dependency_median)
+analysis_data$post_treatment_num <- as.numeric(analysis_data$post_treatment)
+analysis_data$did_median_num <- as.numeric(analysis_data$did_median)
+
+# Create period indicator for pre/post policy
+analysis_data$period <- factor(ifelse(analysis_data$year < 2017, 
+                                     "Pre-Policy (2012-2016)", 
+                                     "Post-Policy (2017-2020)"),
+                              levels = c("Pre-Policy (2012-2016)", "Post-Policy (2017-2020)"))
+
+# ---- 2. Create Correlation Matrices ----
+# Key variables for correlation matrix (using numeric versions of binary variables)
+cor_vars <- c("log_real_wage", "denial_rate", "avg_preperiod_dependency", 
+              "high_dependency_median_num", "post_treatment_num", "did_median_num",
+              "total_approvals", "total_denials")
+
+# Create correlation matrix for all data
+cor_matrix <- cor(analysis_data[, cor_vars], use = "pairwise.complete.obs")
+
+# For period-specific correlations
+pre_data <- analysis_data %>% filter(period == "Pre-Policy (2012-2016)")
+post_data <- analysis_data %>% filter(period == "Post-Policy (2017-2020)")
+
+# Variables with non-zero variance in pre-period
+pre_cor_vars <- c("log_real_wage", "denial_rate", "avg_preperiod_dependency", 
+                 "high_dependency_median_num", "total_approvals", "total_denials")
+pre_cor <- cor(pre_data[, pre_cor_vars], use = "pairwise.complete.obs")
+
+# Variables with non-zero variance in post-period
+post_cor_vars <- c("log_real_wage", "denial_rate", "avg_preperiod_dependency", 
+                  "high_dependency_median_num", "did_median_num", 
+                  "total_approvals", "total_denials")
+post_cor <- cor(post_data[, post_cor_vars], use = "pairwise.complete.obs")
+
+# ---- 3. Improved Visualization with Better Readability ----
+# Define a better color palette
+col_palette <- colorRampPalette(c("#6BAED6", "#FFFFFF", "#E6550D"))(100)
+
+# Create a PDF with better formatting
+pdf("improved_correlation_matrices.pdf", width = 12, height = 15)
+par(mfrow = c(3, 1), mar = c(1, 1, 3, 1))
+
+# Function to create improved correlation plot
+create_improved_corrplot <- function(cor_data, title) {
+  corrplot(cor_data, 
+           method = "color",           # Use color fill
+           type = "upper",             # Show only upper triangle
+           order = "original",         # Keep original variable order
+           col = col_palette,          # Use our custom palette
+           addCoef.col = "black",      # White text for dark cells
+           tl.col = "black",           # Black text for variable names
+           tl.srt = 45,                # Rotate text labels
+           tl.cex = 0.9,               # Slightly smaller text for labels
+           cl.cex = 0.9,               # Slightly smaller text for legend
+           diag = FALSE,               # No diagonal
+           title = title,              # Add title
+           mar = c(0, 0, 3, 0),        # Margins
+           bg = "white",               # White background
+           outline = TRUE,             # Add outline
+           addgrid.col = "lightgray",  # Light grid color
+           # Add a callback function to dynamically color coefficients
+           number.cex = 0.9,           # Slightly smaller coefficient text
+           number.digits = 2,          # Show only 2 decimal places 
+           addCoefasPercent = FALSE)   # Show as coefficients, not percentages
+  
+  # # Add rectangle around the plot for better definition
+  # box("figure", col = "black", lwd = 2)
+}
+
+# Main correlation matrix
+create_improved_corrplot(cor_matrix, "All Data (2012-2020)")
+
+# Pre-policy correlation
+create_improved_corrplot(pre_cor, "Pre-Policy (2012-2016)")
+
+# Post-policy correlation
+create_improved_corrplot(post_cor, "Post-Policy (2017-2020)")
+
+dev.off()
+
+# ---- 4. Create Interactive HTML Version (More Readable) ----
+# If you have htmlwidgets and plotly installed
+if(require(plotly) && require(reshape2)) {
+  # Convert correlation matrices to long format for plotly
+  cor_matrix_long <- melt(cor_matrix)
+  names(cor_matrix_long) <- c("Var1", "Var2", "value")
+  
+  # Create interactive heatmap
+  p <- plot_ly(
+    data = cor_matrix_long,
+    x = ~Var1,
+    y = ~Var2,
+    z = ~value,
+    type = "heatmap",
+    colorscale = list(c(0, "#6BAED6"), c(0.5, "#FFFFFF"), c(1, "#E6550D")),
+    text = ~paste0("r = ", round(value, 2)),
+    hoverinfo = "text"
+  ) %>%
+    layout(
+      title = "Interactive Correlation Matrix (All Data)",
+      xaxis = list(title = ""),
+      yaxis = list(title = "")
+    )
+  
+  # Save as HTML
+  htmlwidgets::saveWidget(p, "interactive_correlation_matrix.html")
+}
+
+# ---- 5. Create PNG Version with Better Background Contrast ----
+# For better default viewing in documents
+png("improved_correlation_matrices_horizontal.png", width = 2000, height = 667, res = 150)
+par(mfrow = c(1, 3), mar = c(1, 1, 3, 1))
+
+# Use the same function to create better correlation plots
+create_improved_corrplot(cor_matrix, "All Data (2012-2020)")
+create_improved_corrplot(pre_cor, "Pre-Policy (2012-2016)")
+create_improved_corrplot(post_cor, "Post-Policy (2017-2020)")
+
+dev.off()
+
+# Print confirmation
+cat("Improved correlation matrices created with better readability.\n")
+```
